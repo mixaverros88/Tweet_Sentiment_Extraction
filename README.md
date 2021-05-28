@@ -32,6 +32,18 @@ frontEnd
 ng serve
 ```
 
-http://localhost:4200/ 
+http://localhost:4200/
 
 Or run the runAngular.cmd on buildingScripts
+
+### Distribution of Sentiment class
+
+![](presentation/images/count_plot_target_class_test_df.png)
+
+| Target| Rows
+| ---- |:-----:
+| Negative | 7781  |
+| Neutral  | 11118 |
+| Positive | 8582  |
+
+We consider this dataset as imbalanced???
