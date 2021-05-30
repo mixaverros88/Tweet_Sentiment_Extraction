@@ -36,6 +36,14 @@ http://localhost:4200/
 
 Or run the runAngular.cmd on buildingScripts
 
+### Run the tests
+
+On root level run the following command
+
+```
+python -m unittest
+```
+
 ### Distribution of Sentiment class
 
 ![](presentation/images/count_plot_target_class_test_df.png)
