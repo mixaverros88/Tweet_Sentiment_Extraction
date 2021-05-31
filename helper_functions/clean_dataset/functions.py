@@ -1,7 +1,10 @@
 import re
+import string
+import os
+from datetime import datetime
 
 
-# TODO: remove empty text
+# TODO: vectorized target class
 
 # TODO: Removing stop words
 def remove_stop_word():
@@ -19,6 +22,7 @@ def sanitize_data_frame(data_frame):
         text = trim_text(covert_text_to_lower_case(clean_html(remove_punctuations_from_a_string(row['text']))))
         data_frame.loc[index, 'text'] = text
 
+
 def remove_punctuations_from_a_string(text):
     punctuations = '''!()-[]{};:'"\,<>./?@#$%^&*_~'''
     text_without_punctuations = ''
@@ -26,6 +30,11 @@ def remove_punctuations_from_a_string(text):
         if char not in punctuations:
             text_without_punctuations = text_without_punctuations + char
     return text_without_punctuations
+
+
+def drop_row_if_has_null_column(data_frame):
+    """Drop All Rows with any Null/NaN/NaT Values"""
+    data_frame.dropna(inplace=True)
 
 
 def clean_html(text):
@@ -39,3 +48,14 @@ def covert_text_to_lower_case(text):
 
 def trim_text(text):
     return text.strip()
+
+
+def generate_results_file(text):
+    now = datetime.now()  # current date and time
+    date_time = now.strftime("%m_%d_%Y_%H_%M_%S")
+    print("date and time:", date_time)
+    alphabet_char_list = string.ascii_lowercase
+    generated_file = open(os.path.abspath(os.curdir) + '\\presentation\\results\\' + date_time + '.txt', "w+",
+                          encoding="utf-8")
+    generated_file.write(text + '\n')
+    generated_file.close()

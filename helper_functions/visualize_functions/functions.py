@@ -21,6 +21,10 @@ def count_plot_target_class(data_frame, target_column, generated_image_name):
 def save_plot_as_image(image_name):
     plt.savefig('presentation/images/' + image_name + '.png', bbox_inches='tight')
 
+
+def check_for_null_values(data_frame):
+    print('Null Columns \n ', data_frame.isna().sum())
+
 # TODO: Dataset desc for the presentation
 
 # TODO: plot the Bag Of Words
