@@ -1,4 +1,4 @@
-from helper_functions.clean_dataset import functions as clean
+from helper_functions.clean_dataset import DataCleaning as clean
 
 text = 'Hello!!!, he said ---and went.   '
 trimmed_text = clean.trim_text(text)

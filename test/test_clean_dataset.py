@@ -1,4 +1,4 @@
-from helper_functions.clean_dataset import functions as clean_dataset
+from helper_functions.clean_dataset import DataCleaning as clean_dataset
 
 text_with_html_tags = "<!DOCTYPE html><html><body><p><b>This text is bold</b></p></body></html>"
 
