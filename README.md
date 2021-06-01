@@ -48,6 +48,10 @@ python -m unittest
 
 ![](presentation/images/count_plot_target_class_test_df.png)
 
+### Get the terminal output
+
+run the terminalOutPutAsTxt.cmd
+
 | Target| Rows
 | ---- |:-----:
 | Negative | 7781  |
