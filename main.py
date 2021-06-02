@@ -1,7 +1,13 @@
+#import nltk
+#nltk.download('stopwords')
+
+
 from helper_functions.read_dataset import functions as read_dataset
 from helper_functions.clean_dataset.DataCleaning import DataCleaning
 from helper_functions.visualize.VisualizeDataset import VisualizeDataset
 from helper_functions.tokenize.RemoveStopWords import RemoveStopWords
+from helper_functions.convert_test.functions import tokenizing_sentences
+
 
 # Retrieve data frames
 train_data_frame = read_dataset.read_train_data_set()
@@ -24,6 +30,11 @@ train_corpus = remove_stop_words_on_train_dataset.remove_stop_words()
 
 remove_stop_words_on_test_dataset = RemoveStopWords(cleaned_test_data_frame)
 test_corpus = remove_stop_words_on_test_dataset.remove_stop_words()
+print(cleaned_test_data_frame)
+
+#Convert Text
+tokenized_sentences = tokenizing_sentences(cleaned_test_data_frame)
+print(tokenized_sentences)
 
 # Vectorized text and target class
 
