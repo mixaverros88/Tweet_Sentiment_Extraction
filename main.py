@@ -8,6 +8,7 @@ from helper_functions.visualize.VisualizeDataset import VisualizeDataset
 from helper_functions.tokenize.RemoveStopWords import RemoveStopWords
 from helper_functions.convert_test.functions import tokenizing_sentences
 
+from helper_functions.text_vectorization.BoW import BoW
 
 # Retrieve data frames
 train_data_frame = read_dataset.read_train_data_set()
@@ -36,9 +37,7 @@ print(cleaned_test_data_frame)
 tokenized_sentences = tokenizing_sentences(cleaned_test_data_frame)
 print(tokenized_sentences)
 
+sentences = remove_stop_words_on_train_dataset.tokenize_sentence()
+#print(sentences)
 # Vectorized text and target class
-
-
-# print(train_corpus)
-# print(cleaned_train_data_frame)
-# print(len(train_corpus))
+BoW(sentences)

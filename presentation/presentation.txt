@@ -1,3 +1,10 @@
+Polarity Sentiment Analysis
+
+Sentiment analysis algorithms fall into one of three buckets
+1. Rule-based
+2. Automatic
+3. Hybrid
+
 For presentation
 1. box plot with the target class distribution
 2. compare text before-after cleaning
@@ -11,3 +18,10 @@ pre-processing
    Let’s remove the stop words with the Aruana library:
    The result would be [‘told’, ‘happy’].
    https://medium.com/@limavallantin/why-is-removing-stop-words-not-always-a-good-idea-c8d35bd77214
+
+
+Text Vectorization - Convert natural language into numerical form
+1. Bag of words
+The problem with this method is that it doesn’t capture the meaning of the text, or the context in which words appear, even when using n-grams.
+2. word2vec
+3. Skip-Thought Vectors

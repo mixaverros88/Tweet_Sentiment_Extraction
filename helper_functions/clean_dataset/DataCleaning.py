@@ -1,7 +1,4 @@
 import re
-import string
-import os
-from datetime import datetime
 
 
 class DataCleaning:
@@ -32,8 +29,10 @@ class DataCleaning:
         for index, row in self.data_frame.iterrows():
             text = self.trim_text(
                 self.covert_text_to_lower_case(
-                    self.clean_html(
-                        self.remove_punctuations_from_a_string(row['text'])
+                    self.clean_url(
+                        self.clean_html(
+                            self.remove_punctuations_from_a_string(row['text'])
+                        )
                     )
                 )
             )
@@ -51,6 +50,10 @@ class DataCleaning:
 
     def clean_html(self, text):
         cleaner = re.compile('<.*?>|&([a-z0-9]+|#[0-9]{1,6}|#x[0-9a-f]{1,6});')
+        return re.sub(cleaner, '', text)
+
+    def clean_url(self, text):
+        cleaner = re.compile('http\S+')
         return re.sub(cleaner, '', text)
 
     def covert_text_to_lower_case(self, text):
