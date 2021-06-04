@@ -23,17 +23,16 @@ Slide: Text pre-processing Steps
 8.  Expand contractions
 9.  Remove numbers (or converted on string)
 10. Trim text and Remove extra whitespaces
-11. Expand contractions
-12. Case Normalization: Lowercase all texts
-13. Remove stop words, no need for this operations since in sentiment analysis we will lose information
+11. Case Normalization: Lowercase all texts
+12. Remove stop words, no need for this operations since in sentiment analysis we will lose information
     e.g.
     An example could be the following sentence: “I told you that she was not happy”.
     Let’s remove the stop words with the Aruana library:
     The result would be [‘told’, ‘happy’].
     https://medium.com/@limavallantin/why-is-removing-stop-words-not-always-a-good-idea-c8d35bd77214
-14. Stemming vs Lemmatization (which one to choose?)
-15. Tokenization (per sentence or all the corpus?)
-16. Spell corrector
+13. Stemming vs Lemmatization (which one to choose?)
+14. Tokenization (per sentence or all the corpus?)
+15. Spell corrector
 
 
 Polarity Sentiment Analysis
