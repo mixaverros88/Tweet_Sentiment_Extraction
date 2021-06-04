@@ -4,8 +4,9 @@ import seaborn as sns
 
 class VisualizeDataset:
 
-    def __init__(self, data_frame, target_column, generated_image_name):
+    def __init__(self, data_frame, dataframe_name, target_column, generated_image_name):
         self.data_frame = data_frame
+        self.dataframe_name = dataframe_name
         self.target_column = target_column
         self.generated_image_name = generated_image_name
         self.count_plot_target_class()
@@ -14,10 +15,11 @@ class VisualizeDataset:
 
     def count_plot_target_class(self):
         """Generate an image regarding the distribution of given target column of a given dataframe"""
+        print(self.dataframe_name)
         print(self.data_frame.groupby([self.target_column]).size())  # print the sum of every class
 
         sns.countplot(data=self.data_frame, x=self.data_frame[self.target_column])
-        plt.title('Display the distribution of ' + self.target_column + ' class')
+        plt.title(self.dataframe_name + ': Display the distribution of ' + self.target_column + ' class')
         plt.xlabel('Target Name: ' + self.target_column)
         plt.ylabel('Count')
         self.save_plot_as_image()
@@ -29,8 +31,10 @@ class VisualizeDataset:
 
     def data_frame_info(self):
         """Display Data Frame information"""
+        print(self.dataframe_name)
         print(self.data_frame.info())
 
     def check_for_null_values(self):
         """Count for every column the null occurrences"""
+        print(self.dataframe_name)
         print(self.data_frame.isna().sum())
