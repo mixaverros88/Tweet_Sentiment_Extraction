@@ -32,7 +32,7 @@ frontEnd
 ng serve
 ```
 
-http://localhost:4200/
+http://localhost:2500/
 
 Or run the runAngular.cmd on buildingScripts
 

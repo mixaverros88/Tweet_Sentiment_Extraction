@@ -1,7 +1,9 @@
-import re
 import unicodedata
-
-from helper_functions.clean_dataset.contractions import CONTRACTION_MAP
+from word2number import w2n
+from helper_functions.clean_dataset.contractions import contractions
+import nltk
+import re
+from autocorrect import spell
 
 
 class DataCleaning:
@@ -16,7 +18,7 @@ class DataCleaning:
 
     def data_cleaning(self):
         self.drop_row_if_has_null_column()
-        self.remove_column_from_data_frame()
+        # self.remove_column_from_data_frame()
         self.sanitize_data_frame()
         self.compare_dataframes()
         return self.data_frame
@@ -32,14 +34,18 @@ class DataCleaning:
     def sanitize_data_frame(self):
         for index, row in self.data_frame.iterrows():
             self.text = row['text']
-            self.text = self.remove_punctuations_special_characters()
             self.text = self.remove_urls()
             self.text = self.remove_html_tags()
             self.text = self.remove_emojis()
+            # self.text = self.convert_number_words_to_integers()
             self.text = self.remove_accented_chars()
             self.text = self.expand_contractions()
-            self.text = self.trim_text()
             self.text = self.covert_text_to_lower_case()
+            self.text = self.remove_punctuations_special_characters()
+            self.text = self.remove_numbers()
+            self.text = self.trim_text()
+            self.text = self.remove_double_spaces()
+            self.text = self.autospell()
 
             # print(row['text'] + ' --- ' + text)
             self.data_frame.loc[index, 'text'] = self.text
@@ -67,6 +73,15 @@ class DataCleaning:
     def trim_text(self):
         return self.text.strip()
 
+    def remove_double_spaces(self):
+        return re.sub('\s+', ' ', self.text)
+
+    def remove_numbers(self):
+        return re.sub(r'\d+', '', self.text)
+
+    def convert_number_words_to_integers(self):
+        return w2n.word_to_num(self.text)
+
     def remove_accented_chars(self):
         return unicodedata.normalize('NFKD', self.text).encode('ascii', 'ignore').decode('utf-8', 'ignore')
 
@@ -89,19 +104,11 @@ class DataCleaning:
         return regrex_pattern.sub(r'', self.text)
 
     def expand_contractions(self):
-        contraction_mapping = CONTRACTION_MAP
-        contractions_pattern = re.compile('({})'.format('|'.join(contraction_mapping.keys())),
-                                          flags=re.IGNORECASE | re.DOTALL)
+        for word in self.text.split():
+            if word.lower() in contractions:
+                self.text = self.text.replace(word, contractions[word.lower()])
+        return self.text
 
-        def expand_match(contraction):
-            match = contraction.group(0)
-            first_char = match[0]
-            expanded_contraction = contraction_mapping.get(match) \
-                if contraction_mapping.get(match) \
-                else contraction_mapping.get(match.lower())
-            expanded_contraction = first_char + expanded_contraction[1:]
-            return expanded_contraction
-
-        expanded_text = contractions_pattern.sub(expand_match, self.text)
-        expanded_text = re.sub("'", "", expanded_text)
-        return expanded_text
+    def autospell(self):
+        spells = [spell(w) for w in (nltk.word_tokenize(self.text))]
+        return " ".join(spells)
