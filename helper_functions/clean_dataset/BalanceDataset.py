@@ -1,3 +1,5 @@
+import logging
+
 import pandas as pd
 
 
@@ -8,7 +10,7 @@ class BalanceDataset:
 
     def convert_to_balance_dataset(self):
         shuffled_df = self.data_frame.sample(frac=1, random_state=4)  # Shuffle the Dataset.
-        print("shuffled_df ", shuffled_df.shape)
+        logging.info("shuffled_df ", shuffled_df.shape)
 
         # Put all the 0 class (minority) in a separate dataset.
         negative = shuffled_df.loc[shuffled_df[self.target_column] == 0]

@@ -1,4 +1,4 @@
 echo %cd%
 cd ../
 cd frontEnd
-ng serve --port 2500
+npm install && ng serve --port 2500 --open
