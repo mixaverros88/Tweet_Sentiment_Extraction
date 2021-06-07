@@ -7,16 +7,16 @@
 }
 
 </style>
-<div class="container" style="border: 0.5px solid #dadada;">
+<div class="container" style="border: 1.5px solid #dbdbdb;border-radius: 13px;">
   <div class="row">
-    <div class="col-sm-6" style="border-right: 3px solid black;">
+    <div class="col-sm-6" style="border-right: 3px solid #dbdbdb;">
       <form>
         <div class="form-group">
           <h3>Test with your own text</h3>
           <textarea style="
     width: 100% !important;
     padding: 9px;
-" #textInput placeholder="Place yours text" required rows="10" cols="60"></textarea>
+" #textInput placeholder="Place yours text" required rows="10" cols="60" ></textarea>
         </div>
         <div class="form-group text-center">
           <button type="button" class="btn btn-primary btn-lg" style="
@@ -31,21 +31,23 @@
     </div>
     <div class="col-sm-6">
       <h3>Results</h3>
-      <div class="col-sm-12">
+      <div class="col-bg-12">
         <h4>Cleaned Text</h4>
       </div>
-      <div class="col-sm-12" style="
+      <div class="col-bg-12" style="
     min-height: 70px;
-    border: 0.1px solid #f1f1f1;
+    border: 0.5px solid #dcdcdc;
+    padding: 3px;
 ">
         {{classification.text}}
       </div>
-      <div class="col-sm-12">
+      <div class="col-bg-12">
         <h4>Sentiment</h4>
       </div>
       <div class="col-sm-12" style="
     min-height: 70px;
-    border: 0.1px solid #f1f1f1;
+    border: 0.5px solid #dcdcdc;
+    padding: 5px;
 ">
         {{classification.sentiment}}
       </div>

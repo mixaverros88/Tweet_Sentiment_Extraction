@@ -14,7 +14,6 @@ class RequestService:
 
         # Create DataFrame
         dataframe = pd.DataFrame(data)
-        sample_cleaning_dataset = DataCleaning(dataframe, 'textID')
+        sample_cleaning_dataset = DataCleaning(dataframe, 'textID', 'request')
         cleaned_sample_data_frame = sample_cleaning_dataset.data_cleaning()
-        print('---' + cleaned_sample_data_frame)
         return cleaned_sample_data_frame

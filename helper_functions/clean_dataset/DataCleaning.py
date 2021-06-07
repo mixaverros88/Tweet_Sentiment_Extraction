@@ -1,9 +1,13 @@
 import unicodedata
-from word2number import w2n
 from helper_functions.clean_dataset.contractions import contractions
-import nltk
+from nltk.corpus import stopwords
+from nltk.tokenize import word_tokenize
+from nltk.tokenize import sent_tokenize
+from nltk.stem import SnowballStemmer
+from nltk.stem import WordNetLemmatizer
+from autocorrect import Speller
+import pandas as pd
 import re
-from autocorrect import spell
 
 
 class DataCleaning:
@@ -11,16 +15,19 @@ class DataCleaning:
     initial_data_frame = ''
     text = ''
 
-    def __init__(self, data_frame, column_name):
+    def __init__(self, data_frame, column_name, dataframe_name):
         self.column_name = column_name
+        self.dataframe_name = dataframe_name
         self.data_frame = data_frame
         self.initial_data_frame = data_frame.copy()
 
     def data_cleaning(self):
         self.drop_row_if_has_null_column()
-        # self.remove_column_from_data_frame()
+        if not self.column_name:
+            self.remove_column_from_data_frame()
         self.sanitize_data_frame()
-        self.compare_dataframes()
+        if self.dataframe_name != 'request':
+            self.compare_dataframes()
         return self.data_frame
 
     def drop_row_if_has_null_column(self):
@@ -34,18 +41,35 @@ class DataCleaning:
     def sanitize_data_frame(self):
         for index, row in self.data_frame.iterrows():
             self.text = row['text']
-            self.text = self.remove_urls()
-            self.text = self.remove_html_tags()
-            self.text = self.remove_emojis()
-            # self.text = self.convert_number_words_to_integers()
-            self.text = self.remove_accented_chars()
+            print('1. text: ' + self.text)
             self.text = self.expand_contractions()
+            print('2. expand_contractions: ' + self.text)
+            self.text = self.remove_urls()
+            print('3. remove_urls: ' + self.text)
+            self.text = self.remove_html_tags()
+            print('4. remove_html_tags: ' + self.text)
+            self.text = self.remove_emojis()
+            print('5. remove_emojis: ' + self.text)
+            # self.text = self.remove_stopwords()
+            # print('6. remove_stopwords: ' + self.text)
+            self.text = self.remove_accented_chars()
+            print('7. remove_accented_chars: ' + self.text)
             self.text = self.covert_text_to_lower_case()
+            print('8. covert_text_to_lower_case: ' + self.text)
             self.text = self.remove_punctuations_special_characters()
+            print('9. remove_punctuations_special_characters: ' + self.text)
             self.text = self.remove_numbers()
+            print('10. remove_numbers: ' + self.text)
             self.text = self.trim_text()
+            print('11. trim_text: ' + self.text)
             self.text = self.remove_double_spaces()
-            self.text = self.autospell()
+            print('12. remove_double_spaces: ' + self.text)
+            self.text = self.auto_spelling()
+            print('13. auto_spelling: ' + self.text)
+            self.text = self.lemmatize()
+            print('14. lemmatize: ' + self.text)
+            self.text = self.stem()
+            print('15. stem: ' + self.text)
 
             # print(row['text'] + ' --- ' + text)
             self.data_frame.loc[index, 'text'] = self.text
@@ -79,19 +103,15 @@ class DataCleaning:
     def remove_numbers(self):
         return re.sub(r'\d+', '', self.text)
 
-    def convert_number_words_to_integers(self):
-        return w2n.word_to_num(self.text)
-
     def remove_accented_chars(self):
         return unicodedata.normalize('NFKD', self.text).encode('ascii', 'ignore').decode('utf-8', 'ignore')
 
     def compare_dataframes(self):
-        print('initial ')
-        for index, row in self.initial_data_frame.head(20).iterrows():
-            print(row['text'])
-        print('cleaned ')
-        for index, row in self.data_frame.head(20).iterrows():
-            print(row['text'])
+        merge_dataframes = pd.concat([self.initial_data_frame['text'], self.data_frame['text']], axis=1,
+                                     keys=['Initial Text', 'Cleaned Text'])
+        merge_dataframes.to_csv('presentation/results/' + self.dataframe_name + "_dataframe_cleaned_initial.csv",
+                                sep=',', encoding='utf-8', index=False)
+        print(merge_dataframes)
 
     def remove_emojis(self):
         regrex_pattern = \
@@ -109,6 +129,26 @@ class DataCleaning:
                 self.text = self.text.replace(word, contractions[word.lower()])
         return self.text
 
-    def autospell(self):
-        spells = [spell(w) for w in (nltk.word_tokenize(self.text))]
+    def auto_spelling(self):
+        spell = Speller(lang='en')
+        spells = [spell(w) for w in (word_tokenize(self.text))]
         return " ".join(spells)
+
+    def remove_stopwords(self):
+        stop_words = stopwords.words('english')
+        return ' '.join([w for w in word_tokenize(self.text) if not w in stop_words])
+
+    def stem(self):
+        snowball_stemmer = SnowballStemmer('english')
+        stemmed_word = [snowball_stemmer.stem(word) for sent in sent_tokenize(self.text) for word in
+                        word_tokenize(sent)]
+        return " ".join(stemmed_word)
+
+    def lemmatize(self):
+        wordnet_lemmatizer = WordNetLemmatizer()
+        lemmatized_word = [wordnet_lemmatizer.lemmatize(word) for sent in sent_tokenize(self.text) for word in
+                           word_tokenize(sent)]
+        return " ".join(lemmatized_word)
+
+    def word_tokenize(self):
+        return [w for sent in sent_tokenize(self.text) for w in word_tokenize(sent)]

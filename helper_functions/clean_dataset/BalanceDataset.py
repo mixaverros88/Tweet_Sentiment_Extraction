@@ -6,7 +6,7 @@ class BalanceDataset:
         self.data_frame = data_frame
         self.target_column = target_column
 
-    def convert_to_balace_dataset(self):
+    def convert_to_balance_dataset(self):
         shuffled_df = self.data_frame.sample(frac=1, random_state=4)  # Shuffle the Dataset.
         print("shuffled_df ", shuffled_df.shape)
 

@@ -18,26 +18,26 @@ VisualizeDataset(test_data_frame, 'Test dataset', 'sentiment', 'count_plot_targe
 
 # Label Encoder On Target Class
 train_label_encoder_transform = LabelEncoderTransform(train_data_frame, 'sentiment')
-train_data_frame = train_label_encoder_transform.convert_taget_column()
+train_data_frame = train_label_encoder_transform.convert_target_column()
 
 test_label_encoder_transform = LabelEncoderTransform(test_data_frame, 'sentiment')
-test_data_frame = test_label_encoder_transform.convert_taget_column()
+test_data_frame = test_label_encoder_transform.convert_target_column()
 
 # Balance Dataset
 train_balance_dataset = BalanceDataset(train_data_frame, 'sentiment')
-train_data_frame = train_balance_dataset.convert_to_balace_dataset()
+train_data_frame = train_balance_dataset.convert_to_balance_dataset()
 
 # Visualize Balance Dataset
 VisualizeDataset(train_data_frame, 'Train dataset ', 'sentiment', 'count_plot_target_class_train_df_balance')
 
 # Cleaning Dataset
-sample_cleaning_dataset = DataCleaning(sample_data_frame, 'textID')
+sample_cleaning_dataset = DataCleaning(sample_data_frame, 'textID', 'sample')
 cleaned_sample_data_frame = sample_cleaning_dataset.data_cleaning()
 
-train_cleaning_dataset = DataCleaning(train_data_frame, 'textID')
+train_cleaning_dataset = DataCleaning(train_data_frame, 'textID', 'train')
 cleaned_train_data_frame = train_cleaning_dataset.data_cleaning()
 
-test_cleaning_dataset = DataCleaning(test_data_frame, 'textID')
+test_cleaning_dataset = DataCleaning(test_data_frame, 'textID', 'test')
 cleaned_test_data_frame = test_cleaning_dataset.data_cleaning()
 
 # Remove Stop Words
