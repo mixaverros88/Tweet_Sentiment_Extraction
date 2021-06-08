@@ -17,8 +17,8 @@ class VisualizeDataset:
 
     def count_plot_target_class(self):
         """Generate an image regarding the distribution of given target column of a given dataframe"""
-        logging.info(self.dataframe_name)
-        logging.info(self.data_frame.groupby([self.target_column]).size())  # print the sum of every class
+        print(self.dataframe_name)
+        print(self.data_frame.groupby([self.target_column]).size())  # print the sum of every class
 
         sns.countplot(data=self.data_frame, x=self.data_frame[self.target_column])
         plt.title(self.dataframe_name + ': Display the distribution of ' + self.target_column + ' class')
@@ -33,10 +33,10 @@ class VisualizeDataset:
 
     def data_frame_info(self):
         """Display Data Frame information"""
-        logging.info(self.dataframe_name)
-        logging.info(self.data_frame.info())
+        print(self.dataframe_name)
+        print(self.data_frame.info())
 
     def check_for_null_values(self):
         """Count for every column the null occurrences"""
-        logging.info(self.dataframe_name)
-        logging.info(self.data_frame.isna().sum())
+        print(self.dataframe_name)
+        print(self.data_frame.isna().sum())
