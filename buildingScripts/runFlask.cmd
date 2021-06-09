@@ -2,4 +2,5 @@ echo %cd%
 cd ../
 cd api
 set FLASK_APP=api.py
-flask run
+rem flask run
+python -m flask run
