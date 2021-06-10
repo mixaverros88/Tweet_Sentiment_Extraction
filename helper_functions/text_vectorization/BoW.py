@@ -1,6 +1,4 @@
 from sklearn.feature_extraction.text import CountVectorizer
-import numpy as np
-
 
 class BoW:
 
@@ -14,6 +12,9 @@ class BoW:
         vectorizer.fit(self.corpus)
         print('Vocabulary: ', vectorizer.vocabulary_)  # a list of unique words
         print('Vocabulary Size: ', len(vectorizer.vocabulary_))  # a list of unique words
+        # freqs = zip(vectorizer.get_feature_names(), vectorizer.sum(axis=0))
+        # # sort from largest to smallest
+        # print(sorted(freqs, key=lambda x: -x[1]))
 
         for index, row in self.data_frame.iterrows():
             vector = vectorizer.transform(row['tokenized_sents'])

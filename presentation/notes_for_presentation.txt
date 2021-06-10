@@ -10,7 +10,9 @@ negative    1001
 neutral     1430
 positive    1103
 
-Slide: Balanced Dataset
+Slide: Balanced Dataset, Smote
+
+remove names, locations, company names
 
 Slide: Text pre-processing Steps
 1.  Remove null columns

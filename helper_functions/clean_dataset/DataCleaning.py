@@ -1,5 +1,6 @@
 import unicodedata
-from helper_functions.clean_dataset.contractions import contractions
+from helper_functions.clean_dataset.contractionList import contractions_list
+from helper_functions.clean_dataset.slanglist import slang_list
 from nltk.corpus import stopwords
 from nltk.tokenize import word_tokenize
 from nltk.tokenize import sent_tokenize
@@ -41,37 +42,47 @@ class DataCleaning:
     def sanitize_data_frame(self):
         for index, row in self.data_frame.iterrows():
             self.text = row['text']
-            print('1. text: ' + self.text)
+            print('#### START ' + str(index) + ' ####')
+            print('1. Text: ' + self.text)
+            self.text = self.covert_text_to_lower_case()
+            print('2. covert_text_to_lower_case: ' + self.text)
             self.text = self.expand_contractions()
-            print('2. expand_contractions: ' + self.text)
+            print('3. expand_contractions: ' + self.text)
+            self.text = self.replace_slang_word()
+            print('4. replace_slang_word: ' + self.text)
             self.text = self.remove_urls()
-            print('3. remove_urls: ' + self.text)
+            print('5. remove_urls: ' + self.text)
             self.text = self.remove_html_tags()
-            print('4. remove_html_tags: ' + self.text)
+            print('6. remove_html_tags: ' + self.text)
             self.text = self.remove_emojis()
-            print('5. remove_emojis: ' + self.text)
+            print('7. remove_emojis: ' + self.text)
             # self.text = self.remove_stopwords()
             # print('6. remove_stopwords: ' + self.text)
-            self.text = self.remove_accented_chars()
-            print('7. remove_accented_chars: ' + self.text)
-            self.text = self.covert_text_to_lower_case()
-            print('8. covert_text_to_lower_case: ' + self.text)
+            self.text = self.remove_hash_tags()
+            print('8. remove_hash_tags: ' + self.text)
+            self.text = self.convert_accented_characters_to_ASCII_characters()
+            print('9. remove_accented_chars: ' + self.text)
             self.text = self.remove_punctuations_special_characters()
-            print('9. remove_punctuations_special_characters: ' + self.text)
+            print('10. remove_punctuations_special_characters: ' + self.text)
+            self.text = self.remove_consequently_char()
+            print('11. remove_consequently_char: ' + self.text)
+            self.text = self.replace_slang_word()
+            print('12. replace_slang_word: ' + self.text)
             self.text = self.remove_numbers()
-            print('10. remove_numbers: ' + self.text)
+            print('13. remove_numbers: ' + self.text)
             self.text = self.trim_text()
-            print('11. trim_text: ' + self.text)
+            print('14. trim_text: ' + self.text)
             self.text = self.remove_double_spaces()
-            print('12. remove_double_spaces: ' + self.text)
+            print('15. remove_double_spaces: ' + self.text)
             self.text = self.auto_spelling()
-            print('13. auto_spelling: ' + self.text)
-            self.text = self.lemmatize()
-            print('14. lemmatize: ' + self.text)
-            self.text = self.stem()
-            print('15. stem: ' + self.text)
-
+            print('16. auto_spelling: ' + self.text)
+            self.text = self.lemma()
+            print('17. lemmatizing: ' + self.text)
+            # self.text = self.stem()
+            # print('15. stem: ' + self.text)
+            print('#### STOP ' + str(index) + '#### \n')
             # print(row['text'] + ' --- ' + text)
+            # TODO: remove ` ,
             self.data_frame.loc[index, 'text'] = self.text
         # print(self.data_frame)
 
@@ -81,6 +92,8 @@ class DataCleaning:
         for char in self.text:
             if char not in punctuations:
                 text_without_punctuations = text_without_punctuations + char
+            else:
+                text_without_punctuations = text_without_punctuations + " "
         return text_without_punctuations
 
     def remove_html_tags(self):
@@ -90,6 +103,9 @@ class DataCleaning:
     def remove_urls(self):
         cleaner = re.compile('http\S+')
         return re.sub(cleaner, '', self.text)
+
+    def remove_hash_tags(self):
+        return ' '.join(re.sub("(@[A-Za-z0-9]+)|([^0-9A-Za-z \t])|(\w+:\/\/\S+)", " ", self.text).split())
 
     def covert_text_to_lower_case(self):
         return self.text.lower()
@@ -103,7 +119,7 @@ class DataCleaning:
     def remove_numbers(self):
         return re.sub(r'\d+', '', self.text)
 
-    def remove_accented_chars(self):
+    def convert_accented_characters_to_ASCII_characters(self):
         return unicodedata.normalize('NFKD', self.text).encode('ascii', 'ignore').decode('utf-8', 'ignore')
 
     def compare_dataframes(self):
@@ -125,8 +141,17 @@ class DataCleaning:
 
     def expand_contractions(self):
         for word in self.text.split():
-            if word.lower() in contractions:
-                self.text = self.text.replace(word, contractions[word.lower()])
+            if word.lower() in contractions_list:
+                self.text = self.text.replace(word, contractions_list[word.lower()])
+        return self.text
+
+    def remove_consequently_char(self):
+        return re.sub(r'(.)\1+', r'\1\1', self.text)
+
+    def replace_slang_word(self):
+        for word in self.text.split():
+            if word.lower() in slang_list:
+                self.text = self.text.replace(word, slang_list[word.lower()])
         return self.text
 
     def auto_spelling(self):
@@ -144,7 +169,7 @@ class DataCleaning:
                         word_tokenize(sent)]
         return " ".join(stemmed_word)
 
-    def lemmatize(self):
+    def lemma(self):
         wordnet_lemmatizer = WordNetLemmatizer()
         lemmatized_word = [wordnet_lemmatizer.lemmatize(word) for sent in sent_tokenize(self.text) for word in
                            word_tokenize(sent)]
