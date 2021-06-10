@@ -244,7 +244,6 @@ contractions_list = {
     "you`re": "you are",
     "you`ve": "you have",
 
-
     # Custom Contractions
     "S`ok": "it's okay",
     "gotta": "have got a",

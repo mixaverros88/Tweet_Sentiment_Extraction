@@ -134,7 +134,7 @@ class DataCleaning:
         merge_dataframes = pd.concat([self.data_frame['text'], self.data_frame['sentiment']], axis=1,
                                      keys=['text', 'sentiment'])
         merge_dataframes.to_csv('datasets/cleaned/' + self.dataframe_name + "_dataframe_cleaned.csv",
-                                sep=',', encoding='utf-8', index=False)
+                                sep=',', index=False, header=True)
         print(merge_dataframes)
 
     def remove_emojis(self):

@@ -17,4 +17,3 @@ class TokenizeDataFrame:
     def tokenize_text(self):
         for index, row in self.data_frame.iterrows():
             self.word_tokens += word_tokenize(row['text'])
-
