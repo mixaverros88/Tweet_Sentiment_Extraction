@@ -6,6 +6,7 @@ from helper_functions.clean_dataset.BalanceDataset import BalanceDataset
 from helper_functions.tokenize.TokenizeDataFrame import TokenizeDataFrame
 from helper_functions.convert_test.functions import tokenizing_sentences
 from helper_functions.text_vectorization.BoW import BoW
+from helper_functions.text_vectorization.Word2Vec import Word2Vec
 
 train_dataset = 'Train Dataset'
 test_dataset = 'Test Dataset'
@@ -14,8 +15,8 @@ target_name = 'sentiment'
 text_id_column = 'textID'
 
 # Retrieve Data Frames
-train_data_frame = read_dataset.read_train_data_set()
 sample_data_frame = read_dataset.read_sample_data_set()
+train_data_frame = read_dataset.read_train_data_set()
 test_data_frame = read_dataset.read_test_data_set()
 
 # # Visualize Dataset
@@ -23,14 +24,14 @@ VisualizeDataset(train_data_frame, train_dataset, target_name, 'count_plot_targe
 VisualizeDataset(test_data_frame, test_dataset, target_name, 'count_plot_target_class_test_df')
 
 # Label Encoder On Target Class
+sample_label_encoder_transform = LabelEncoderTransform(sample_data_frame, target_name)
+sample_data_frame = sample_label_encoder_transform.convert_target_column()
+
 train_label_encoder_transform = LabelEncoderTransform(train_data_frame, target_name)
 train_data_frame = train_label_encoder_transform.convert_target_column()
 
 test_label_encoder_transform = LabelEncoderTransform(test_data_frame, target_name)
 test_data_frame = test_label_encoder_transform.convert_target_column()
-
-sample_label_encoder_transform = LabelEncoderTransform(sample_data_frame, target_name)
-sample_data_frame = sample_label_encoder_transform.convert_target_column()
 
 # Balance Dataset
 train_balance_dataset = BalanceDataset(train_data_frame, target_name)
@@ -42,6 +43,7 @@ VisualizeDataset(train_data_frame, train_dataset + ' Under Sampling', target_nam
                  'count_plot_target_class_train_df_balance_under_sampling')
 VisualizeDataset(train_data_frame_oversampling, train_dataset + ' Over Sampling ', target_name,
                  'count_plot_target_class_train_df_balance_over_sampling')
+
 # Cleaning Dataset
 sample_cleaning_dataset = DataCleaning(sample_data_frame, text_id_column, sample_dataset)
 cleaned_sample_data_frame = sample_cleaning_dataset.data_cleaning()
@@ -66,7 +68,11 @@ test_corpus = tokenize_data_frame_test_data.tokenize_sentence()
 sample_tokenized_sentences_data_frame = tokenizing_sentences(cleaned_sample_data_frame)
 print(sample_tokenized_sentences_data_frame)
 
-# Vectorized Text Column
+# Vectorized - BOW
 bag_of_words = BoW(sample_tokenized_sentences_data_frame, sample_corpus)
 array = bag_of_words.vectorize_text()
 print('array', array)
+
+# Vectorized - Word2Vec
+word_2_vec = Word2Vec(sample_corpus)
+word_2_vec_model = word_2_vec.vectorize_text()

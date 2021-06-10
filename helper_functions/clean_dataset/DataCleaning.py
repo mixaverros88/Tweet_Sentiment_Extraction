@@ -29,6 +29,7 @@ class DataCleaning:
         self.sanitize_data_frame()
         if self.dataframe_name != 'request':
             self.compare_dataframes()
+            self.create_new_dataframes()
         return self.data_frame
 
     def drop_row_if_has_null_column(self):
@@ -126,6 +127,13 @@ class DataCleaning:
         merge_dataframes = pd.concat([self.initial_data_frame['text'], self.data_frame['text']], axis=1,
                                      keys=['Initial Text', 'Cleaned Text'])
         merge_dataframes.to_csv('presentation/results/' + self.dataframe_name + "_dataframe_cleaned_initial.csv",
+                                sep=',', encoding='utf-8', index=False)
+        print(merge_dataframes)
+
+    def create_new_dataframes(self):
+        merge_dataframes = pd.concat([self.data_frame['text'], self.data_frame['sentiment']], axis=1,
+                                     keys=['text', 'sentiment'])
+        merge_dataframes.to_csv('datasets/cleaned/' + self.dataframe_name + "_dataframe_cleaned.csv",
                                 sep=',', encoding='utf-8', index=False)
         print(merge_dataframes)
 
