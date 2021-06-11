@@ -10,7 +10,16 @@ cors = CORS(app, resources={r"/api/*": {"origins": "*"}})
 def index():
     text = request.json['text']
     request_service = RequestService(text)
-    data_frame = request_service.convert_target_column()
+    ds = request_service.convert_target_column()
+    data_frame = ds.get_dataframe()
     text = data_frame.iloc[0]['text']
-    req = {'text': str(text), 'sentiment': 'positive'}
+    print(ds.get_array())
+    arr = ds.get_array()[0]
+    print(arr)
+    req = {'text': str(text),
+           'neutral': str(arr[0]),
+           'negative': str(arr[1]),
+           'positive': str(arr[2])
+
+           }
     return jsonify(req)

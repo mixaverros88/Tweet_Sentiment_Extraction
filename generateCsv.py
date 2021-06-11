@@ -3,10 +3,6 @@ from helper_functions.clean_dataset.DataCleaning import DataCleaning
 from helper_functions.visualize.VisualizeDataset import VisualizeDataset
 from helper_functions.label_encoder.LabelEncoderTransform import LabelEncoderTransform
 from helper_functions.clean_dataset.BalanceDataset import BalanceDataset
-from helper_functions.tokenize.TokenizeDataFrame import TokenizeDataFrame
-from helper_functions.convert_test.functions import tokenizing_sentences
-from helper_functions.text_vectorization.BoW import BoW
-from helper_functions.text_vectorization.Word2VecModel import Word2VecModel
 
 train_dataset = 'Train_Dataset'
 test_dataset = 'Test_Dataset'

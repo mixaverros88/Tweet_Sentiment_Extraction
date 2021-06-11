@@ -1,4 +1,6 @@
 export class Classification {
     text: string;
-    sentiment: string;
+    neutral: string;
+    negative: string;
+    positive: string;
 }

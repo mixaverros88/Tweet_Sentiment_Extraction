@@ -14,3 +14,28 @@ def tokenizing_sentences_and_words(data_frame):
             dd.append(word)
         words.append(dd)
     return words
+
+
+def get_column_values_as_np_array(column_name, data_frame):
+    return data_frame[column_name].values
+
+
+def tokenize_sentence(data_frame):
+    sentences = []
+    for index, row in data_frame.iterrows():
+        sentences += [row['text']]
+    return sentences
+
+
+def tokenize_text(data_frame):
+    word_tokens = []
+    for index, row in data_frame.iterrows():
+        word_tokens += word_tokenize(row['text'])
+    return word_tokens
+
+
+def get_corpus(data_frame):
+    sentences = ''
+    for index, row in data_frame.iterrows():
+        sentences += row['text']
+    return [sentences]
