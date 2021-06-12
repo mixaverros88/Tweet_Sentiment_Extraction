@@ -1,8 +1,8 @@
-from sklearn.linear_model import LogisticRegression
+from sklearn import svm
 import pickle
 
 
-class LogisticRegressionModel:
+class SvmModel:
 
     def __init__(self, X_train, X_test, y_train, y_test):
         self.X_train = X_train
@@ -11,7 +11,7 @@ class LogisticRegressionModel:
         self.y_test = y_test
 
     def results(self):
-        model = LogisticRegression(max_iter=13698)
+        model = svm.SVC(kernel='linear') # Linear Kernel
         model.fit(self.X_train, self.y_train)
-        pickle.dump(model, open('models/machine_learning/serialized/logistic_regression.sav', 'wb'))
+        pickle.dump(model, open('serializedModels/svm.sav', 'wb'))
         return model.predict(self.X_test)

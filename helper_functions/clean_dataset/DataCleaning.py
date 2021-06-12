@@ -81,7 +81,7 @@ class DataCleaning:
             print('17. lemmatizing: ' + self.text)
             # self.text = self.stem()
             # print('15. stem: ' + self.text)
-            print('#### STOP ' + str(index) + '#### \n')
+            print('#### STOP ' + str(index) + ' #### \n')
             # print(row['text'] + ' --- ' + text)
             # TODO: remove ` ,
             self.data_frame.loc[index, 'text'] = self.text

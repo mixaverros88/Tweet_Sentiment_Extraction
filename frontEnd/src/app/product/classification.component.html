@@ -8,6 +8,7 @@
 
 
 
+
 </style>
 <div class="container" style="border: 1.5px solid #dbdbdb;border-radius: 13px;">
   <div class="row">
@@ -51,22 +52,37 @@
     border: 0.5px solid #dcdcdc;
     padding: 5px;
 ">
-        Neutral : {{classification.neutral}}
+        Neutral : {{classification.logistic_regression.neutral}}
       </div>
       <div class="col-sm-12" style="
     min-height: 20px;
     border: 0.5px solid #dcdcdc;
     padding: 5px;
 ">
-        Negative : {{classification.negative}}
+        Negative : {{classification.logistic_regression.negative}}
       </div>
       <div class="col-sm-12" style="
     min-height: 20px;
     border: 0.5px solid #dcdcdc;
     padding: 5px;
 ">
-        Positive : {{classification.positive}}
+        Positive : {{classification.logistic_regression.positive}}
       </div>
+      <div class="col-sm-12" style="
+    min-height: 20px;
+    border: 0.5px solid #dcdcdc;
+    padding: 5px;
+">
+        Sentiment : {{classification.svm.Sentiment}}
+      </div>
+            <div class="col-sm-12" style="
+    min-height: 20px;
+    border: 0.5px solid #dcdcdc;
+    padding: 5px;
+">
+        Sentiment : {{classification.naive_bayes.Sentiment}}
+      </div>
+
     </div>
   </div>
 </div>
