@@ -6,6 +6,8 @@ from helper_functions.metrics.ComposeMetrics import ComposeMetrics
 from models.machine_learning.LogisticRegressionModel import LogisticRegressionModel
 from models.machine_learning.SvmModel import SvmModel
 from models.machine_learning.GaussianNBModel import GaussianNBModel
+from models.neural.MLPClassifierModel import MLPClassifierModel
+from models.machine_learning.KNeighborsModel import KNeighborsModel
 from sklearn.model_selection import train_test_split
 import numpy as np
 import nltk
@@ -48,20 +50,30 @@ vectors_word_2_vec = word_2_vec.vectorize_text()
 X_train, X_test, y_train, y_test = train_test_split(vectors_bag_of_words, target_values, test_size=0.3, random_state=32)
 
 # Logistic Regression
-logistic_regression_model = LogisticRegressionModel(X_train, X_test, y_train, y_test)
-logistic_regression_y_predict = logistic_regression_model.results()
+# logistic_regression_model = LogisticRegressionModel(X_train, X_test, y_train, y_test)
+# logistic_regression_y_predict = logistic_regression_model.results()
+#
+# ComposeMetrics(y_test, logistic_regression_y_predict, 'Logistic Regression Model', [0, 1, 2])
+#
+# svm_model = SvmModel(X_train, X_test, y_train, y_test)
+# svm_y_predict = svm_model.results()
+#
+# ComposeMetrics(y_test, svm_y_predict, 'SVM Model', [0, 1, 2])
+#
+# nb_model = GaussianNBModel(X_train, X_test, y_train, y_test)
+# nb_y_predict = nb_model.results()
+#
+# ComposeMetrics(y_test, nb_y_predict, 'NB Model', [0, 1, 2])
 
-ComposeMetrics(y_test, logistic_regression_y_predict, 'Logistic Regression Model', [0, 1, 2])
+neural_network = MLPClassifierModel(X_train, X_test, y_train, y_test)
+neural_network_predict = neural_network.results()
 
-svm_model = SvmModel(X_train, X_test, y_train, y_test)
-svm_y_predict = svm_model.results()
+ComposeMetrics(y_test, neural_network_predict, 'MLPClassifier Model', [0, 1, 2])
 
-ComposeMetrics(y_test, svm_y_predict, 'SVM Model', [0, 1, 2])
+kneighbors_model = KNeighborsModel(X_train, X_test, y_train, y_test)
+kneighbors_model_predict = kneighbors_model.results()
 
-nb_model = GaussianNBModel(X_train, X_test, y_train, y_test)
-nb_y_predict = nb_model.results()
-
-ComposeMetrics(y_test, nb_y_predict, 'NB Model', [0, 1, 2])
+# ComposeMetrics(y_test, kneighbors_model, 'KNeighbors Classifier', [0, 1, 2])
 
 # X_train, X_test, y_train, y_test = train_test_split(vectors_word_2_vec, target_values, test_size=0.3, random_state=109)
 #

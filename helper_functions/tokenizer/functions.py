@@ -39,3 +39,7 @@ def get_corpus(data_frame):
     for index, row in data_frame.iterrows():
         sentences += row['text']
     return [sentences]
+
+
+def get_models_best_parameters(model, algo_name):
+    print(algo_name + ' Best Parameters : ', model.best_estimator_)

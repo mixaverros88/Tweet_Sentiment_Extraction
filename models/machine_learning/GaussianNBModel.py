@@ -1,5 +1,8 @@
 from sklearn.naive_bayes import GaussianNB
 import pickle
+from sklearn.model_selection import GridSearchCV
+from helper_functions.tokenizer.functions import get_models_best_parameters
+import numpy as np
 
 
 class GaussianNBModel:
@@ -11,6 +14,13 @@ class GaussianNBModel:
         self.y_test = y_test
 
     def results(self):
+        print('Gaussian')
+        # Grid Search
+        # param_grid = {'var_smoothing': np.logspace(0, -9, num=100)}
+        # model_gs = GridSearchCV(estimator=GaussianNB(), param_grid=param_grid, cv=5, verbose=1, scoring='accuracy')
+        # model_gs.fit(self.X_train, self.y_train)
+        # get_models_best_parameters(model_gs, 'gaussian')  # GaussianNB(var_smoothing=0.01)
+
         model = GaussianNB()
         model.fit(self.X_train, self.y_train)
         pickle.dump(model, open('serializedModels/gaussian_nb.sav', 'wb'))

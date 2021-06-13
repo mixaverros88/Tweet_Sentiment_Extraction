@@ -1,14 +1,20 @@
 export class Classification {
     text: string;
-    logistic_regression {
+    logistic_regression_proba :  {
       neutral: string;
       negative: string;
       positive: string;
-    },
-    svm{
+    };
+    logistic_regression : {
       Sentiment: string;
-    },
-    naive_bayes{
+    };
+    svm : {
       Sentiment: string;
-    }
+    };
+    naive_bayes : {
+      Sentiment: string;
+    };
+    mlp : {
+      Sentiment: string;
+    };
 }

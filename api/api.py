@@ -3,7 +3,7 @@ from flask_cors import CORS
 from api.RequestService import RequestService
 
 app = Flask(__name__)
-cors = CORS(app, resources={r"/api/*": {"origins": "*"}})
+CORS(app, resources={r"/api/*": {"origins": "*"}})
 
 
 @app.route('/api', methods=['POST'])

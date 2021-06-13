@@ -5,9 +5,26 @@
 .container {
     background-color: white;
 }
+.customTextArea{
+    min-height: 220px;
+    border: 0.5px solid #767676;
+    padding: 5px;
+}
+.positive {
+    background-color: green;
+}
 
+.negative {
+    background-color: red;
+}
 
+.neutral {
+    background-color: #d99f6e;
+}
 
+.text-white{
+  color:white
+}
 
 </style>
 <div class="container" style="border: 1.5px solid #dbdbdb;border-radius: 13px;">
@@ -33,57 +50,93 @@
       </form>
     </div>
     <div class="col-sm-6">
-      <h3>Results</h3>
-      <div class="col-bg-12">
-        <h4>Cleaned Text</h4>
-      </div>
-      <div class="col-bg-12" style="
-    min-height: 70px;
-    border: 0.5px solid #dcdcdc;
-    padding: 3px;
-">
+      <h3>Cleaned Text</h3>
+      <div class="col-bg-12 customTextArea">
         {{classification.text}}
       </div>
-      <div class="col-bg-12">
-        <h4>Sentiment</h4>
-      </div>
-      <div class="col-sm-12" style="
-    min-height: 20px;
-    border: 0.5px solid #dcdcdc;
-    padding: 5px;
-">
-        Neutral : {{classification.logistic_regression.neutral}}
-      </div>
-      <div class="col-sm-12" style="
-    min-height: 20px;
-    border: 0.5px solid #dcdcdc;
-    padding: 5px;
-">
-        Negative : {{classification.logistic_regression.negative}}
-      </div>
-      <div class="col-sm-12" style="
-    min-height: 20px;
-    border: 0.5px solid #dcdcdc;
-    padding: 5px;
-">
-        Positive : {{classification.logistic_regression.positive}}
-      </div>
-      <div class="col-sm-12" style="
-    min-height: 20px;
-    border: 0.5px solid #dcdcdc;
-    padding: 5px;
-">
-        Sentiment : {{classification.svm.Sentiment}}
-      </div>
-            <div class="col-sm-12" style="
-    min-height: 20px;
-    border: 0.5px solid #dcdcdc;
-    padding: 5px;
-">
-        Sentiment : {{classification.naive_bayes.Sentiment}}
-      </div>
-
     </div>
   </div>
+  <hr>
+
+  <div class="row">
+    <div class="col-sm-12">
+      <div class="col-sm-12">
+
+        <table class="table">
+          <thead>
+          <tr>
+            <th scope="col">Model</th>
+            <th scope="col">Sentiment</th>
+          </tr>
+          </thead>
+          <tbody>
+          <tr>
+            <td>Logistic Regression</td>
+            <td class="text-white" [ngClass]="{
+            'positive' : classification.logistic_regression.Sentiment === 'Positive',
+            'negative' : classification.logistic_regression.Sentiment === 'Negative',
+            'neutral' : classification.logistic_regression.Sentiment === 'Neutral'
+         }">{{classification.logistic_regression.Sentiment}}
+            </td>
+          </tr>
+          <tr>
+            <td>Support Vector Machine</td>
+            <td class="text-white" [ngClass]="{
+            'positive' : classification.svm.Sentiment === 'Positive',
+            'negative' : classification.svm.Sentiment === 'Negative',
+            'neutral' : classification.svm.Sentiment === 'Neutral'
+         }">{{classification.svm.Sentiment}}
+            </td>
+          </tr>
+          <tr>
+            <td>Naive Bayes</td>
+            <td class="text-white" [ngClass]="{
+            'positive' : classification.naive_bayes.Sentiment === 'Positive',
+            'negative' : classification.naive_bayes.Sentiment === 'Negative',
+            'neutral' : classification.naive_bayes.Sentiment === 'Neutral'
+         }">{{classification.naive_bayes.Sentiment}}
+            </td>
+          </tr>
+          <tr>
+            <td>MLP</td>
+            <td class="text-white" [ngClass]="{
+            'positive' : classification.mlp.Sentiment === 'Positive',
+            'negative' : classification.mlp.Sentiment === 'Negative',
+            'neutral' : classification.mlp.Sentiment === 'Neutral'
+         }">{{classification.mlp.Sentiment}}
+            </td>
+          </tr>
+          </tbody>
+        </table>
+        <hr>
+        <h4>Logistic Regression</h4>
+
+        <table class="table">
+          <thead>
+          <tr>
+            <th scope="col">Sentiment</th>
+            <th scope="col">Probabilities</th>
+          </tr>
+          </thead>
+          <tbody>
+          <tr>
+            <td>Neutral</td>
+            <td>{{classification.logistic_regression_proba.neutral}}</td>
+          </tr>
+          <tr>
+            <td>Negative</td>
+            <td>{{classification.logistic_regression_proba.negative}}</td>
+          </tr>
+          <tr>
+            <td>Positive</td>
+            <td>{{classification.logistic_regression_proba.positive}}</td>
+          </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+  <hr>
 </div>
+
 

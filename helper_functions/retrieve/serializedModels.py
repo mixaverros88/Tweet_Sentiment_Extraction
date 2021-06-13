@@ -17,6 +17,11 @@ def svm():
         open(os.path.abspath(__file__ + "/../../../serializedModels/svm.sav"), 'rb'))
 
 
+def MLPClassifier():
+    return pickle.load(
+        open(os.path.abspath(__file__ + "/../../../serializedModels/MLPClassifierModel.sav"), 'rb'))
+
+
 def nb():
     return pickle.load(
         open(os.path.abspath(__file__ + "/../../../serializedModels/gaussian_nb.sav"), 'rb'))
