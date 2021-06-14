@@ -15,14 +15,14 @@ class MLPClassifierModel:
     def results(self):
         print('MLPClassifier')
         # Grid Search
-        mlp = MLPClassifier(max_iter=100)
-        parameter_space = {'hidden_layer_sizes': [(50, 50, 50), (50, 100, 50), (100,)], 'activation': ['tanh', 'relu'],
-                           'solver': ['sgd', 'adam'], 'alpha': [0.0001, 0.05],
-                           'learning_rate': ['constant', 'adaptive'], }
-        model_gs = GridSearchCV(mlp, parameter_space, n_jobs=-1, cv=3)
-        model_gs.fit(self.X_train, self.y_train)
-        # MLPClassifier(activation='tanh', alpha=0.05, hidden_layer_sizes=(50, 50, 50),learning_rate='adaptive', max_iter=100)
-        get_models_best_parameters(model_gs, 'MLPClassifier')
+        # mlp = MLPClassifier(max_iter=100)
+        # parameter_space = {'hidden_layer_sizes': [(50, 50, 50), (50, 100, 50), (100,)], 'activation': ['tanh', 'relu'],
+        #                    'solver': ['sgd', 'adam'], 'alpha': [0.0001, 0.05],
+        #                    'learning_rate': ['constant', 'adaptive'], }
+        # model_gs = GridSearchCV(mlp, parameter_space, n_jobs=-1, cv=3)
+        # model_gs.fit(self.X_train, self.y_train)
+        # # MLPClassifier(activation='tanh', alpha=0.05, hidden_layer_sizes=(50, 50, 50),learning_rate='adaptive', max_iter=100)
+        # get_models_best_parameters(model_gs, 'MLPClassifier')
 
         model = MLPClassifier(activation='tanh', alpha=0.05, hidden_layer_sizes=(2, 2, 2), learning_rate='adaptive',
                               max_iter=100)

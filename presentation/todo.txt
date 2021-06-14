@@ -2,6 +2,9 @@ Unbalance Dataset
 1. SMOTE
 2. NearMiss
 
+Text Analysis
+1. Count the average words per row and category
+
 Text Pre-processing
 1. Remove names, locations, company names ???
 2. Convert number in text format to digits ???

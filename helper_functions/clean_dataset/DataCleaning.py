@@ -9,6 +9,10 @@ from nltk.stem import WordNetLemmatizer
 from autocorrect import Speller
 import pandas as pd
 import re
+import nltk
+
+nltk.download('maxent_ne_chunker')
+nltk.download('words')
 
 
 class DataCleaning:
@@ -79,6 +83,8 @@ class DataCleaning:
             print('16. auto_spelling: ' + self.text)
             self.text = self.lemma()
             print('17. lemmatizing: ' + self.text)
+            self.text = self.remove_proper_nouns()
+            print('18. remove_proper_nouns: ' + self.text)
             # self.text = self.stem()
             # print('15. stem: ' + self.text)
             print('#### STOP ' + str(index) + ' #### \n')
@@ -182,6 +188,15 @@ class DataCleaning:
         lemmatized_word = [wordnet_lemmatizer.lemmatize(word) for sent in sent_tokenize(self.text) for word in
                            word_tokenize(sent)]
         return " ".join(lemmatized_word)
+
+    def remove_proper_nouns(self):
+        tokens = nltk.word_tokenize(self.text)
+        tokens = nltk.pos_tag(tokens)
+        text = ''
+        for word in tokens:
+            if word[1] != 'NNP':
+                text += ' ' + word[0]
+        return text.strip()
 
     def word_tokenize(self):
         return [w for sent in sent_tokenize(self.text) for w in word_tokenize(sent)]
