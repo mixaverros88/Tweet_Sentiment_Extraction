@@ -1,5 +1,9 @@
 import matplotlib.pyplot as plt
 import seaborn as sns
+import os
+from pathlib import Path
+
+path = Path()
 
 
 class VisualizeDataset:
@@ -27,7 +31,9 @@ class VisualizeDataset:
 
     def save_plot_as_image(self):
         """Save the plot as image"""
-        plt.savefig('presentation/images/' + self.generated_image_name + '.png', bbox_inches='tight')
+        plt.savefig(os.path.abspath(
+            path.parent.absolute().parent) + '\\presentation\\images\\' + self.generated_image_name + '.png',
+                    bbox_inches='tight')
 
     def data_frame_info(self):
         """Display Data Frame information"""

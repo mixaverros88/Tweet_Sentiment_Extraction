@@ -6,13 +6,14 @@ import pickle
 
 class BoW:
 
-    def __init__(self, corpus):
+    def __init__(self, corpus, model_name):
         self.corpus = corpus
+        self.model_name = model_name
 
     def vectorize_text(self):
-        vectorizer = CountVectorizer()
-        vectors = vectorizer.fit_transform(self.corpus)
-        pickle.dump(vectorizer, open('serializedModels/bag_of_words.sav', 'wb'))
+        model = CountVectorizer()
+        vectors = model.fit_transform(self.corpus)
+        pickle.dump(model, open('serializedModels/' + self.model_name + '.sav', 'wb'))
         # print(vectors)
         # print('BOW Vocabulary Size: ', len(vectorizer.vocabulary_))  # a list of unique words
         return vectors

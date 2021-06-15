@@ -7,11 +7,12 @@ import numpy as np
 
 class GaussianNBModel:
 
-    def __init__(self, X_train, X_test, y_train, y_test):
+    def __init__(self, X_train, X_test, y_train, y_test, model_name):
         self.X_train = X_train.todense()
         self.X_test = X_test.todense()
         self.y_train = y_train
         self.y_test = y_test
+        self.model_name = model_name
 
     def results(self):
         print('Gaussian')
@@ -23,5 +24,5 @@ class GaussianNBModel:
 
         model = GaussianNB()
         model.fit(self.X_train, self.y_train)
-        pickle.dump(model, open('serializedModels/gaussian_nb.sav', 'wb'))
+        pickle.dump(model, open('serializedModels/' + self.model_name + '.sav', 'wb'))
         return model.predict(self.X_test)

@@ -10,7 +10,10 @@ from autocorrect import Speller
 import pandas as pd
 import re
 import nltk
+import os
+from pathlib import Path
 
+path = Path()
 nltk.download('maxent_ne_chunker')
 nltk.download('words')
 
@@ -132,14 +135,16 @@ class DataCleaning:
     def compare_dataframes(self):
         merge_dataframes = pd.concat([self.initial_data_frame['text'], self.data_frame['text']], axis=1,
                                      keys=['Initial Text', 'Cleaned Text'])
-        merge_dataframes.to_csv('presentation/results/' + self.dataframe_name + "_dataframe_cleaned_initial.csv",
+        merge_dataframes.to_csv(os.path.abspath(
+            path.parent.absolute().parent) + '\\presentation\\results\\' + self.dataframe_name + "_dataframe_cleaned_initial.csv",
                                 sep=',', encoding='utf-8', index=False)
         print(merge_dataframes)
 
     def create_new_dataframes(self):
         merge_dataframes = pd.concat([self.data_frame['text'], self.data_frame['sentiment']], axis=1,
                                      keys=['text', 'sentiment'])
-        merge_dataframes.to_csv('datasets/cleaned/' + self.dataframe_name + "_dataframe_cleaned.csv",
+        merge_dataframes.to_csv(os.path.abspath(
+            path.parent.absolute().parent) + '\\datasets\\cleaned\\' + self.dataframe_name + "_dataframe_cleaned.csv",
                                 sep=',', index=False, header=True)
         print(merge_dataframes)
 

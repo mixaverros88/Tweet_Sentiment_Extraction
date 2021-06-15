@@ -30,8 +30,8 @@ class ClassificationDto:
         return {
             'text': str(text),
             'logistic_regression_proba': {
-                'neutral': str(lg[0]),
-                'negative': str(lg[1]),
+                'negative': str(lg[0]),
+                'neutral': str(lg[1]),
                 'positive': str(lg[2])
             },
             'logistic_regression': {
