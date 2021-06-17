@@ -26,7 +26,7 @@ class MLPClassifierModel:
         # get_models_best_parameters(model_gs, 'MLPClassifier')
 
         model = MLPClassifier(activation='tanh', alpha=0.05, hidden_layer_sizes=(5, 5, 5), learning_rate='adaptive',
-                              max_iter=100)
+                              max_iter=1000)
         model.fit(self.X_train, self.y_train)
         pickle.dump(model, open('serializedModels/' + self.model_name + '.sav', 'wb'))
         return model.predict(self.X_test)

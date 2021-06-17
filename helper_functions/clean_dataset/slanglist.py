@@ -83,6 +83,8 @@ slang_list = {
     "thru": "through",
     "wknd": "weekend",
     "nkotb": "new kids on the block",
+    "wanna": "want to",
+    "LMFAO": "laughing my freaking ass off",
     # gotto ??
     # HOORAYY ??
     # waaaa ??
@@ -98,4 +100,8 @@ slang_list = {
     # oowww ??
     # hehe ??
     # mahasha ??
+
+    # emoji
+    "=P": "",
+    "<3": "",
 }

@@ -12,6 +12,11 @@ def bag_of_words_over_sampling():
         open(os.path.abspath(__file__ + "/../../../serializedModels/bag_of_words_over_sampling.sav"), 'rb'))
 
 
+def bag_of_word2vec_sampling():
+    return pickle.load(
+        open(os.path.abspath(__file__ + "/../../../serializedModels/word2VecOverSampling.sav"), 'rb'))
+
+
 def logistic_regression():
     return pickle.load(
         open(os.path.abspath(__file__ + "/../../../serializedModels/logistic_regression.sav"), 'rb'))
@@ -20,6 +25,12 @@ def logistic_regression():
 def logistic_regression_over_sampling():
     return pickle.load(
         open(os.path.abspath(__file__ + "/../../../serializedModels/logistic_regression_over_sampling.sav"), 'rb'))
+
+
+def logistic_regression_word2vec_under_sampling():
+    return pickle.load(
+        open(os.path.abspath(__file__ + "/../../../serializedModels/logistic_regression_under_sampling_word2vec.sav"),
+             'rb'))
 
 
 def svm():
@@ -50,3 +61,8 @@ def nb():
 def nb_over_sampling():
     return pickle.load(
         open(os.path.abspath(__file__ + "/../../../serializedModels/gaussian_over_sampling.sav"), 'rb'))
+
+
+def decision_tree_over_sampling():
+    return pickle.load(
+        open(os.path.abspath(__file__ + "/../../../serializedModels/decisiontree_over_sampling.sav"), 'rb'))

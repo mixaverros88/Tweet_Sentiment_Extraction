@@ -9,9 +9,16 @@ from nltk.stem import WordNetLemmatizer
 from autocorrect import Speller
 import pandas as pd
 import re
-import nltk
 import os
 from pathlib import Path
+from num2words import num2words
+from nltk.tokenize.treebank import TreebankWordDetokenizer
+import nltk
+import en_core_web_sm
+
+nlp = en_core_web_sm.load()
+
+from geotext import GeoText
 
 path = Path()
 nltk.download('maxent_ne_chunker')
@@ -52,49 +59,52 @@ class DataCleaning:
             self.text = row['text']
             print('#### START ' + str(index) + ' ####')
             print('1. Text: ' + self.text)
-            self.text = self.covert_text_to_lower_case()
-            print('2. covert_text_to_lower_case: ' + self.text)
+            self.text = self.NER()
+            print('20. NER: ' + self.text)
             self.text = self.expand_contractions()
-            print('3. expand_contractions: ' + self.text)
-            self.text = self.replace_slang_word()
-            print('4. replace_slang_word: ' + self.text)
-            self.text = self.remove_urls()
-            print('5. remove_urls: ' + self.text)
-            self.text = self.remove_html_tags()
-            print('6. remove_html_tags: ' + self.text)
+            print('4. expand_contractions: ' + self.text)
+            # self.text = self.remove_locations()
+            # print('2. remove_locations: ' + self.text)
+            self.text = self.remove_am_pm_dates()
+            print('2. remove_am_pm_dates: ' + self.text)
+
             self.text = self.remove_emojis()
-            print('7. remove_emojis: ' + self.text)
-            # self.text = self.remove_stopwords()
-            # print('6. remove_stopwords: ' + self.text)
-            self.text = self.remove_hash_tags()
-            print('8. remove_hash_tags: ' + self.text)
-            self.text = self.convert_accented_characters_to_ASCII_characters()
-            print('9. remove_accented_chars: ' + self.text)
-            self.text = self.remove_punctuations_special_characters()
-            print('10. remove_punctuations_special_characters: ' + self.text)
-            self.text = self.remove_consequently_char()
-            print('11. remove_consequently_char: ' + self.text)
+            print('8. remove_emojis: ' + self.text)
+            self.text = self.covert_text_to_lower_case()
+            print('3. covert_text_to_lower_case: ' + self.text)
             self.text = self.replace_slang_word()
-            print('12. replace_slang_word: ' + self.text)
-            self.text = self.remove_numbers()
-            print('13. remove_numbers: ' + self.text)
+            print('5. replace_slang_word: ' + self.text)
+            self.text = self.remove_urls()
+            print('6. remove_urls: ' + self.text)
+            self.text = self.remove_html_tags()
+            print('7. remove_html_tags: ' + self.text)
+            self.text = self.remove_hash_tags()
+            print('9. remove_hash_tags: ' + self.text)
+            self.text = self.convert_accented_characters_to_ASCII_characters()
+            print('10. remove_accented_chars: ' + self.text)
+            self.text = self.remove_punctuations_special_characters()
+            print('11. remove_punctuations_special_characters: ' + self.text)
+            self.text = self.remove_consequently_char()
+            print('12. remove_consequently_char: ' + self.text)
+            self.text = self.replace_slang_word()
+            print('13. replace_slang_word: ' + self.text)
+            # self.text = self.remove_numbers()
+            # print('14. remove_numbers: ' + self.text)
             self.text = self.trim_text()
-            print('14. trim_text: ' + self.text)
+            print('15. trim_text: ' + self.text)
             self.text = self.remove_double_spaces()
-            print('15. remove_double_spaces: ' + self.text)
+            print('16. remove_double_spaces: ' + self.text)
             self.text = self.auto_spelling()
-            print('16. auto_spelling: ' + self.text)
+            print('17. auto_spelling: ' + self.text)
             self.text = self.lemma()
-            print('17. lemmatizing: ' + self.text)
-            self.text = self.remove_proper_nouns()
-            print('18. remove_proper_nouns: ' + self.text)
-            # self.text = self.stem()
-            # print('15. stem: ' + self.text)
+            print('18. lemmatizing: ' + self.text)
+            self.text = self.convert_num_to_word()
+            print('20. convert_num_to_word: ' + self.text)
+            self.text = self.convert_to_nominal()
+            print('20. convert_to_nominal: ' + self.text)
             print('#### STOP ' + str(index) + ' #### \n')
-            # print(row['text'] + ' --- ' + text)
             # TODO: remove ` ,
             self.data_frame.loc[index, 'text'] = self.text
-        # print(self.data_frame)
 
     def remove_punctuations_special_characters(self):
         punctuations = '''!()-[]{};:'"\,<>./?@#$%^&*_~'''
@@ -105,6 +115,10 @@ class DataCleaning:
             else:
                 text_without_punctuations = text_without_punctuations + " "
         return text_without_punctuations
+
+    def remove_am_pm_dates(self):
+        cleaner = re.compile('(?:\d{2}|\d{1})(?:AM|PM|am|pm)')
+        return re.sub(cleaner, '', self.text)
 
     def remove_html_tags(self):
         cleaner = re.compile('<.*?>|&([a-z0-9]+|#[0-9]{1,6}|#x[0-9a-f]{1,6});')
@@ -150,12 +164,23 @@ class DataCleaning:
 
     def remove_emojis(self):
         regrex_pattern = \
-            re.compile(pattern="["
-                               u"\U0001F600-\U0001F64F"  # emoticons
-                               u"\U0001F300-\U0001F5FF"  # symbols & pictographs
-                               u"\U0001F680-\U0001F6FF"  # transport & map symbols
-                               u"\U0001F1E0-\U0001F1FF"  # flags (iOS)
-                               "]+", flags=re.UNICODE)
+            re.compile("["
+                       u"\U0001F600-\U0001F64F"  # emoticons
+                       u"\U0001F300-\U0001F5FF"  # symbols & pictographs
+                       u"\U0001F680-\U0001F6FF"  # transport & map symbols
+                       u"\U0001F1E0-\U0001F1FF"  # flags (iOS)
+                       u"\U0001F1F2-\U0001F1F4"  # Macau flag
+                       u"\U0001F1E6-\U0001F1FF"  # flags
+                       u"\U0001F600-\U0001F64F"
+                       u"\U00002702-\U000027B0"
+                       u"\U000024C2-\U0001F251"
+                       u"\U0001f926-\U0001f937"
+                       u"\U0001F1F2"
+                       u"\U0001F1F4"
+                       u"\U0001F620"
+                       u"\u200d"
+                       u"\u2640-\u2642"
+                       "]+", flags=re.UNICODE)
         return regrex_pattern.sub(r'', self.text)
 
     def expand_contractions(self):
@@ -194,14 +219,53 @@ class DataCleaning:
                            word_tokenize(sent)]
         return " ".join(lemmatized_word)
 
-    def remove_proper_nouns(self):
+    def remove_locations(self):
+        places = GeoText(self.text)
+        for place in places.cities:
+            self.text = self.text.replace(place, '')
+        return self.text
+
+    def convert_num_to_word(self):
         tokens = nltk.word_tokenize(self.text)
         tokens = nltk.pos_tag(tokens)
-        text = ''
+        text = []
+        print(tokens)
         for word in tokens:
-            if word[1] != 'NNP':
-                text += ' ' + word[0]
-        return text.strip()
+            if word[1] == 'CD':
+                try:
+                    text.append(num2words(word[0]))
+                except:
+                    text.append(word[0])
+            else:
+                text.append(word[0])
+        return TreebankWordDetokenizer().detokenize(text)
+
+    def convert_to_nominal(self):
+        numbers = re.findall('(\d+)[st|nd|rd|th]', self.text)
+
+        newText = self.text
+        for n in numbers:
+            ordinalAsString = num2words(n, ordinal=True)
+            newText = re.sub(r"\d+[st|nd|rd|th]", ordinalAsString[:-1], self.text, 1)
+            print(newText)
+
+        print(self.text)
+        print(newText)
+        return newText
+
+    # Named Entity Recognition (NER)
+    def NER(self):
+        # https://towardsdatascience.com/named-entity-recognition-with-nltk-and-spacy-8c4a7d88e7da
+        doc = nlp(self.text)
+        print(self.text)
+        print(type(self.text))
+        print([(X.text, X.label_) for X in doc.ents])
+        for idx, X in enumerate(doc.ents):
+            if X.label_ == 'ORG' or X.label_ == 'PERSON' or X.label_ == 'GPE' or X.label_ == 'TIME':  # REMOVE organizations
+                self.text = self.text.replace(X.text, '')
+        print(self.text)
+        print('----------')
+        return self.text
 
     def word_tokenize(self):
         return [w for sent in sent_tokenize(self.text) for w in word_tokenize(sent)]

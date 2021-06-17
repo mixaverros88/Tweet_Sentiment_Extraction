@@ -17,8 +17,8 @@ export class ClassificationComponent {
 
   constructor (
     private httpClient: HttpClient,
-    private _constant: ConstantsService) {
-    this._constant.getJSON().subscribe(
+    private constantService: ConstantsService) {
+    this.constantService.getJSON().subscribe(
       (data) => {
         this.jsonUrl = data;
         this.URL_PATH =  this.jsonUrl.url ;
@@ -39,4 +39,20 @@ export class ClassificationComponent {
     );
   }
 
+  getSentiment(value: string): string{
+    if(value){
+        switch(value){
+          case 'Positive':
+            return 'positive'
+          case 'Negative':
+            return 'negative'
+          case 'Neutral':
+            return 'neutral'
+          default:
+            return ''
+        }
+    }else{
+      return ''
+    }
+  }
 }

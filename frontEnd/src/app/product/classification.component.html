@@ -43,7 +43,7 @@
     background-color: #41a1f0;
     width: 221px;
 "
-                  (click)="postText(textInput.value);  textInput.value=''; ">
+                  (click)="postText(textInput.value);  ">
             Classify Text
           </button>
         </div>
@@ -51,8 +51,8 @@
     </div>
     <div class="col-sm-6">
       <h3>Cleaned Text</h3>
-      <div class="col-bg-12 customTextArea">
-        {{classification.text}}
+     <div class="col-bg-12 customTextArea">
+        {{classification?.text}}
       </div>
     </div>
   </div>
@@ -66,44 +66,54 @@
           <thead>
           <tr>
             <th scope="col">Model</th>
-            <th scope="col">Sentiment</th>
+            <th scope="col">Bag of Words</th>
+            <th scope="col">Word2Vec</th>
           </tr>
           </thead>
           <tbody>
           <tr>
             <td>Logistic Regression</td>
-            <td class="text-white" [ngClass]="{
-            'positive' : classification.logistic_regression.Sentiment === 'Positive',
-            'negative' : classification.logistic_regression.Sentiment === 'Negative',
-            'neutral' : classification.logistic_regression.Sentiment === 'Neutral'
-         }">{{classification.logistic_regression.Sentiment}}
+            <td class="text-white" [ngClass]="getSentiment(classification?.bag_of_words?.logistic_regression?.Sentiment)">
+              {{classification?.bag_of_words?.logistic_regression?.Sentiment}}
+            </td>
+            <td class="text-white" [ngClass]="getSentiment(classification?.word2Vec?.logistic_regression?.Sentiment)">
+              {{classification?.word2Vec?.logistic_regression?.Sentiment}}
             </td>
           </tr>
           <tr>
             <td>Support Vector Machine</td>
-            <td class="text-white" [ngClass]="{
-            'positive' : classification.svm.Sentiment === 'Positive',
-            'negative' : classification.svm.Sentiment === 'Negative',
-            'neutral' : classification.svm.Sentiment === 'Neutral'
-         }">{{classification.svm.Sentiment}}
+            <td class="text-white" [ngClass]="getSentiment(classification?.bag_of_words?.svm?.Sentiment)">
+              {{classification?.bag_of_words?.svm?.Sentiment}}
+            </td>
+            <td class="text-white" [ngClass]="getSentiment(classification?.bag_of_words?.svm?.Sentiment)">
+              {{classification?.word2Vec?.svm?.Sentiment}}
             </td>
           </tr>
           <tr>
             <td>Naive Bayes</td>
-            <td class="text-white" [ngClass]="{
-            'positive' : classification.naive_bayes.Sentiment === 'Positive',
-            'negative' : classification.naive_bayes.Sentiment === 'Negative',
-            'neutral' : classification.naive_bayes.Sentiment === 'Neutral'
-         }">{{classification.naive_bayes.Sentiment}}
+            <td class="text-white" [ngClass]="getSentiment(classification?.bag_of_words?.naive_bayes?.Sentiment)">
+              {{classification?.bag_of_words?.naive_bayes?.Sentiment}}
+            </td>
+            <td class="text-white" [ngClass]="getSentiment(classification?.word2Vec?.naive_bayes?.Sentiment)">
+              {{classification?.word2Vec?.naive_bayes?.Sentiment}}
+            </td>
+          </tr>
+          <tr>
+            <td>Decision Tree</td>
+            <td class="text-white" [ngClass]="getSentiment(classification?.bag_of_words?.decision_tree?.Sentiment)">
+                {{classification?.bag_of_words?.decision_tree?.Sentiment}}
+            </td>
+            <td class="text-white" [ngClass]="getSentiment(classification?.bag_of_words?.decision_tree?.Sentiment)">
+                {{classification?.word2Vec?.decision_tree?.Sentiment}}
             </td>
           </tr>
           <tr>
             <td>MLP</td>
-            <td class="text-white" [ngClass]="{
-            'positive' : classification.mlp.Sentiment === 'Positive',
-            'negative' : classification.mlp.Sentiment === 'Negative',
-            'neutral' : classification.mlp.Sentiment === 'Neutral'
-         }">{{classification.mlp.Sentiment}}
+            <td class="text-white" [ngClass]="getSentiment(classification?.bag_of_words?.mlp?.Sentiment)">
+              {{classification?.bag_of_words?.mlp?.Sentiment}}
+            </td>
+            <td class="text-white" [ngClass]="getSentiment(classification?.word2Vec?.mlp?.Sentiment)">
+              {{classification?.word2Vec?.mlp?.Sentiment}}
             </td>
           </tr>
           </tbody>
@@ -121,15 +131,15 @@
           <tbody>
           <tr>
             <td>Neutral</td>
-            <td>{{classification.logistic_regression_proba.neutral}}</td>
+            <td>{{classification?.bag_of_words?.logistic_regression_proba?.neutral}}</td>
           </tr>
           <tr>
             <td>Negative</td>
-            <td>{{classification.logistic_regression_proba.negative}}</td>
+            <td>{{classification?.bag_of_words?.logistic_regression_proba?.negative}}</td>
           </tr>
           <tr>
             <td>Positive</td>
-            <td>{{classification.logistic_regression_proba.positive}}</td>
+            <td>{{classification?.bag_of_words?.logistic_regression_proba?.positive}}</td>
           </tr>
           </tbody>
         </table>
