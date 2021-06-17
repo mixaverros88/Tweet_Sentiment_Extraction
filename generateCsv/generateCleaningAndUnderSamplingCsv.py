@@ -34,4 +34,4 @@ VisualizeDataset(train_data_frame_under_sampling, train_dataset + ' Under Sampli
 
 # Cleaning Dataset
 train_cleaning_dataset = DataCleaning(train_data_frame_under_sampling, text_id_column, train_dataset + 'Under_Sampling')
-cleaned_train_data_frame = train_cleaning_dataset.data_cleaning()
+cleaned_train_data_frame = train_cleaning_dataset.data_pre_processing()

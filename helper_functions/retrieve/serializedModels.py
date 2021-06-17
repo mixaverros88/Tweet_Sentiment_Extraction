@@ -1,6 +1,8 @@
 import os
 import pickle
 
+""" Retrieve Trained Models """
+
 
 def bag_of_words():
     return pickle.load(
@@ -43,12 +45,12 @@ def svm_over_sampling():
         open(os.path.abspath(__file__ + "/../../../serializedModels/mlp_over_sampling.sav"), 'rb'))
 
 
-def MLPClassifier():
+def multi_layer_perceptron_classifier():
     return pickle.load(
         open(os.path.abspath(__file__ + "/../../../serializedModels/MLPClassifierModel.sav"), 'rb'))
 
 
-def MLPClassifier_over_sampling():
+def multi_layer_perceptron_classifier_over_sampling():
     return pickle.load(
         open(os.path.abspath(__file__ + "/../../../serializedModels/mlp_over_sampling.sav"), 'rb'))
 

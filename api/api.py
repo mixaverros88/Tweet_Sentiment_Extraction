@@ -7,8 +7,8 @@ CORS(app, resources={r"/api/*": {"origins": "*"}})
 
 
 @app.route('/api', methods=['POST'])
-def index():
-    text = request.json['text']
-    request_service = RequestService(text)
+def sentiment_analysis():
+    requested_text = request.json['text']  # get requested text
+    request_service = RequestService(requested_text)
     classification_dto = request_service.classify_text()
     return jsonify(classification_dto.get_response())

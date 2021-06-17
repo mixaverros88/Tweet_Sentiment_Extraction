@@ -27,6 +27,7 @@ export class ClassificationComponent {
   }
 
   postText(text: string): void {
+  this.classification = null
     this.httpClient.post(this.URL_PATH,
     {
       text: text,

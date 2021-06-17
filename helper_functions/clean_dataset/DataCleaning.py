@@ -1,10 +1,8 @@
 import unicodedata
 from helper_functions.clean_dataset.contractionList import contractions_list
 from helper_functions.clean_dataset.slanglist import slang_list
-from nltk.corpus import stopwords
 from nltk.tokenize import word_tokenize
 from nltk.tokenize import sent_tokenize
-from nltk.stem import SnowballStemmer
 from nltk.stem import WordNetLemmatizer
 from autocorrect import Speller
 import pandas as pd
@@ -15,10 +13,9 @@ from num2words import num2words
 from nltk.tokenize.treebank import TreebankWordDetokenizer
 import nltk
 import en_core_web_sm
+from wordsegment import load, segment
 
 nlp = en_core_web_sm.load()
-
-from geotext import GeoText
 
 path = Path()
 nltk.download('maxent_ne_chunker')
@@ -30,20 +27,19 @@ class DataCleaning:
     initial_data_frame = ''
     text = ''
 
-    def __init__(self, data_frame, column_name, dataframe_name):
+    def __init__(self, data_frame, column_name=None, dataframe_name=None):
         self.column_name = column_name
         self.dataframe_name = dataframe_name
         self.data_frame = data_frame
         self.initial_data_frame = data_frame.copy()
 
-    def data_cleaning(self):
+    def data_pre_processing(self):
         self.drop_row_if_has_null_column()
-        if not self.column_name:
+        if self.column_name is not None:  # If the request is from API
             self.remove_column_from_data_frame()
         self.sanitize_data_frame()
-        if self.dataframe_name != 'request':
-            self.compare_dataframes()
-            self.create_new_dataframes()
+        if self.dataframe_name is not None:  # If the request is from API
+            self.create_new_csv()
         return self.data_frame
 
     def drop_row_if_has_null_column(self):
@@ -55,55 +51,52 @@ class DataCleaning:
         self.data_frame.drop(self.column_name, axis=1, inplace=True)
 
     def sanitize_data_frame(self):
+        """For every row of the data frame proceed with the following steps"""
         for index, row in self.data_frame.iterrows():
             self.text = row['text']
-            print('#### START ' + str(index) + ' ####')
-            print('1. Text: ' + self.text)
-            self.text = self.NER()
-            print('20. NER: ' + self.text)
+            print('#### START: ' + str(index) + ' ####')
+            print('1. Initial Text: ' + self.text)
+            self.text = self.name_entity_recognition()
+            print('2. name_entity_recognition: ' + self.text)
             self.text = self.expand_contractions()
-            print('4. expand_contractions: ' + self.text)
-            # self.text = self.remove_locations()
-            # print('2. remove_locations: ' + self.text)
+            print('3. expand_contractions: ' + self.text)
             self.text = self.remove_am_pm_dates()
-            print('2. remove_am_pm_dates: ' + self.text)
-
+            print('4. remove_am_pm_dates: ' + self.text)
             self.text = self.remove_emojis()
-            print('8. remove_emojis: ' + self.text)
+            print('5. remove_emojis: ' + self.text)
             self.text = self.covert_text_to_lower_case()
-            print('3. covert_text_to_lower_case: ' + self.text)
+            print('6. covert_text_to_lower_case: ' + self.text)
             self.text = self.replace_slang_word()
-            print('5. replace_slang_word: ' + self.text)
+            print('7. replace_slang_word: ' + self.text)
             self.text = self.remove_urls()
-            print('6. remove_urls: ' + self.text)
+            print('8. remove_urls: ' + self.text)
             self.text = self.remove_html_tags()
-            print('7. remove_html_tags: ' + self.text)
+            print('9. remove_html_tags: ' + self.text)
             self.text = self.remove_hash_tags()
-            print('9. remove_hash_tags: ' + self.text)
+            print('10. remove_hash_tags: ' + self.text)
             self.text = self.convert_accented_characters_to_ASCII_characters()
-            print('10. remove_accented_chars: ' + self.text)
+            print('11. remove_accented_chars: ' + self.text)
             self.text = self.remove_punctuations_special_characters()
-            print('11. remove_punctuations_special_characters: ' + self.text)
+            print('12. remove_punctuations_special_characters: ' + self.text)
             self.text = self.remove_consequently_char()
-            print('12. remove_consequently_char: ' + self.text)
+            print('13. remove_consequently_char: ' + self.text)
             self.text = self.replace_slang_word()
-            print('13. replace_slang_word: ' + self.text)
-            # self.text = self.remove_numbers()
-            # print('14. remove_numbers: ' + self.text)
+            print('14. replace_slang_word: ' + self.text)
             self.text = self.trim_text()
             print('15. trim_text: ' + self.text)
             self.text = self.remove_double_spaces()
             print('16. remove_double_spaces: ' + self.text)
+            self.text = self.word_segment()
+            print('27. word_segment: ' + self.text)
             self.text = self.auto_spelling()
-            print('17. auto_spelling: ' + self.text)
-            self.text = self.lemma()
-            print('18. lemmatizing: ' + self.text)
+            print('18. auto_spelling: ' + self.text)
+            self.text = self.lemmatization()
+            print('19. lemmatization: ' + self.text)
             self.text = self.convert_num_to_word()
             print('20. convert_num_to_word: ' + self.text)
             self.text = self.convert_to_nominal()
-            print('20. convert_to_nominal: ' + self.text)
-            print('#### STOP ' + str(index) + ' #### \n')
-            # TODO: remove ` ,
+            print('21. convert_to_nominal: ' + self.text)
+            print('#### STOP: ' + str(index) + ' #### \n')
             self.data_frame.loc[index, 'text'] = self.text
 
     def remove_punctuations_special_characters(self):
@@ -121,15 +114,17 @@ class DataCleaning:
         return re.sub(cleaner, '', self.text)
 
     def remove_html_tags(self):
+        """ Remove HTML tags e.g. <div> """
         cleaner = re.compile('<.*?>|&([a-z0-9]+|#[0-9]{1,6}|#x[0-9a-f]{1,6});')
         return re.sub(cleaner, '', self.text)
 
     def remove_urls(self):
+        """ Remove HTML tags e.g. https://scikit-learn.org/stable/modules/neural_networks_supervised.html"""
         cleaner = re.compile('http\S+')
         return re.sub(cleaner, '', self.text)
 
     def remove_hash_tags(self):
-        return ' '.join(re.sub("(@[A-Za-z0-9]+)|([^0-9A-Za-z \t])|(\w+:\/\/\S+)", " ", self.text).split())
+        return ' '.join(re.sub('(@[A-Za-z0-9]+)|([^0-9A-Za-z \t])|(\w+:\/\/\S+)', ' ', self.text).split())
 
     def covert_text_to_lower_case(self):
         return self.text.lower()
@@ -140,21 +135,11 @@ class DataCleaning:
     def remove_double_spaces(self):
         return re.sub('\s+', ' ', self.text)
 
-    def remove_numbers(self):
-        return re.sub(r'\d+', '', self.text)
-
     def convert_accented_characters_to_ASCII_characters(self):
         return unicodedata.normalize('NFKD', self.text).encode('ascii', 'ignore').decode('utf-8', 'ignore')
 
-    def compare_dataframes(self):
-        merge_dataframes = pd.concat([self.initial_data_frame['text'], self.data_frame['text']], axis=1,
-                                     keys=['Initial Text', 'Cleaned Text'])
-        merge_dataframes.to_csv(os.path.abspath(
-            path.parent.absolute().parent) + '\\presentation\\results\\' + self.dataframe_name + "_dataframe_cleaned_initial.csv",
-                                sep=',', encoding='utf-8', index=False)
-        print(merge_dataframes)
-
-    def create_new_dataframes(self):
+    def create_new_csv(self):
+        """ Summarize the raw tweet with the cleaned tweet in one csv in order to analyze the results"""
         merge_dataframes = pd.concat([self.data_frame['text'], self.data_frame['sentiment']], axis=1,
                                      keys=['text', 'sentiment'])
         merge_dataframes.to_csv(os.path.abspath(
@@ -163,6 +148,7 @@ class DataCleaning:
         print(merge_dataframes)
 
     def remove_emojis(self):
+        """ remove emoji e.g. 👋 """
         regrex_pattern = \
             re.compile("["
                        u"\U0001F600-\U0001F64F"  # emoticons
@@ -203,29 +189,14 @@ class DataCleaning:
         spells = [spell(w) for w in (word_tokenize(self.text))]
         return " ".join(spells)
 
-    def remove_stopwords(self):
-        stop_words = stopwords.words('english')
-        return ' '.join([w for w in word_tokenize(self.text) if not w in stop_words])
-
-    def stem(self):
-        snowball_stemmer = SnowballStemmer('english')
-        stemmed_word = [snowball_stemmer.stem(word) for sent in sent_tokenize(self.text) for word in
-                        word_tokenize(sent)]
-        return " ".join(stemmed_word)
-
-    def lemma(self):
+    def lemmatization(self):
         wordnet_lemmatizer = WordNetLemmatizer()
         lemmatized_word = [wordnet_lemmatizer.lemmatize(word) for sent in sent_tokenize(self.text) for word in
                            word_tokenize(sent)]
         return " ".join(lemmatized_word)
 
-    def remove_locations(self):
-        places = GeoText(self.text)
-        for place in places.cities:
-            self.text = self.text.replace(place, '')
-        return self.text
-
     def convert_num_to_word(self):
+        """e.g 1 to one"""
         tokens = nltk.word_tokenize(self.text)
         tokens = nltk.pos_tag(tokens)
         text = []
@@ -241,6 +212,7 @@ class DataCleaning:
         return TreebankWordDetokenizer().detokenize(text)
 
     def convert_to_nominal(self):
+        """e.g 1st to first"""
         numbers = re.findall('(\d+)[st|nd|rd|th]', self.text)
 
         newText = self.text
@@ -248,24 +220,23 @@ class DataCleaning:
             ordinalAsString = num2words(n, ordinal=True)
             newText = re.sub(r"\d+[st|nd|rd|th]", ordinalAsString[:-1], self.text, 1)
             print(newText)
-
         print(self.text)
         print(newText)
         return newText
 
+    def word_segment(self):
+        """Segment Words e.g loveit to love it"""
+        load()
+        return ' '.join(segment(self.text))
+
+    # https://towardsdatascience.com/named-entity-recognition-with-nltk-and-spacy-8c4a7d88e7da
     # Named Entity Recognition (NER)
-    def NER(self):
-        # https://towardsdatascience.com/named-entity-recognition-with-nltk-and-spacy-8c4a7d88e7da
+    def name_entity_recognition(self):
         doc = nlp(self.text)
-        print(self.text)
-        print(type(self.text))
         print([(X.text, X.label_) for X in doc.ents])
         for idx, X in enumerate(doc.ents):
-            if X.label_ == 'ORG' or X.label_ == 'PERSON' or X.label_ == 'GPE' or X.label_ == 'TIME':  # REMOVE organizations
+            # REMOVE organizations
+            if X.label_ == 'ORG' or X.label_ == 'PERSON' or X.label_ == 'GPE' or X.label_ == 'TIME':
                 self.text = self.text.replace(X.text, '')
         print(self.text)
-        print('----------')
         return self.text
-
-    def word_tokenize(self):
-        return [w for sent in sent_tokenize(self.text) for w in word_tokenize(sent)]

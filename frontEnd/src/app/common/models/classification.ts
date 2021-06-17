@@ -1,7 +1,7 @@
 export class Classification {
     text: string;
     bag_of_words : {
-      logistic_regression_proba :  {
+      logistic_regression_probabilities :  {
         neutral: string;
         negative: string;
         positive: string;
@@ -23,7 +23,7 @@ export class Classification {
       };
     };
     word2Vec : {
-      logistic_regression_proba :  {
+      logistic_regression_probabilities :  {
         neutral: string;
         negative: string;
         positive: string;

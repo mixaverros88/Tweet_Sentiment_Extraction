@@ -34,7 +34,7 @@ VisualizeDataset(train_data_frame_oversampling, train_dataset + ' Over Sampling 
 
 # Cleaning Dataset
 train_cleaning_dataset = DataCleaning(train_data_frame_oversampling, text_id_column, train_dataset + 'Over_Sampling')
-cleaned_train_data_frame = train_cleaning_dataset.data_cleaning()
+cleaned_train_data_frame = train_cleaning_dataset.data_pre_processing()
 
 test_cleaning_dataset = DataCleaning(test_data_frame, text_id_column, test_dataset)
-cleaned_test_data_frame = test_cleaning_dataset.data_cleaning()
+cleaned_test_data_frame = test_cleaning_dataset.data_pre_processing()
