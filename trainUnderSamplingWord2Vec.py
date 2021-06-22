@@ -6,8 +6,12 @@ from helper_functions.metrics.ComposeMetrics import ComposeMetrics
 from models.machine_learning.LogisticRegressionModel import LogisticRegressionModel
 from sklearn.model_selection import train_test_split
 import numpy as np
+import configparser
+config = configparser.RawConfigParser()
+config.read('ConfigFile.properties')
 
-target_column = 'sentiment'
+
+target_column = config.get('STR', 'target.column')
 
 # Retrieve Data Frames
 train_data_frame_under_sampling = read_dataset.read_cleaned_train_data_set_under_sampling()
@@ -26,7 +30,7 @@ corpus = tokenize_sentence(train_data_frame_under_sampling)
 
 # Vectorized - Word2Vec
 tokenized_sentences = tokenizing_sentences_and_words(train_data_frame_under_sampling)
-word_2_vec = Word2VecModel(tokenized_sentences, 'word2VecUnderSampling')
+word_2_vec = Word2VecModel(tokenized_sentences, config.get('MODELS', 'under_sampling.word2vec.word2vec'))
 vectors_word_2_vec = word_2_vec.vectorize_text()
 
 
@@ -42,7 +46,7 @@ X_train, X_test, y_train, y_test = train_test_split(vectors_word_2_vec.wv.syn0, 
                                                     test_size=0.33, random_state=32)
 
 logistic_regression_model_2 = LogisticRegressionModel(X_train, X_test, y_train, y_test,
-                                                      'logistic_regression_under_sampling_word2vec')
+                                                      config.get('MODELS', 'under_sampling.word2vec.lg'))
 logistic_regression_model_results2 = logistic_regression_model_2.results()
 # print(logistic_regression_model_results2)
 

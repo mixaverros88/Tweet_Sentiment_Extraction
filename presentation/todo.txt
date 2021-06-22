@@ -1,3 +1,6 @@
+DictVectorizer
+
+
 Unbalance Dataset
 1. SMOTE
 2. NearMiss

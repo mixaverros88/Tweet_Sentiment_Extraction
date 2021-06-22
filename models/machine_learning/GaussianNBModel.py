@@ -1,28 +1,33 @@
-from sklearn.naive_bayes import GaussianNB
+from sklearn.naive_bayes import MultinomialNB
 import pickle
 from sklearn.model_selection import GridSearchCV
 from helper_functions.tokenizer.functions import get_models_best_parameters
 import numpy as np
 
 
+# https://www.ritchieng.com/machine-learning-multinomial-naive-bayes-vectorization/
+# https://dzone.com/articles/scikit-learn-using-gridsearch-to-tune-the-hyperpar
+
 class GaussianNBModel:
 
-    def __init__(self, X_train, X_test, y_train, y_test, model_name):
-        self.X_train = X_train.todense()
-        self.X_test = X_test.todense()
+    def __init__(self, x_train, x_test, y_train, y_test, model_name):
+        self.X_train = x_train.todense()
+        self.X_test = x_test.todense()
         self.y_train = y_train
         self.y_test = y_test
         self.model_name = model_name
 
     def results(self):
-        print('Gaussian')
+        # TODO: gaussian vs multinomial naive bayes
+        print('Multinomial Naive Bayes')
         # Grid Search
-        # param_grid = {'var_smoothing': np.logspace(0, -9, num=100)}
-        # model_gs = GridSearchCV(estimator=GaussianNB(), param_grid=param_grid, cv=5, verbose=1, scoring='accuracy')
+        # params = {'alpha': [1.0, 1.1, 1.5, 1.9, 2.0, 3.0, 4.0, 5.0], }
+        # model_gs = GridSearchCV(MultinomialNB(), param_grid=params, n_jobs=-1, cv=5, verbose=5)
+        # print(model_gs)
         # model_gs.fit(self.X_train, self.y_train)
-        # get_models_best_parameters(model_gs, 'gaussian')  # GaussianNB(var_smoothing=0.01)
+        # get_models_best_parameters(model_gs, 'Multinomial Naive Bayes')
 
-        model = GaussianNB()
+        model = MultinomialNB(alpha=1.5)
         model.fit(self.X_train, self.y_train)
         pickle.dump(model, open('serializedModels/' + self.model_name + '.sav', 'wb'))
         return model.predict(self.X_test)

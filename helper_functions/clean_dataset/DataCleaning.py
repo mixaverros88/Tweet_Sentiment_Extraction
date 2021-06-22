@@ -12,10 +12,10 @@ from pathlib import Path
 from num2words import num2words
 from nltk.tokenize.treebank import TreebankWordDetokenizer
 import nltk
-import en_core_web_sm
+import en_core_web_lg
 from wordsegment import load, segment
 
-nlp = en_core_web_sm.load()
+nlp = en_core_web_lg.load()
 
 path = Path()
 nltk.download('maxent_ne_chunker')
@@ -40,6 +40,7 @@ class DataCleaning:
         self.sanitize_data_frame()
         if self.dataframe_name is not None:  # If the request is from API
             self.create_new_csv()
+            self.compare_dataframes()
         return self.data_frame
 
     def drop_row_if_has_null_column(self):
@@ -86,8 +87,8 @@ class DataCleaning:
             print('15. trim_text: ' + self.text)
             self.text = self.remove_double_spaces()
             print('16. remove_double_spaces: ' + self.text)
-            self.text = self.word_segment()
-            print('27. word_segment: ' + self.text)
+            # self.text = self.word_segment()
+            # print('27. word_segment: ' + self.text)
             self.text = self.auto_spelling()
             print('18. auto_spelling: ' + self.text)
             self.text = self.lemmatization()
@@ -145,7 +146,13 @@ class DataCleaning:
         merge_dataframes.to_csv(os.path.abspath(
             path.parent.absolute().parent) + '\\datasets\\cleaned\\' + self.dataframe_name + "_dataframe_cleaned.csv",
                                 sep=',', index=False, header=True)
-        print(merge_dataframes)
+
+    def compare_dataframes(self):
+        merge_dataframes = pd.concat([self.initial_data_frame['text'], self.data_frame['text']], axis=1,
+                                     keys=['Initial Text', 'Cleaned Text'])
+        merge_dataframes.to_csv(os.path.abspath(
+            path.parent.absolute().parent) + '\\presentation\\results\\' + self.dataframe_name + "_dataframe_cleaned_initial.csv",
+                                sep=',', encoding='utf-8', index=False)
 
     def remove_emojis(self):
         """ remove emoji e.g. 👋 """
