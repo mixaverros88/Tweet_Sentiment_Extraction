@@ -5,7 +5,9 @@ from helper_functions.clean_dataset.DataCleaning import DataCleaning
 from helper_functions.retrieve.serializedModels import bag_of_words_over_sampling, \
     bag_of_words_logistic_regression_over_sampling, bog_of_words_svm_over_sampling, bog_of_words_nb_over_sampling, \
     bog_of_words_multi_layer_perceptron_classifier_over_sampling, bog_of_words_decision_tree_over_sampling, \
-    tfidf_over_sampling, tfidf_logistic_regression_over_sampling
+    tfidf_over_sampling, tfidf_logistic_regression_over_sampling, tfidf_svm_over_sampling, tfidf_nb_over_sampling, \
+    tfidf_multi_layer_perceptron_classifier_over_sampling, tfidf_decision_tree_over_sampling, word2vec_over_sampling, \
+    word2vec_logistic_regression_over_sampling
 
 
 class RequestService:
@@ -26,44 +28,63 @@ class RequestService:
         bag_of_words_model = bag_of_words_over_sampling()  # Retrieve Model
         bag_of_words_vectors = bag_of_words_model.transform([cleaned_text])
 
-        logistic_regression_model = bag_of_words_logistic_regression_over_sampling()  # Retrieve Model
-        logistic_regression_probabilities_results = logistic_regression_model.predict_proba(bag_of_words_vectors)
+        bag_of_words_logistic_regression_model = bag_of_words_logistic_regression_over_sampling()  # Retrieve Model
+        bag_of_words_logistic_regression_probabilities_results = bag_of_words_logistic_regression_model.predict_proba(
+            bag_of_words_vectors)
+        bag_of_words_logistic_regression_results = bag_of_words_logistic_regression_model.predict(bag_of_words_vectors)
 
-        logistic_regression_results = logistic_regression_model.predict(bag_of_words_vectors)
+        bag_of_words_svm_model = bog_of_words_svm_over_sampling()  # Retrieve Model
+        bag_of_words_svm_results = bag_of_words_svm_model.predict(bag_of_words_vectors)
 
-        svm_model = bog_of_words_svm_over_sampling()  # Retrieve Model
-        svm_results = svm_model.predict(bag_of_words_vectors)
+        bag_of_words_nb_model = bog_of_words_nb_over_sampling()  # Retrieve Model
+        bag_of_words_nb_results = bag_of_words_nb_model.predict(bag_of_words_vectors.toarray())
 
-        nb_model = bog_of_words_nb_over_sampling()  # Retrieve Model
-        nb_results = nb_model.predict(bag_of_words_vectors.toarray())
+        bag_of_words_mlp_model = bog_of_words_multi_layer_perceptron_classifier_over_sampling()  # Retrieve Model
+        bag_of_words_mlp_results = bag_of_words_mlp_model.predict(bag_of_words_vectors)
 
-        mlp_model = bog_of_words_multi_layer_perceptron_classifier_over_sampling()  # Retrieve Model
-        mlp_results = mlp_model.predict(bag_of_words_vectors)
+        bag_of_words_decision_tree_model = bog_of_words_decision_tree_over_sampling()  # Retrieve Model
+        bag_of_words_decision_tree_results = bag_of_words_decision_tree_model.predict(bag_of_words_vectors)
 
-        decision_tree_model = bog_of_words_decision_tree_over_sampling()  # Retrieve Model
-        decision_tree_results = decision_tree_model.predict(bag_of_words_vectors)
+        # Word2Vec
+        # word2vec_model = word2vec_over_sampling()  # Retrieve Model
+        # word2vec_vectors = word2vec_model.transform([cleaned_text])
 
-        # word2vec
-        # Vectorize Cleaned Text With WORD2VEC
-        # word2vec_model = bag_of_word2vec_sampling()  # Retrieve Model
-        # word2vec_vectors = word2vec_model.transform([cleaned_request])
-        #
-        # logistic_regression_word2vec_model = logistic_regression_word2vec_under_sampling()  # Retrieve Model
-        # logistic_regression_word2vec_results = logistic_regression_word2vec_model.predict(word2vec_vectors)
+        # word2vec_logistic_regression_model = word2vec_logistic_regression_over_sampling()  # Retrieve Model
+        # word2vec_logistic_regression_model_results = word2vec_logistic_regression_model.predict(word2vec_vectors)
 
         # Tfidf
-        # tfidf_model = tfidf_over_sampling()
-        # tfidf_model_vectors = tfidf_model.transform([cleaned_text])
+        tfidf_model = tfidf_over_sampling()
+        tfidf_model_vectors = tfidf_model.transform([cleaned_text])
 
-        # tfidf_logistic_regression_model = tfidf_logistic_regression_over_sampling()  # Retrieve Model
-        # tfidf_logistic_regression_results = tfidf_logistic_regression_model.predict(tfidf_model_vectors)
+        tfidf_logistic_regression_model = tfidf_logistic_regression_over_sampling()  # Retrieve Model
+        tfidf_logistic_regression_probabilities_results = tfidf_logistic_regression_model.predict_proba(
+            tfidf_model_vectors)
+        tfidf_logistic_regression_results = tfidf_logistic_regression_model.predict(tfidf_model_vectors)
+
+        tfidf_svm_model = tfidf_svm_over_sampling()  # Retrieve Model
+        tfidf_svm_results = tfidf_svm_model.predict(tfidf_model_vectors)
+
+        tfidf_words_nb_model = tfidf_nb_over_sampling()  # Retrieve Model
+        tfidf_nb_results = tfidf_words_nb_model.predict(tfidf_model_vectors.toarray())
+
+        tfidf_mlp_model = tfidf_multi_layer_perceptron_classifier_over_sampling()  # Retrieve Model
+        tfidf_mlp_results = tfidf_mlp_model.predict(tfidf_model_vectors)
+
+        tfidf_decision_tree_model = tfidf_decision_tree_over_sampling()  # Retrieve Model
+        tfidf_decision_tree_results = tfidf_decision_tree_model.predict(tfidf_model_vectors)
 
         return ClassificationDto(
             cleaned_data_frame,
-            logistic_regression_probabilities_results,
-            logistic_regression_results,
-            svm_results,
-            nb_results,
-            mlp_results,
-            decision_tree_results
+            bag_of_words_logistic_regression_probabilities_results,
+            bag_of_words_logistic_regression_results,
+            bag_of_words_svm_results,
+            bag_of_words_nb_results,
+            bag_of_words_mlp_results,
+            bag_of_words_decision_tree_results,
+            tfidf_logistic_regression_probabilities_results,
+            tfidf_logistic_regression_results,
+            tfidf_svm_results,
+            tfidf_nb_results,
+            tfidf_mlp_results,
+            tfidf_decision_tree_results
         )
