@@ -38,7 +38,7 @@ corpus = remove_words_from_corpus(corpus, word_list)
 
 # Vectorized - BOW
 bag_of_words_over_sampling = BoW(corpus, config.get('MODELS', 'oversampling.BOW.bow'))
-vectors_bag_of_words_over_sampling = bag_of_words_over_sampling.vectorize_text()
+vectors_bag_of_words_over_sampling = bag_of_words_over_sampling.text_vectorization()
 
 # Split Train-Test Data
 X_train, X_test, y_train, y_test = train_test_split(vectors_bag_of_words_over_sampling,

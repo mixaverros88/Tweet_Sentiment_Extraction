@@ -15,7 +15,7 @@ class Word2VecModel:
         self.corpus = corpus
         self.model_name = model_name
 
-    def vectorize_text(self):
+    def text_vectorization(self):
         print(len(self.corpus))
         model = gensim.models.Word2Vec(self.corpus, min_count=1, window=5, sg=1)
         print(model)

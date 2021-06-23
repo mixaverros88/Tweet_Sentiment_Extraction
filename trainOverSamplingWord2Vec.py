@@ -31,7 +31,7 @@ corpus = tokenize_sentence(train_data_frame_over_sampling)
 # Vectorized - Word2Vec
 tokenized_sentences = tokenizing_sentences_and_words(train_data_frame_over_sampling)
 word_2_vec = Word2VecModel(tokenized_sentences, config.get('MODELS', 'oversampling.word2vec.word2vec'))
-vectors_word_2_vec = word_2_vec.vectorize_text()
+vectors_word_2_vec = word_2_vec.text_vectorization()
 
 
 def shuffle_along_axis(a, axis):

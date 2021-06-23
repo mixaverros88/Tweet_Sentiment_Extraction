@@ -11,6 +11,7 @@ Text Analysis
 Text Pre-processing
 1. Remove names, locations, company names ???
 2. Convert number in text format to digits ???
+3. Remove Single Character
 
 Text Vectorization - Convert natural language into numerical form
 1. Bag of words = The problem with this method is that it does’t capture the meaning of the text, or the context in which words appear, even when using n-grams.

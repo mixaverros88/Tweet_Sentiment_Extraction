@@ -7,11 +7,11 @@ import pandas as pd
 
 class ComposeMetrics:
 
-    def __init__(self, y_test, y_predict, model_name, targets_name_array):
+    def __init__(self, y_test, y_predict, model_name, **targets_name_array):
         self.y_test = y_test
         self.y_predict = y_predict
         self.model_name = model_name
-        self.targets_name_array = targets_name_array
+        self.targets_name_array = [0, 1, 2]
         self.print_macro_metrics()
         self.plot_confusion_matrix()
 

@@ -15,7 +15,7 @@ class BoW:
         self.corpus = corpus
         self.model_name = model_name
 
-    def vectorize_text(self):
+    def text_vectorization(self):
         # TODO: model tuning , fit vs fit_transform
         model = CountVectorizer()
         print(model)

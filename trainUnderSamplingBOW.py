@@ -33,7 +33,7 @@ corpus = tokenize_sentence(train_data_frame_under_sampling)
 
 # Vectorized - BOW
 bag_of_words_under_sampling = BoW(corpus, config.get('MODELS', 'under_sampling.BOW.bow'))
-vectors_bag_of_words_under_sampling = bag_of_words_under_sampling.vectorize_text()
+vectors_bag_of_words_under_sampling = bag_of_words_under_sampling.text_vectorization()
 
 # Split Train-Test Data
 X_train, X_test, y_train, y_test = train_test_split(vectors_bag_of_words_under_sampling, target_values, test_size=0.33,
