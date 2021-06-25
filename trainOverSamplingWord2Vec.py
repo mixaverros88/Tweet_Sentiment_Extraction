@@ -127,11 +127,11 @@ ComposeMetrics(svm_y_predict.score, y_test, svm_y_predict.prediction, config.get
                word_embedding)
 
 # Gaussian Naive Bayes
-nb_model = GaussianNBModel(X_train, X_test, y_train, y_test, config.get('MODELS', 'oversampling.word2vec.gaussian'), 'sss')
-nb_y_predict = nb_model.results()
-
-ComposeMetrics(nb_y_predict.score, y_test, nb_y_predict.prediction, config.get('MODELNAME', 'model.nb'), data_set,
-               word_embedding)
+# nb_model = GaussianNBModel(X_train, X_test, y_train, y_test, config.get('MODELS', 'oversampling.word2vec.gaussian'), 'sss')
+# nb_y_predict = nb_model.results()
+#
+# ComposeMetrics(nb_y_predict.score, y_test, nb_y_predict.prediction, config.get('MODELNAME', 'model.nb'), data_set,
+#                word_embedding)
 
 # MLP Classifier
 neural_network = MLPClassifierModel(X_train, X_test, y_train, y_test, config.get('MODELS', 'oversampling.word2vec.mlp'), 'sss')

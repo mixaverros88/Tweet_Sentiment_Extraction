@@ -80,7 +80,7 @@
             <td class="text-white" [ngClass]="getSentiment(classification?.word2Vec?.logistic_regression?.Sentiment)">
               {{classification?.word2Vec?.logistic_regression?.Sentiment}}
             </td>
-            <td class="text-white" [ngClass]="getSentiment(classification?.word2Vec?.logistic_regression?.Sentiment)">
+            <td class="text-white" [ngClass]="getSentiment(classification?.tfidf?.logistic_regression?.Sentiment)">
               {{classification?.tfidf?.logistic_regression?.Sentiment}}
             </td>
           </tr>
@@ -89,10 +89,10 @@
             <td class="text-white" [ngClass]="getSentiment(classification?.bag_of_words?.svm?.Sentiment)">
               {{classification?.bag_of_words?.svm?.Sentiment}}
             </td>
-            <td class="text-white" [ngClass]="getSentiment(classification?.bag_of_words?.svm?.Sentiment)">
+            <td class="text-white" [ngClass]="getSentiment(classification?.word2Vec?.svm?.Sentiment)">
               {{classification?.word2Vec?.svm?.Sentiment}}
             </td>
-            <td class="text-white" [ngClass]="getSentiment(classification?.bag_of_words?.svm?.Sentiment)">
+            <td class="text-white" [ngClass]="getSentiment(classification?.tfidf?.svm?.Sentiment)">
               {{classification?.tfidf?.svm?.Sentiment}}
             </td>
           </tr>
@@ -104,7 +104,7 @@
             <td class="text-white" [ngClass]="getSentiment(classification?.word2Vec?.naive_bayes?.Sentiment)">
               {{classification?.word2Vec?.naive_bayes?.Sentiment}}
             </td>
-            <td class="text-white" [ngClass]="getSentiment(classification?.word2Vec?.naive_bayes?.Sentiment)">
+            <td class="text-white" [ngClass]="getSentiment(classification?.tfidf?.naive_bayes?.Sentiment)">
               {{classification?.tfidf?.naive_bayes?.Sentiment}}
             </td>
           </tr>
@@ -113,10 +113,10 @@
             <td class="text-white" [ngClass]="getSentiment(classification?.bag_of_words?.decision_tree?.Sentiment)">
                 {{classification?.bag_of_words?.decision_tree?.Sentiment}}
             </td>
-            <td class="text-white" [ngClass]="getSentiment(classification?.bag_of_words?.decision_tree?.Sentiment)">
+            <td class="text-white" [ngClass]="getSentiment(classification?.word2Vec?.decision_tree?.Sentiment)">
                 {{classification?.word2Vec?.decision_tree?.Sentiment}}
             </td>
-            <td class="text-white" [ngClass]="getSentiment(classification?.bag_of_words?.decision_tree?.Sentiment)">
+            <td class="text-white" [ngClass]="getSentiment(classification?.tfidf?.decision_tree?.Sentiment)">
                 {{classification?.tfidf?.decision_tree?.Sentiment}}
             </td>
           </tr>
@@ -128,7 +128,7 @@
             <td class="text-white" [ngClass]="getSentiment(classification?.word2Vec?.mlp?.Sentiment)">
               {{classification?.word2Vec?.mlp?.Sentiment}}
             </td>
-            <td class="text-white" [ngClass]="getSentiment(classification?.word2Vec?.mlp?.Sentiment)">
+            <td class="text-white" [ngClass]="getSentiment(classification?.tfidf?.mlp?.Sentiment)">
               {{classification?.tfidf?.mlp?.Sentiment}}
             </td>
           </tr>
@@ -151,19 +151,19 @@
           <tr>
             <td>Neutral</td>
             <td>{{classification?.bag_of_words?.logistic_regression_probabilities?.neutral}}</td>
-            <td>{{classification?.bag_of_words?.logistic_regression_probabilities?.neutral}}</td>
-            <td>{{classification?.bag_of_words?.logistic_regression_probabilities?.neutral}}</td>
+            <td>{{classification?.word2Vec?.logistic_regression_probabilities?.neutral}}</td>
+            <td>{{classification?.tfidf?.logistic_regression_probabilities?.neutral}}</td>
           </tr>
           <tr>
             <td>Negative</td>
+            <td>{{classification?.bag_of_words?.logistic_regression_probabilities?.negative}}</td>
             <td>{{classification?.word2Vec?.logistic_regression_probabilities?.negative}}</td>
-            <td>{{classification?.word2Vec?.logistic_regression_probabilities?.negative}}</td>
-            <td>{{classification?.word2Vec?.logistic_regression_probabilities?.negative}}</td>
+            <td>{{classification?.tfidf?.logistic_regression_probabilities?.negative}}</td>
           </tr>
           <tr>
             <td>Positive</td>
-            <td>{{classification?.tfidf?.logistic_regression_probabilities?.positive}}</td>
-            <td>{{classification?.tfidf?.logistic_regression_probabilities?.positive}}</td>
+            <td>{{classification?.bag_of_words?.logistic_regression_probabilities?.positive}}</td>
+            <td>{{classification?.word2Vec?.logistic_regression_probabilities?.positive}}</td>
             <td>{{classification?.tfidf?.logistic_regression_probabilities?.positive}}</td>
           </tr>
           </tbody>
