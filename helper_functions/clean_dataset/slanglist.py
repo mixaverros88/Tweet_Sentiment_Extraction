@@ -85,6 +85,10 @@ slang_list = {
     "nkotb": "new kids on the block",
     "wanna": "want to",
     "LMFAO": "laughing my freaking ass off",
+    "aka": "also known as",
+    "all4web": "all for web",
+    "amp": "ampere",
+    "inc": "incorporated",
     # gotto ??
     # HOORAYY ??
     # waaaa ??

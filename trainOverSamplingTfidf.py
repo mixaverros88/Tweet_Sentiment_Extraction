@@ -14,8 +14,8 @@ import configparser
 
 config = configparser.RawConfigParser()
 config.read('ConfigFile.properties')
-
-
+data_set = config.get('STR', 'data.over.sampling')
+word_embedding = config.get('STR', 'word.embedding.tfidf')
 target_column = config.get('STR', 'target.column')
 
 # Retrieve Data Frames
@@ -50,33 +50,33 @@ logistic_regression_model = LogisticRegressionModel(X_train, X_test, y_train, y_
                                                     config.get('MODELS', 'oversampling.Tfidf.lg'))
 logistic_regression_y_predict = logistic_regression_model.results()
 
-ComposeMetrics(y_test, logistic_regression_y_predict, config.get('MODELNAME', 'model.lg'))
+ComposeMetrics(logistic_regression_y_predict.score, y_test, logistic_regression_y_predict.prediction, config.get('MODELNAME', 'model.lg'), data_set, word_embedding)
 
 # Support Vector Machine
 svm_model = SvmModel(X_train, X_test, y_train, y_test, config.get('MODELS', 'oversampling.Tfidf.svm'))
 svm_y_predict = svm_model.results()
 
-ComposeMetrics(y_test, svm_y_predict, config.get('MODELNAME', 'model.svm'))
+ComposeMetrics(svm_y_predict.score, y_test, svm_y_predict.prediction, config.get('MODELNAME', 'model.svm'), data_set, word_embedding)
 
 # Gaussian Naive Bayes
 nb_model = GaussianNBModel(X_train, X_test, y_train, y_test, config.get('MODELS', 'oversampling.Tfidf.gaussian'))
 nb_y_predict = nb_model.results()
 
-ComposeMetrics(y_test, nb_y_predict, config.get('MODELNAME', 'model.nb'))
+ComposeMetrics(nb_y_predict.score, y_test, nb_y_predict.prediction, config.get('MODELNAME', 'model.nb'), data_set, word_embedding)
 
 # MLP Classifier
 neural_network = MLPClassifierModel(X_train, X_test, y_train, y_test, config.get('MODELS', 'oversampling.Tfidf.mlp'))
 neural_network_predict = neural_network.results()
 
-ComposeMetrics(y_test, neural_network_predict, config.get('MODELNAME', 'model.mlp'))
+ComposeMetrics(neural_network_predict.score, y_test, neural_network_predict.prediction, config.get('MODELNAME', 'model.mlp'), data_set, word_embedding)
 
 decision_tree = DecisionTreeModel(X_train, X_test, y_train, y_test, config.get('MODELS', 'oversampling.Tfidf.dt'))
 decision_tree_predict = decision_tree.results()
 
-# ComposeMetrics(y_test, decision_tree_predict, config.get('MODELNAME', 'model.dt'))
+# ComposeMetrics(decision_tree_predict.score, y_test, decision_tree_predict.prediction, config.get('MODELNAME', 'model.dt'), data_set, word_embedding)
 
 # K Neighbors
 k_neighbors_model = KNeighborsModel(X_train, X_test, y_train, y_test, config.get('MODELS', 'oversampling.Tfidf.k_neighbors'))
 k_neighbors_model_predict = k_neighbors_model.results()
 
-# ComposeMetrics(y_test, k_neighbors_model_predict, config.get('MODELNAME', 'model.kn'))
+# ComposeMetrics(k_neighbors_model_predict.score, y_test, k_neighbors_model_predict.prediction, config.get('MODELNAME', 'model.kn'), data_set, word_embedding)

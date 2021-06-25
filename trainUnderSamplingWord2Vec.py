@@ -7,10 +7,11 @@ from models.machine_learning.LogisticRegressionModel import LogisticRegressionMo
 from sklearn.model_selection import train_test_split
 import numpy as np
 import configparser
+
 config = configparser.RawConfigParser()
 config.read('ConfigFile.properties')
-
-
+data_set = config.get('STR', 'data.under.sampling')
+word_embedding = config.get('STR', 'word.embedding.word2vec')
 target_column = config.get('STR', 'target.column')
 
 # Retrieve Data Frames
@@ -53,4 +54,4 @@ logistic_regression_model_results2 = logistic_regression_model_2.results()
 print(y_test)
 print(logistic_regression_model_results2)
 
-ComposeMetrics(y_test, logistic_regression_model_results2, 'Logistic Regression Model', [0, 1, 2])
+ComposeMetrics(logistic_regression_model_results2.score, y_test, logistic_regression_model_results2.prediction, 'Logistic Regression Model', [0, 1, 2])

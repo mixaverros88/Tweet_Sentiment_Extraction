@@ -1,14 +1,19 @@
 from sklearn.neural_network import MLPClassifier
 import pickle
+import collections
 from sklearn.model_selection import GridSearchCV
 from helper_functions.tokenizer.functions import get_models_best_parameters
 
 
 class MLPClassifierModel:
 
-    def __init__(self, X_train, X_test, y_train, y_test, model_name):
-        self.X_train = X_train.todense()
-        self.X_test = X_test.todense()
+    def __init__(self, X_train, X_test, y_train, y_test, model_name, *word2vec):
+        if word2vec is None:
+            self.X_train = X_train.todense()
+            self.X_test = X_test.todense()
+        else:
+            self.X_train = X_train
+            self.X_test = X_test
         self.y_train = y_train
         self.y_test = y_test
         self.model_name = model_name
@@ -29,4 +34,9 @@ class MLPClassifierModel:
                               max_iter=1000)
         model.fit(self.X_train, self.y_train)
         pickle.dump(model, open('serializedModels/' + self.model_name + '.sav', 'wb'))
-        return model.predict(self.X_test)
+        pred = model.predict(self.X_test)
+        # y_score = model.fit(self.X_train, self.y_train).decision_function(self.X_test)
+        y_score = None
+        Point = collections.namedtuple('Point', ['prediction', 'score'])
+        p = Point(prediction=pred, score=y_score)
+        return p

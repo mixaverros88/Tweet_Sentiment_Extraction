@@ -14,9 +14,10 @@ class Tfidf:
     def text_vectorization(self):
         # TODO: model tuning , fit vs fit_transform
         model = TfidfVectorizer()
+        print(model)
         vectors = model.fit_transform(self.corpus)
         pickle.dump(model, open('serializedModels/' + self.model_name + '.sav', 'wb'))
-        print(model.get_feature_names())
+        print('TfidfVectorizer get_feature_names(): ', model.get_feature_names())
         # print(vectors)
         print('Tfidf Vocabulary Size: ', len(model.vocabulary_))
         return vectors

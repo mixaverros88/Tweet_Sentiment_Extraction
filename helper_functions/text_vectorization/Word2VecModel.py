@@ -1,4 +1,3 @@
-import gensim
 from gensim.models import Word2Vec
 import pickle
 from nltk.tokenize import sent_tokenize, word_tokenize
@@ -17,7 +16,7 @@ class Word2VecModel:
 
     def text_vectorization(self):
         print(len(self.corpus))
-        model = gensim.models.Word2Vec(self.corpus, min_count=1, window=5, sg=1)
+        model = Word2Vec(sentences=self.corpus, window=5, min_count=1, workers=4)
         print(model)
         print('Word2Vec Vocabulary : ', model.wv.syn0)
         print('Word2Vec Vocabulary : ', len(model.wv.syn0))

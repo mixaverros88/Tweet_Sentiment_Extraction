@@ -54,7 +54,7 @@ def count_word_occurrences(data_frame, counter):
             # print(w)
             # print(type(w[0]))
             # print(type(w[1]))
-    print(list_word)
+    print('list_word: ', list_word)
     print('Size of words with ' + str(counter) + ' or less occurrences ' + str(len(list_word)))
     return list_word
 

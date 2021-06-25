@@ -12,8 +12,11 @@ from models.machine_learning.DecisionTreeModel import DecisionTreeModel
 from sklearn.model_selection import train_test_split
 import configparser
 
-target_column = 'sentiment'
-
+config = configparser.RawConfigParser()
+config.read('ConfigFile.properties')
+target_column = config.get('STR', 'target.column')
+data_set = config.get('STR', 'data.over.sampling')
+word_embedding = config.get('STR', 'word.embedding.bow')
 config = configparser.RawConfigParser()
 config.read('ConfigFile.properties')
 
@@ -29,7 +32,7 @@ test_data_frame.dropna(inplace=True)
 # Get Target Values as Numpy Array
 target_values = get_column_values_as_np_array(target_column, train_data_frame_over_sampling)
 
-word_list = count_word_occurrences(train_data_frame_over_sampling, 1)
+word_list = count_word_occurrences(train_data_frame_over_sampling, 3)
 
 # Tokenize data frame
 corpus = tokenize_sentence(train_data_frame_over_sampling)
@@ -48,33 +51,33 @@ X_train, X_test, y_train, y_test = train_test_split(vectors_bag_of_words_over_sa
 logistic_regression_model = LogisticRegressionModel(X_train, X_test, y_train, y_test, config.get('MODELS', 'oversampling.BOW.lg'))
 logistic_regression_y_predict = logistic_regression_model.results()
 
-ComposeMetrics(y_test, logistic_regression_y_predict, 'Logistic Regression Model', [0, 1, 2])
+ComposeMetrics(logistic_regression_y_predict.score, y_test, logistic_regression_y_predict.prediction,  config.get('MODELNAME', 'model.lg'), data_set, word_embedding)
 
 # Support Vector Machine
 svm_model = SvmModel(X_train, X_test, y_train, y_test, config.get('MODELS', 'oversampling.BOW.svm'))
 svm_y_predict = svm_model.results()
 
-ComposeMetrics(y_test, svm_y_predict, 'SVM Model', [0, 1, 2])
+ComposeMetrics(svm_y_predict.score, y_test, svm_y_predict.prediction, config.get('MODELNAME', 'model.svm'), data_set, word_embedding)
 
 # Gaussian Naive Bayes
 nb_model = GaussianNBModel(X_train, X_test, y_train, y_test, config.get('MODELS', 'oversampling.BOW.gaussian'))
 nb_y_predict = nb_model.results()
 
-ComposeMetrics(y_test, nb_y_predict, 'NB Model', [0, 1, 2])
+ComposeMetrics(nb_y_predict.score, y_test, nb_y_predict.prediction, config.get('MODELNAME', 'model.nb'), data_set, word_embedding)
 
 # MLP Classifier
 neural_network = MLPClassifierModel(X_train, X_test, y_train, y_test, config.get('MODELS', 'oversampling.BOW.mlp'))
 neural_network_predict = neural_network.results()
 
-ComposeMetrics(y_test, neural_network_predict, 'MLPClassifier Model', [0, 1, 2])
+ComposeMetrics(neural_network_predict.score, y_test, neural_network_predict.prediction, config.get('MODELNAME', 'model.mlp'), data_set, word_embedding)
 
 decision_tree = DecisionTreeModel(X_train, X_test, y_train, y_test, config.get('MODELS', 'oversampling.BOW.dt'))
 decision_tree_predict = decision_tree.results()
 
-# ComposeMetrics(y_test, decision_tree_predict, 'Decision Tree Model', [0, 1, 2])
+# ComposeMetrics( decision_tree_predict.score, y_test, decision_tree_predict.prediction, config.get('MODELNAME', 'model.dt'), data_set, word_embedding)
 
 # K Neighbors
 kneighbors_model = KNeighborsModel(X_train, X_test, y_train, y_test, config.get('MODELS', 'oversampling.BOW.k_neighbors'))
 kneighbors_model_predict = kneighbors_model.results()
 
-# ComposeMetrics(y_test, kneighbors_model, 'KNeighbors Classifier', [0, 1, 2])
+# ComposeMetrics(, kneighbors_model.score, y_test, kneighbors_model.prediction, config.get('MODELNAME', 'model.kn'), data_set, word_embedding)

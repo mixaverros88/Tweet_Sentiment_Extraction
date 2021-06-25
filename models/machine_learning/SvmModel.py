@@ -1,5 +1,6 @@
 from sklearn import svm
 import pickle
+import collections
 from sklearn.model_selection import GridSearchCV
 from helper_functions.tokenizer.functions import get_models_best_parameters
 import numpy as np
@@ -29,4 +30,8 @@ class SvmModel:
         model = svm.SVC(kernel='linear')  # Linear Kernel
         model.fit(self.X_train, self.y_train)
         pickle.dump(model, open('serializedModels/' + self.model_name + '.sav', 'wb'))
-        return model.predict(self.X_test)
+        pred = model.predict(self.X_test)
+        y_score = model.fit(self.X_train, self.y_train).decision_function(self.X_test)
+        Point = collections.namedtuple('Point', ['prediction', 'score'])
+        p = Point(prediction=pred, score=y_score)
+        return p

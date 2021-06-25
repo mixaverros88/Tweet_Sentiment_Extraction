@@ -21,7 +21,7 @@ class BoW:
         print(model)
         vectors = model.fit_transform(self.corpus)
         pickle.dump(model, open('serializedModels/' + self.model_name + '.sav', 'wb'))
-        print(model.get_feature_names())
-        print(vectors)
+        print('CountVectorizer get_feature_names(): ', model.get_feature_names())
+        # print(vectors)
         print('BOW Vocabulary Size: ', len(model.vocabulary_))
         return vectors

@@ -1,8 +1,6 @@
 from sklearn.linear_model import LogisticRegression
 import pickle
-from sklearn.model_selection import GridSearchCV, RepeatedStratifiedKFold
-from helper_functions.tokenizer.functions import get_models_best_parameters
-
+import collections
 
 class LogisticRegressionModel:
 
@@ -48,4 +46,8 @@ class LogisticRegressionModel:
         model = LogisticRegression(C=1.0, penalty='l2', solver='liblinear', max_iter=1000)
         model.fit(self.X_train, self.y_train)
         pickle.dump(model, open('serializedModels/' + self.model_name + '.sav', 'wb'))
-        return model.predict(self.X_test)
+        y_score = model.fit(self.X_train, self.y_train).decision_function(self.X_test)
+        pred = model.predict(self.X_test)
+        Point = collections.namedtuple('Point', ['prediction', 'score'])
+        p = Point(prediction=pred, score=y_score)
+        return p
