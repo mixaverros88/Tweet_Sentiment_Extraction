@@ -2,6 +2,7 @@ from sklearn.linear_model import LogisticRegression
 import pickle
 import collections
 
+
 class LogisticRegressionModel:
 
     def __init__(self, X_train, X_test, y_train, y_test, model_name):

@@ -1,8 +1,8 @@
-from helper_functions.retrieve import dataset as read_dataset
-from helper_functions.tokenizer.functions import get_column_values_as_np_array, tokenize_sentence, \
+from helper.retrieve import dataset as read_dataset
+from helper.helper_functions.functions import get_column_values_as_np_array, tokenize_sentence, \
     count_word_occurrences, remove_words_from_corpus
-from helper_functions.text_vectorization.BoW import BoW
-from helper_functions.metrics.ComposeMetrics import ComposeMetrics
+from models.text_vectorization.BoW import BoW
+from helper.metrics.ComposeMetrics import ComposeMetrics
 from models.machine_learning.LogisticRegressionModel import LogisticRegressionModel
 from models.machine_learning.SvmModel import SvmModel
 from models.machine_learning.GaussianNBModel import GaussianNBModel
@@ -17,8 +17,9 @@ config.read('ConfigFile.properties')
 target_column = config.get('STR', 'target.column')
 data_set = config.get('STR', 'data.over.sampling')
 word_embedding = config.get('STR', 'word.embedding.bow')
-config = configparser.RawConfigParser()
-config.read('ConfigFile.properties')
+test_size = float(config.get('PROJECT', 'test.size'))
+random_state = int(config.get('PROJECT', 'random.state'))
+remove_words_by_occur_size = int(config.get('PROJECT', 'remove.words.occur.size'))
 
 # Retrieve Data Frames
 train_data_frame_over_sampling = read_dataset.read_cleaned_train_data_set_over_sampling()
@@ -32,11 +33,13 @@ test_data_frame.dropna(inplace=True)
 # Get Target Values as Numpy Array
 target_values = get_column_values_as_np_array(target_column, train_data_frame_over_sampling)
 
-word_list = count_word_occurrences(train_data_frame_over_sampling, 3)
+# List of words tha occurs 3 or less times
+word_list = count_word_occurrences(train_data_frame_over_sampling, remove_words_by_occur_size)
 
 # Tokenize data frame
 corpus = tokenize_sentence(train_data_frame_over_sampling)
 
+# Remove from corpus the given list of words
 corpus = remove_words_from_corpus(corpus, word_list)
 
 # Vectorized - BOW
@@ -45,39 +48,78 @@ vectors_bag_of_words_over_sampling = bag_of_words_over_sampling.text_vectorizati
 
 # Split Train-Test Data
 X_train, X_test, y_train, y_test = train_test_split(vectors_bag_of_words_over_sampling,
-                                                    target_values, test_size=0.3, random_state=32)
+                                                    target_values, test_size=test_size, random_state=random_state)
 
 # Logistic Regression
-logistic_regression_model = LogisticRegressionModel(X_train, X_test, y_train, y_test, config.get('MODELS', 'oversampling.BOW.lg'))
+logistic_regression_model = LogisticRegressionModel(X_train, X_test, y_train, y_test,
+                                                    config.get('MODELS', 'oversampling.BOW.lg'))
 logistic_regression_y_predict = logistic_regression_model.results()
 
-ComposeMetrics(logistic_regression_y_predict.score, y_test, logistic_regression_y_predict.prediction,  config.get('MODELNAME', 'model.lg'), data_set, word_embedding)
+ComposeMetrics(
+    logistic_regression_y_predict.score,
+    y_test,
+    logistic_regression_y_predict.prediction,
+    config.get('MODELNAME', 'model.lg'),
+    data_set,
+    word_embedding)
 
 # Support Vector Machine
 svm_model = SvmModel(X_train, X_test, y_train, y_test, config.get('MODELS', 'oversampling.BOW.svm'))
 svm_y_predict = svm_model.results()
 
-ComposeMetrics(svm_y_predict.score, y_test, svm_y_predict.prediction, config.get('MODELNAME', 'model.svm'), data_set, word_embedding)
+ComposeMetrics(
+    svm_y_predict.score,
+    y_test,
+    svm_y_predict.prediction,
+    config.get('MODELNAME', 'model.svm'),
+    data_set,
+    word_embedding)
 
 # Gaussian Naive Bayes
 nb_model = GaussianNBModel(X_train, X_test, y_train, y_test, config.get('MODELS', 'oversampling.BOW.gaussian'))
 nb_y_predict = nb_model.results()
 
-ComposeMetrics(nb_y_predict.score, y_test, nb_y_predict.prediction, config.get('MODELNAME', 'model.nb'), data_set, word_embedding)
+ComposeMetrics(
+    nb_y_predict.score,
+    y_test,
+    nb_y_predict.prediction,
+    config.get('MODELNAME', 'model.nb'),
+    data_set,
+    word_embedding)
 
 # MLP Classifier
 neural_network = MLPClassifierModel(X_train, X_test, y_train, y_test, config.get('MODELS', 'oversampling.BOW.mlp'))
 neural_network_predict = neural_network.results()
 
-ComposeMetrics(neural_network_predict.score, y_test, neural_network_predict.prediction, config.get('MODELNAME', 'model.mlp'), data_set, word_embedding)
+ComposeMetrics(
+    neural_network_predict.score,
+    y_test,
+    neural_network_predict.prediction,
+    config.get('MODELNAME', 'model.mlp'),
+    data_set,
+    word_embedding)
 
+# Decision Tree
 decision_tree = DecisionTreeModel(X_train, X_test, y_train, y_test, config.get('MODELS', 'oversampling.BOW.dt'))
 decision_tree_predict = decision_tree.results()
 
-# ComposeMetrics( decision_tree_predict.score, y_test, decision_tree_predict.prediction, config.get('MODELNAME', 'model.dt'), data_set, word_embedding)
+ComposeMetrics(
+    decision_tree_predict.score,
+    y_test,
+    decision_tree_predict.prediction,
+    config.get('MODELNAME', 'model.dt'),
+    data_set,
+    word_embedding)
 
 # K Neighbors
-kneighbors_model = KNeighborsModel(X_train, X_test, y_train, y_test, config.get('MODELS', 'oversampling.BOW.k_neighbors'))
-kneighbors_model_predict = kneighbors_model.results()
+k_neighbors_model = KNeighborsModel(X_train, X_test, y_train, y_test,
+                                    config.get('MODELS', 'oversampling.BOW.k_neighbors'))
+k_neighbors_model_predict = k_neighbors_model.results()
 
-# ComposeMetrics(, kneighbors_model.score, y_test, kneighbors_model.prediction, config.get('MODELNAME', 'model.kn'), data_set, word_embedding)
+ComposeMetrics(
+    k_neighbors_model_predict.score,
+    y_test,
+    k_neighbors_model_predict.prediction,
+    config.get('MODELNAME', 'model.kn'),
+    data_set,
+    word_embedding)

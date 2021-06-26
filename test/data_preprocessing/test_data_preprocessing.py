@@ -1,4 +1,4 @@
-from helper_functions.clean_dataset.DataCleaning import DataCleaning
+from helper.clean_dataset.DataCleaning import DataCleaning
 import pandas as pd
 
 # data

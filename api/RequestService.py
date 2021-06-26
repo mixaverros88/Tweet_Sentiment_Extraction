@@ -1,8 +1,8 @@
 import pandas as pd
 
 from api.dto.ClassificationDto import ClassificationDto
-from helper_functions.clean_dataset.DataCleaning import DataCleaning
-from helper_functions.retrieve.serializedModels import bag_of_words_over_sampling, \
+from helper.clean_dataset.DataCleaning import DataCleaning
+from helper.retrieve.serializedModels import bag_of_words_over_sampling, \
     bag_of_words_logistic_regression_over_sampling, bag_of_words_svm_over_sampling, bag_of_words_nb_over_sampling, \
     bag_of_words_multi_layer_perceptron_classifier_over_sampling, bag_of_words_decision_tree_over_sampling, \
     tfidf_over_sampling, tfidf_logistic_regression_over_sampling, tfidf_svm_over_sampling, tfidf_nb_over_sampling, \

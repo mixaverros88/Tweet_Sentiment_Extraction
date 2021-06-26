@@ -2,7 +2,7 @@ from sklearn import svm
 import pickle
 import collections
 from sklearn.model_selection import GridSearchCV
-from helper_functions.tokenizer.functions import get_models_best_parameters
+from helper.helper_functions.functions import get_models_best_parameters
 import numpy as np
 
 

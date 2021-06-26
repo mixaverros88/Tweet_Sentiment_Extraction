@@ -1,8 +1,8 @@
-from helper_functions.retrieve import dataset as read_dataset
-from helper_functions.clean_dataset.DataCleaning import DataCleaning
-from helper_functions.visualize.VisualizeDataset import VisualizeDataset
-from helper_functions.label_encoder.LabelEncoderTransform import LabelEncoderTransform
-from helper_functions.clean_dataset.BalanceDataset import BalanceDataset
+from helper.retrieve import dataset as read_dataset
+from helper.clean_dataset.DataCleaning import DataCleaning
+from helper.visualize.VisualizeDataset import VisualizeDataset
+from helper.label_encoder.LabelEncoderTransform import LabelEncoderTransform
+from helper.clean_dataset.BalanceDataset import BalanceDataset
 
 train_dataset = 'Train_Dataset'
 test_dataset = 'Test_Dataset'
