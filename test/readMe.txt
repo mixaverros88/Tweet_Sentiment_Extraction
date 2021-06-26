@@ -1,0 +1,1 @@
+the test file name should have the pattern test_*.py

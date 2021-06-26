@@ -1,0 +1,35 @@
+DictVectorizer
+
+
+Unbalance Dataset
+1. SMOTE
+2. NearMiss
+
+Text Analysis
+1. Count the average words per row and category
+
+Text Pre-processing
+1. Remove names, locations, company names ???
+2. Convert number in text format to digits ???
+3. Remove Single Character
+
+Text Vectorization - Convert natural language into numerical form
+1. Bag of words = The problem with this method is that it does’t capture the meaning of the text, or the context in which words appear, even when using n-grams.
+2. word2vec
+3. TfidfVectorizer
+4. Skip-Thought Vectors
+
+Balance Test Data Set??
+
+API
+Map dto object ClassificationDto
+
+Models
+1. LogisticRegression
+
+
+https://medium.com/@limavallantin/why-is-removing-stop-words-not-always-a-good-idea-c8d35bd77214
+
+To be cleaned
+San Diego
+Humous and Dorito`s.... Oh yes ==> Why Humous is classify as JJ??

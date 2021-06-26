@@ -1,0 +1,177 @@
+<style>
+  body {
+    background-color: #f1f1f1 !important;
+}
+.container {
+    background-color: white;
+}
+.customTextArea{
+    min-height: 220px;
+    border: 0.5px solid #767676;
+    padding: 5px;
+}
+.positive {
+    background-color: green;
+}
+
+.negative {
+    background-color: red;
+}
+
+.neutral {
+    background-color: #d99f6e;
+}
+
+.text-white{
+  color:white
+}
+
+</style>
+<div class="container" style="border: 1.5px solid #dbdbdb;border-radius: 13px;">
+  <div class="row">
+    <div class="col-sm-6" style="border-right: 3px solid #dbdbdb;">
+      <form>
+        <div class="form-group">
+          <h3>Test with your own text</h3>
+          <textarea style="
+    width: 100% !important;
+    padding: 9px;
+" #textInput placeholder="Place yours text" required rows="10" cols="60"></textarea>
+        </div>
+        <div class="form-group text-center">
+          <button type="button" class="btn btn-primary btn-lg" style="
+    background-color: #41a1f0;
+    width: 221px;
+"
+                  (click)="postText(textInput.value);  ">
+            Classify Text
+          </button>
+        </div>
+      </form>
+    </div>
+    <div class="col-sm-6">
+      <h3>Cleaned Text</h3>
+     <div class="col-bg-12 customTextArea">
+        {{classification?.text}}
+      </div>
+    </div>
+  </div>
+  <hr>
+
+  <div class="row">
+    <div class="col-sm-12">
+      <div class="col-sm-12">
+
+        <table class="table">
+          <thead>
+          <tr>
+            <th scope="col">Model (Over Sampling)</th>
+            <th scope="col">Bag of Words</th>
+            <th scope="col">Word2Vec</th>
+            <th scope="col">TF-IDF</th>
+          </tr>
+          </thead>
+          <tbody>
+          <tr>
+            <td>Logistic Regression</td>
+            <td class="text-white" [ngClass]="getSentiment(classification?.bag_of_words?.logistic_regression?.Sentiment)">
+              {{classification?.bag_of_words?.logistic_regression?.Sentiment}}
+            </td>
+            <td class="text-white" [ngClass]="getSentiment(classification?.word2Vec?.logistic_regression?.Sentiment)">
+              {{classification?.word2Vec?.logistic_regression?.Sentiment}}
+            </td>
+            <td class="text-white" [ngClass]="getSentiment(classification?.tfidf?.logistic_regression?.Sentiment)">
+              {{classification?.tfidf?.logistic_regression?.Sentiment}}
+            </td>
+          </tr>
+          <tr>
+            <td>Support Vector Machine</td>
+            <td class="text-white" [ngClass]="getSentiment(classification?.bag_of_words?.svm?.Sentiment)">
+              {{classification?.bag_of_words?.svm?.Sentiment}}
+            </td>
+            <td class="text-white" [ngClass]="getSentiment(classification?.word2Vec?.svm?.Sentiment)">
+              {{classification?.word2Vec?.svm?.Sentiment}}
+            </td>
+            <td class="text-white" [ngClass]="getSentiment(classification?.tfidf?.svm?.Sentiment)">
+              {{classification?.tfidf?.svm?.Sentiment}}
+            </td>
+          </tr>
+          <tr>
+            <td>Naive Bayes</td>
+            <td class="text-white" [ngClass]="getSentiment(classification?.bag_of_words?.naive_bayes?.Sentiment)">
+              {{classification?.bag_of_words?.naive_bayes?.Sentiment}}
+            </td>
+            <td class="text-white" [ngClass]="getSentiment(classification?.word2Vec?.naive_bayes?.Sentiment)">
+              {{classification?.word2Vec?.naive_bayes?.Sentiment}}
+            </td>
+            <td class="text-white" [ngClass]="getSentiment(classification?.tfidf?.naive_bayes?.Sentiment)">
+              {{classification?.tfidf?.naive_bayes?.Sentiment}}
+            </td>
+          </tr>
+          <tr>
+            <td>Decision Tree</td>
+            <td class="text-white" [ngClass]="getSentiment(classification?.bag_of_words?.decision_tree?.Sentiment)">
+                {{classification?.bag_of_words?.decision_tree?.Sentiment}}
+            </td>
+            <td class="text-white" [ngClass]="getSentiment(classification?.word2Vec?.decision_tree?.Sentiment)">
+                {{classification?.word2Vec?.decision_tree?.Sentiment}}
+            </td>
+            <td class="text-white" [ngClass]="getSentiment(classification?.tfidf?.decision_tree?.Sentiment)">
+                {{classification?.tfidf?.decision_tree?.Sentiment}}
+            </td>
+          </tr>
+          <tr>
+            <td>MLP</td>
+            <td class="text-white" [ngClass]="getSentiment(classification?.bag_of_words?.mlp?.Sentiment)">
+              {{classification?.bag_of_words?.mlp?.Sentiment}}
+            </td>
+            <td class="text-white" [ngClass]="getSentiment(classification?.word2Vec?.mlp?.Sentiment)">
+              {{classification?.word2Vec?.mlp?.Sentiment}}
+            </td>
+            <td class="text-white" [ngClass]="getSentiment(classification?.tfidf?.mlp?.Sentiment)">
+              {{classification?.tfidf?.mlp?.Sentiment}}
+            </td>
+          </tr>
+          </tbody>
+        </table>
+
+        <hr>
+        <h4>Logistic Regression</h4>
+
+        <table class="table">
+          <thead>
+          <tr>
+            <th scope="col">Sentiment</th>
+            <th scope="col">Bag Of Words</th>
+            <th scope="col">Word2Vec</th>
+            <th scope="col">TF-IDF</th>
+          </tr>
+          </thead>
+          <tbody>
+          <tr>
+            <td>Neutral</td>
+            <td>{{classification?.bag_of_words?.logistic_regression_probabilities?.neutral}}</td>
+            <td>{{classification?.word2Vec?.logistic_regression_probabilities?.neutral}}</td>
+            <td>{{classification?.tfidf?.logistic_regression_probabilities?.neutral}}</td>
+          </tr>
+          <tr>
+            <td>Negative</td>
+            <td>{{classification?.bag_of_words?.logistic_regression_probabilities?.negative}}</td>
+            <td>{{classification?.word2Vec?.logistic_regression_probabilities?.negative}}</td>
+            <td>{{classification?.tfidf?.logistic_regression_probabilities?.negative}}</td>
+          </tr>
+          <tr>
+            <td>Positive</td>
+            <td>{{classification?.bag_of_words?.logistic_regression_probabilities?.positive}}</td>
+            <td>{{classification?.word2Vec?.logistic_regression_probabilities?.positive}}</td>
+            <td>{{classification?.tfidf?.logistic_regression_probabilities?.positive}}</td>
+          </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+  <hr>
+</div>
+
+
