@@ -1,7 +1,7 @@
 from helper.retrieve import dataset as read_dataset
 from helper.helper_functions.functions import get_column_values_as_np_array, tokenize_sentence, \
     tokenizing_sentences_and_words_data_frame, \
-    count_word_occurrences, remove_words_from_corpus, convert_data_frame_sentece_to_vector_array
+    count_word_occurrences, remove_words_from_corpus, convert_data_frame_sentence_to_vector_array
 from models.text_vectorization.Word2VecModel import Word2VecModel
 from helper.metrics.ComposeMetrics import ComposeMetrics
 from models.machine_learning.LogisticRegressionModel import LogisticRegressionModel
@@ -47,7 +47,7 @@ tokenized_sentences = tokenizing_sentences_and_words_data_frame(train_data_frame
 word_2_vec = Word2VecModel(tokenized_sentences, config.get('MODELS', 'under_sampling.word2vec.word2vec'))
 word2vec_model = word_2_vec.text_vectorization()
 
-X = convert_data_frame_sentece_to_vector_array(word2vec_model, train_data_frame_under_sampling)
+X = convert_data_frame_sentence_to_vector_array(word2vec_model, train_data_frame_under_sampling)
 
 # Split Train-Test Data
 X_train, X_test, y_train, y_test = \

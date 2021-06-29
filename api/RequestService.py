@@ -2,6 +2,7 @@ import pandas as pd
 
 from api.dto.ClassificationDto import ClassificationDto
 from helper.clean_dataset.DataCleaning import DataCleaning
+from helper.helper_functions.functions import convert_sentence_to_vector_array_request
 from helper.retrieve.serializedModels import bag_of_words_over_sampling, \
     bag_of_words_logistic_regression_over_sampling, bag_of_words_svm_over_sampling, bag_of_words_nb_over_sampling, \
     bag_of_words_multi_layer_perceptron_classifier_over_sampling, bag_of_words_decision_tree_over_sampling, \
@@ -48,18 +49,20 @@ class RequestService:
 
         # Word2Vec
         word2vec_model = word2vec_over_sampling()  # Retrieve Model
-        from nltk import sent_tokenize, word_tokenize
-        import numpy as np
-        word_tokens = word_tokenize(cleaned_text)
-        np_vec = []
-        for word in word_tokens:
-            vec = word2vec_model.wv[str(word)]
-            np_vec.append(vec)
-        aa = np.average(np_vec, axis=0)
-        print(type((np_vec)))
-        print(type((aa)))
-        nn = np.array(np_vec)
-        print(type((nn)))
+        # from nltk import sent_tokenize, word_tokenize
+        # import numpy as np
+        # word_tokens = word_tokenize(cleaned_text)
+        # np_vec = []
+        # for word in word_tokens:
+        #     vec = word2vec_model.wv[str(word)]
+        #     np_vec.append(vec)
+        # aa = np.average(np_vec, axis=0)
+        # print(type((np_vec)))
+        # print(type((aa)))
+        # nn = np.array(np_vec)
+        # print(type((nn)))
+
+        np_vec = convert_sentence_to_vector_array_request(word2vec_model, cleaned_text)
 
         word2vec_logistic_regression_model = word2vec_logistic_regression_over_sampling()  # Retrieve Model
         word2vec_logistic_regression_probabilities_results = word2vec_logistic_regression_model.predict_proba(np_vec)
@@ -69,7 +72,7 @@ class RequestService:
         word2vec_svm_results = word2vec_svm_model.predict(np_vec)
 
         # word2vec_nb_model = word2vec_nb_over_sampling()  # Retrieve Model
-        # word2vec_nb_results = word2vec_nb_model.predict(np_vec.toarray())
+        # word2vec_nb_results = word2vec_nb_model.predict(np_vec)
 
         word2vec_mlp_model = word2vec_multi_layer_perceptron_classifier_over_sampling()  # Retrieve Model
         word2vec_mlp_results = word2vec_mlp_model.predict(np_vec)

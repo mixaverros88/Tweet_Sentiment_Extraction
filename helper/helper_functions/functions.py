@@ -98,16 +98,27 @@ def convert_sentence_to_vector_array(word2vec_model, sentence):
     for word in word_tokens:
         vec = word2vec_model.wv[str(word)]
         np_vec.append(vec)
+    nn = np.array(np_vec)
+    return np.average(np_vec, axis=0)
+
+
+def convert_sentence_to_vector_array_request(word2vec_model, sentence):
+    word_tokens = word_tokenize(sentence)
+    np_vec = []
+    for word in word_tokens:
+        try:
+            vec = word2vec_model.wv[str(word)]
+        except:
+            print(str(word) + ' is not in vocabulary word2vec')
+        np_vec.append(vec)
     aa = np.average(np_vec, axis=0)
     nn = np.array(np_vec)
-    return aa
+    return np_vec
 
 
-def convert_data_frame_sentece_to_vector_array(word2vec_model, data_frame):
+def convert_data_frame_sentence_to_vector_array(word2vec_model, data_frame):
     x = data_frame['text'].apply(lambda sentence: convert_sentence_to_vector_array(word2vec_model, sentence))
-    # x = list(map(lambda sentence: convert_sentence_to_vector_array(word2vec_model, sentence), corpus))
     x = x.to_numpy()
-    # x = np.asarray(x, dtype=np.float32)
     x = x.reshape(-1, 1)
     x = np.concatenate(np.concatenate(x, axis=0), axis=0).reshape(-1, 100)
     return x
