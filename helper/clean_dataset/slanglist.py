@@ -89,6 +89,19 @@ slang_list = {
     "all4web": "all for web",
     "amp": "ampere",
     "inc": "incorporated",
+    "vip": "very important person",
+    "yay": "yes",
+    "gng": "good night goon",
+    "dnt": "do not",
+    "ne": "Any",
+    "cld": "could",
+    "ff": "fist fucking",
+    "gfs": "girlfriends",
+    "win7": "windows 7",
+    "fy": "fuck you",
+    "ng": "no good",
+    # uh ??
+    # oh ??
     # gotto ??
     # HOORAYY ??
     # waaaa ??

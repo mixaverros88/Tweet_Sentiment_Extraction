@@ -1,4 +1,5 @@
 import { Classification } from '../common/models/classification';
+import { RandomTweet } from '../common/models/randomTweet';
 import { Component, Injectable  } from '@angular/core';
 import { HttpClient} from '@angular/common/http';
 import {ConstantsService} from '../common/services/constants.service';
@@ -14,6 +15,7 @@ export class ClassificationComponent {
   URL_PATH: string;
   jsonUrl: any;
   classification: Classification;
+  randomTweet: RandomTweet;
 
   constructor (
     private httpClient: HttpClient,
@@ -28,7 +30,7 @@ export class ClassificationComponent {
 
   postText(text: string): void {
   this.classification = null
-    this.httpClient.post(this.URL_PATH,
+    this.httpClient.post(this.URL_PATH + 'api',
     {
       text: text,
     })
@@ -39,6 +41,17 @@ export class ClassificationComponent {
       }
     );
   }
+
+  getProducts() {
+      this.httpClient.get(this.URL_PATH + 'getRandomTweet')
+      .subscribe(
+        (response: any) => {
+          console.log(response);
+          this.randomTweet = response;
+        }
+      );
+  }
+
 
   getSentiment(value: string): string{
     if(value){

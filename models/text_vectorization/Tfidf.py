@@ -13,6 +13,7 @@ class Tfidf:
         vectors = model.fit_transform(self.corpus)
         pickle.dump(model, open('serializedModels/' + self.model_name + '.sav', 'wb'))
         print('TfidfVectorizer get_feature_names(): ', model.get_feature_names())
+        print('TfidfVectorizer len get_feature_names(): ', len(model.get_feature_names()))
         print('Tfidf Vocabulary Size: ', len(model.vocabulary_))
         print('Tfidf Vocabulary: ', model.vocabulary_)
         print(model)

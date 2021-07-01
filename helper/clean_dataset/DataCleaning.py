@@ -243,7 +243,10 @@ class DataCleaning:
         print([(X.text, X.label_) for X in doc.ents])
         for idx, X in enumerate(doc.ents):
             # REMOVE organizations
-            if X.label_ == 'ORG' or X.label_ == 'PERSON' or X.label_ == 'GPE' or X.label_ == 'TIME':
+            if X.label_ == 'ORG' or \
+                    X.label_ == 'PERSON' or \
+                    X.label_ == 'GPE' or \
+                    X.label_ == 'TIME':
                 self.text = self.text.replace(X.text, '')
         print(self.text)
         return self.text

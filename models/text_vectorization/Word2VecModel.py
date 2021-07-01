@@ -19,7 +19,7 @@ class Word2VecModel:
         model = Word2Vec(sentences=self.corpus, window=5, min_count=1, workers=4)
         print(model)
         print('Word2Vec Vocabulary : ', model.wv.syn0)
-        print('Word2Vec Vocabulary : ', len(model.wv.syn0))
+        print('Word2Vec Vocabulary len : ', len(model.wv.syn0))
         pickle.dump(model, open('serializedModels/' + self.model_name + '.sav', 'wb'))
         # print('Word2Vec Vocabulary : ', model.wv.vocab)
         # print('Word2Vec Vocabulary Size: ', len(model.wv.vocab))

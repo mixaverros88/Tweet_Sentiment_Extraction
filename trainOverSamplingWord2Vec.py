@@ -54,8 +54,14 @@ X_train, X_test, y_train, y_test = \
     train_test_split(X, target_values, test_size=test_size, random_state=random_state, stratify=target_values)
 
 # Logistic Regression
-logistic_regression_model = LogisticRegressionModel(X_train, X_test, y_train, y_test,
-                                                    config.get('MODELS', 'oversampling.word2vec.lg'))
+logistic_regression_params = {'C': 1.0, 'penalty': 'l2', 'max_iter': 1000}
+logistic_regression_model = LogisticRegressionModel(
+    X_train,
+    X_test,
+    y_train,
+    y_test,
+    config.get('MODELS', 'oversampling.word2vec.lg'),
+    logistic_regression_params)
 logistic_regression_model = logistic_regression_model.results()
 
 ComposeMetrics(
@@ -67,7 +73,15 @@ ComposeMetrics(
     word_embedding)
 
 # Support Vector Machine
-svm_model = SvmModel(X_train, X_test, y_train, y_test, config.get('MODELS', 'oversampling.word2vec.svm'))
+svm_params = {'kernel': 'linear'}
+svm_model = SvmModel(
+    X_train,
+    X_test,
+    y_train,
+    y_test,
+    config.get('MODELS', 'oversampling.word2vec.svm'),
+    svm_params)
+
 svm_y_predict = svm_model.results()
 
 ComposeMetrics(
@@ -79,15 +93,25 @@ ComposeMetrics(
     word_embedding)
 
 # Gaussian Naive Bayes
-# nb_model = GaussianNBModel(X_train, X_test, y_train, y_test, config.get('MODELS', 'oversampling.word2vec.gaussian'), 'sss')
+# nb_params = {'alpha': 1.5}
+# nb_model = GaussianNBModel(X_train, X_test, y_train, y_test, config.get('MODELS', 'oversampling.word2vec.gaussian'), 'sss', nb_params)
 # nb_y_predict = nb_model.results()
 #
 # ComposeMetrics(nb_y_predict.score, y_test, nb_y_predict.prediction, config.get('MODELNAME', 'model.nb'), data_set,
 #                word_embedding)
 
 # MLP Classifier
-neural_network = MLPClassifierModel(X_train, X_test, y_train, y_test, config.get('MODELS', 'oversampling.word2vec.mlp'),
-                                    'sss')
+neural_network_params = {'activation': 'tanh', 'alpha': 0.05, 'hidden_layer_sizes': (5, 5, 5),
+                         'learning_rate': 'adaptive', 'max_iter': 1000}
+neural_network = MLPClassifierModel(
+    X_train,
+    X_test,
+    y_train,
+    y_test,
+    config.get('MODELS', 'oversampling.word2vec.mlp'),
+    'sss',
+    neural_network_params)
+
 neural_network_predict = neural_network.results()
 
 ComposeMetrics(
@@ -99,7 +123,15 @@ ComposeMetrics(
     word_embedding)
 
 # Decision Tree
-decision_tree = DecisionTreeModel(X_train, X_test, y_train, y_test, config.get('MODELS', 'oversampling.word2vec.dt'))
+decision_tree_params = {'max_depth': 5, 'max_leaf_nodes': 18, 'min_samples_split': 3}
+decision_tree = DecisionTreeModel(
+    X_train,
+    X_test,
+    y_train,
+    y_test,
+    config.get('MODELS', 'oversampling.word2vec.dt'),
+    decision_tree_params)
+
 decision_tree_predict = decision_tree.results()
 
 ComposeMetrics(
@@ -111,8 +143,15 @@ ComposeMetrics(
     word_embedding)
 
 # K Neighbors
-k_neighbors_model = KNeighborsModel(X_train, X_test, y_train, y_test,
-                                    config.get('MODELS', 'oversampling.word2vec.k_neighbors'))
+k_neighbors_params = {'metric': 'euclidean', 'weights': 'distance'}
+k_neighbors_model = KNeighborsModel(
+    X_train,
+    X_test,
+    y_train,
+    y_test,
+    config.get('MODELS', 'oversampling.word2vec.k_neighbors'),
+    k_neighbors_params)
+
 k_neighbors_model_predict = k_neighbors_model.results()
 
 ComposeMetrics(
@@ -122,7 +161,6 @@ ComposeMetrics(
     config.get('MODELNAME', 'model.kn'),
     data_set,
     word_embedding)
-
 
 # import numpy as np
 # import pandas as pd
@@ -161,4 +199,3 @@ ComposeMetrics(
 # clf.fit(X_train, y_train)
 # y_pred = clf.predict(X_test)
 # print(classification_report(y_test, y_pred))
-

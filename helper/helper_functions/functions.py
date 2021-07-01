@@ -122,3 +122,20 @@ def convert_data_frame_sentence_to_vector_array(word2vec_model, data_frame):
     x = x.reshape(-1, 1)
     x = np.concatenate(np.concatenate(x, axis=0), axis=0).reshape(-1, 100)
     return x
+
+
+def count_words_per_sentence(sentence):
+    sentence = str(sentence)
+    return len(sentence.split())
+
+
+def count_the_most_common_words_in_data_set(data_set, column, counter):
+    # get most common words in given dataset
+    all_words = []
+    for line in list(data_set[column]):
+        line = str(line)
+        words = line.split()
+        for word in words:
+            all_words.append(word.lower())
+
+    return Counter(all_words).most_common(counter)
