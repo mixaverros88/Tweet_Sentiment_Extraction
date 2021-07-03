@@ -1,9 +1,15 @@
 from sklearn import svm
 import pickle
 import collections
+from helper.retrieve.serializedModels import bag_of_words_svm_over_sampling
 from sklearn.model_selection import GridSearchCV
 from helper.helper_functions.functions import get_models_best_parameters
 import numpy as np
+
+
+def run_on_test_data_set(x, y):
+    model = bag_of_words_svm_over_sampling()  # Retrieve Model
+    return model.predict(x)
 
 
 class SvmModel:

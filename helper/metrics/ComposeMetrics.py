@@ -42,11 +42,11 @@ class ComposeMetrics:
         print(classification_report(self.y_test, self.y_predict))
 
     def print_metrics(self):
-        print(self.model_name + ' Accuracy: ', round(accuracy_score(self.y_test, self.y_pred), 2), '%')
-        print(self.model_name + ' Recall: ', round(recall_score(self.y_test, self.y_pred), 2), '%')
-        print(self.model_name + ' Precision: ', round(precision_score(self.y_test, self.y_pred), 2), '%')
-        print(self.model_name + ' F-measure: ', round(f1_score(self.y_test, self.y_pred), 2), '%')
-        print(self.model_name + ' Confusion Matrix: \n', confusion_matrix(self.y_test, self.y_pred))
+        print(self.model_name + ' Accuracy: ', round(accuracy_score(self.y_test, self.y_predict), 2), '%')
+        print(self.model_name + ' Recall: ', round(recall_score(self.y_test, self.y_predict), 2), '%')
+        print(self.model_name + ' Precision: ', round(precision_score(self.y_test, self.y_predict), 2), '%')
+        print(self.model_name + ' F-measure: ', round(f1_score(self.y_test, self.y_predict), 2), '%')
+        print(self.model_name + ' Confusion Matrix: \n', confusion_matrix(self.y_test, self.y_predict))
 
     def plot_confusion_matrix(self):
         confusion_matrix_array = confusion_matrix(self.y_test, self.y_predict)

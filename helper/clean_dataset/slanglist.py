@@ -17,6 +17,7 @@ slang_list = {
     "cu": "see you",
     "cul8r": "see you later",
     "cya": "see you",
+    "ya": "you",
     "faq": "frequently asked questions",
     "fc": "fingers crossed",
     "fwiw": "for what it's worth",
@@ -100,6 +101,8 @@ slang_list = {
     "win7": "windows 7",
     "fy": "fuck you",
     "ng": "no good",
+    "itll": "it shall",
+    "b/c": "because",
     # uh ??
     # oh ??
     # gotto ??

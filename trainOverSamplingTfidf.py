@@ -1,6 +1,7 @@
 from helper.retrieve import dataset as read_dataset
 from helper.helper_functions.functions import get_column_values_as_np_array, tokenize_sentence, \
-    count_word_occurrences, remove_words_from_corpus
+    count_word_occurrences, remove_words_from_corpus, count_the_most_common_words_in_data_set, \
+    count_the_most_common_words_in_data_set_convert
 from models.text_vectorization.Tfidf import Tfidf
 from helper.metrics.ComposeMetrics import ComposeMetrics
 from models.machine_learning.LogisticRegressionModel import LogisticRegressionModel
@@ -20,27 +21,29 @@ target_column = config.get('STR', 'target.column')
 test_size = float(config.get('PROJECT', 'test.size'))
 random_state = int(config.get('PROJECT', 'random.state'))
 remove_words_by_occur_size = int(config.get('PROJECT', 'remove.words.occur.size'))
+remove_most_common_word_size = int(config.get('PROJECT', 'remove.most.common.word'))
 
 # Retrieve Data Frames
 train_data_frame_over_sampling = read_dataset.read_cleaned_train_data_set_over_sampling()
-test_data_frame = read_dataset.read_cleaned_test_data_set()
 
-# TODO: check why nulls rows
 # Remove Null rows
 train_data_frame_over_sampling.dropna(inplace=True)
-test_data_frame.dropna(inplace=True)
 
 # Get Target Values as Numpy Array
 target_values = get_column_values_as_np_array(target_column, train_data_frame_over_sampling)
 
-# List of words tha occurs 3 or less times
-word_list = count_word_occurrences(train_data_frame_over_sampling, remove_words_by_occur_size)
+# List of words that occurs 3 or less times
+list_of_words_tha_occurs_3_or_less_times = count_word_occurrences(train_data_frame_over_sampling, remove_words_by_occur_size)
+
+# List of top 15 most common word
+most_common_words = count_the_most_common_words_in_data_set(train_data_frame_over_sampling, 'text', remove_most_common_word_size)
+most_common_words = count_the_most_common_words_in_data_set_convert(most_common_words)
 
 # Tokenize data frame
 corpus = tokenize_sentence(train_data_frame_over_sampling)
 
 # Remove from corpus the given list of words
-corpus = remove_words_from_corpus(corpus, word_list)
+corpus = remove_words_from_corpus(corpus, list_of_words_tha_occurs_3_or_less_times + most_common_words)
 
 # Vectorized - TF-IDF
 tfidf_of_words_over_sampling = Tfidf(corpus, config.get('MODELS', 'oversampling.Tfidf.tfidf'))

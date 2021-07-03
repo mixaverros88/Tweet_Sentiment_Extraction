@@ -1,7 +1,8 @@
 from helper.retrieve import dataset as read_dataset
 from helper.helper_functions.functions import get_column_values_as_np_array, tokenize_sentence, \
     tokenizing_sentences_and_words_data_frame, \
-    count_word_occurrences, remove_words_from_corpus, convert_data_frame_sentence_to_vector_array
+    count_word_occurrences, remove_words_from_corpus, convert_data_frame_sentence_to_vector_array, \
+    count_the_most_common_words_in_data_set, count_the_most_common_words_in_data_set_convert
 from models.text_vectorization.Word2VecModel import Word2VecModel
 from helper.metrics.ComposeMetrics import ComposeMetrics
 from models.machine_learning.LogisticRegressionModel import LogisticRegressionModel
@@ -20,27 +21,30 @@ target_column = config.get('STR', 'target.column')
 test_size = float(config.get('PROJECT', 'test.size'))
 random_state = int(config.get('PROJECT', 'random.state'))
 remove_words_by_occur_size = int(config.get('PROJECT', 'remove.words.occur.size'))
+remove_most_common_word_size = int(config.get('PROJECT', 'remove.most.common.word'))
 
 # Retrieve Data Frames
 train_data_frame_under_sampling = read_dataset.read_cleaned_train_data_set_under_sampling()
-test_data_frame = read_dataset.read_cleaned_test_data_set()
 
-# TODO: check why nulls rows
 # Remove Null rows
 train_data_frame_under_sampling.dropna(inplace=True)
-test_data_frame.dropna(inplace=True)
 
 # Get Target Values as Numpy Array
 target_values = get_column_values_as_np_array(target_column, train_data_frame_under_sampling)
 
-# List of words tha occurs 3 or less times
-word_list = count_word_occurrences(train_data_frame_under_sampling, remove_words_by_occur_size)
+# List of words that occurs 3 or less times
+list_of_words_tha_occurs_3_or_less_times = count_word_occurrences(train_data_frame_under_sampling,
+                                                                  remove_words_by_occur_size)
+
+# List of top 15 most common word
+most_common_words = count_the_most_common_words_in_data_set(train_data_frame_under_sampling, 'text', remove_most_common_word_size)
+most_common_words = count_the_most_common_words_in_data_set_convert(most_common_words)
 
 # Tokenize data frame
 corpus = tokenize_sentence(train_data_frame_under_sampling)
 
 # Remove from corpus the given list of words
-corpus = remove_words_from_corpus(corpus, word_list)
+corpus = remove_words_from_corpus(corpus, list_of_words_tha_occurs_3_or_less_times + most_common_words)
 
 # Vectorized - Word2Vec
 tokenized_sentences = tokenizing_sentences_and_words_data_frame(train_data_frame_under_sampling)
@@ -92,7 +96,8 @@ ComposeMetrics(
 # MLP Classifier
 neural_network_params = {'activation': 'tanh', 'alpha': 0.05, 'hidden_layer_sizes': (5, 5, 5),
                          'learning_rate': 'adaptive', 'max_iter': 1000}
-neural_network = MLPClassifierModel(X_train, X_test, y_train, y_test, config.get('MODELS', 'under_sampling.word2vec.mlp'),
+neural_network = MLPClassifierModel(X_train, X_test, y_train, y_test,
+                                    config.get('MODELS', 'under_sampling.word2vec.mlp'),
                                     'sss', neural_network_params)
 neural_network_predict = neural_network.results()
 
@@ -106,7 +111,8 @@ ComposeMetrics(
 
 # Decision Tree
 decision_tree_params = {'max_depth': 5, 'max_leaf_nodes': 18, 'min_samples_split': 3}
-decision_tree = DecisionTreeModel(X_train, X_test, y_train, y_test, config.get('MODELS', 'under_sampling.word2vec.dt'), decision_tree_params)
+decision_tree = DecisionTreeModel(X_train, X_test, y_train, y_test, config.get('MODELS', 'under_sampling.word2vec.dt'),
+                                  decision_tree_params)
 decision_tree_predict = decision_tree.results()
 
 ComposeMetrics(
@@ -130,7 +136,6 @@ ComposeMetrics(
     config.get('MODELNAME', 'model.kn'),
     data_set,
     word_embedding)
-
 
 # import numpy as np
 # import pandas as pd
@@ -169,4 +174,3 @@ ComposeMetrics(
 # clf.fit(X_train, y_train)
 # y_pred = clf.predict(X_test)
 # print(classification_report(y_test, y_pred))
-

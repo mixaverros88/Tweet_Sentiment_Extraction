@@ -28,5 +28,5 @@ def read_cleaned_train_data_set_over_sampling():
 
 def read_cleaned_test_data_set():
     return pd.read_csv(
-        os.path.abspath(os.curdir) + '\\datasets\\cleaned\\Test_Dataset_dataframe_cleaned.csv',
+        os.path.abspath(path.parent.absolute().parent) + '\\datasets\\cleaned\\Test_Dataset_dataframe_cleaned.csv',
         sep=',')

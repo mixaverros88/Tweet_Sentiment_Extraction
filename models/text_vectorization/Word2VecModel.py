@@ -1,5 +1,6 @@
 from gensim.models import Word2Vec
 import pickle
+from helper.retrieve.serializedModels import word2vec_over_sampling
 from nltk.tokenize import sent_tokenize, word_tokenize
 import warnings
 
@@ -10,9 +11,9 @@ import os
 
 class Word2VecModel:
 
-    def __init__(self, corpus, model_name):
+    def __init__(self, corpus, *model_name):
         self.corpus = corpus
-        self.model_name = model_name
+        self.model_name = str(model_name)
 
     def text_vectorization(self):
         print(len(self.corpus))
@@ -26,3 +27,13 @@ class Word2VecModel:
         # print(vectors)
         # return vectors
         return model
+
+    def text_vectorization_test_data_set(self):
+        model = word2vec_over_sampling()  # Retrieve Model
+        vectors = model.transform(self.corpus)
+        print(model)
+        print('TfidfVectorizer get_feature_names(): ', model.get_feature_names())
+        print('TfidfVectorizer len get_feature_names(): ', len(model.get_feature_names()))
+        print('Tfidf Vocabulary Size: ', len(model.vocabulary_))
+        print('Tfidf Vocabulary : ', model.vocabulary_)
+        return vectors

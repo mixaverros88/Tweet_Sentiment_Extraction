@@ -196,9 +196,10 @@ class DataCleaning:
         spells = [spell(w) for w in (word_tokenize(self.text))]
         return " ".join(spells)
 
+    # https://www.datacamp.com/community/tutorials/stemming-lemmatization-python
     def lemmatization(self):
         wordnet_lemmatizer = WordNetLemmatizer()
-        lemmatized_word = [wordnet_lemmatizer.lemmatize(word) for sent in sent_tokenize(self.text) for word in
+        lemmatized_word = [wordnet_lemmatizer.lemmatize(word, pos="v") for sent in sent_tokenize(self.text) for word in
                            word_tokenize(sent)]
         return " ".join(lemmatized_word)
 

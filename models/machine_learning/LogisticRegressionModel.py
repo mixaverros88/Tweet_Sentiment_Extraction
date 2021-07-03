@@ -6,6 +6,12 @@ from helper.helper_functions.functions import get_models_best_parameters
 from sklearn.model_selection import RepeatedStratifiedKFold
 from sklearn.model_selection import GridSearchCV
 from sklearn.linear_model import LogisticRegression
+from helper.retrieve.serializedModels import bag_of_words_logistic_regression_over_sampling
+
+
+def run_on_test_data_set(x, y):
+    model = bag_of_words_logistic_regression_over_sampling()  # Retrieve Model
+    return model.predict(x)
 
 
 class LogisticRegressionModel:
@@ -20,20 +26,13 @@ class LogisticRegressionModel:
 
     def results(self):
         print('Logistic Regression')
-        # Grid Search
-        # clf = LogisticRegression(solver='lbfgs', max_iter=10000)
-        # param_grid = {'C': [120, 121, 122, 123, 124, 125, 126, 127, 128 ], 'penalty': ['l1', 'l2']}
-        # model_gs = GridSearchCV(clf, param_grid=param_grid, cv=5, verbose=True, n_jobs=-1)
-        # model_gs.fit(self.X_train, self.y_train)
-        # get_models_best_parameters(model_gs, 'Logistic Regression')  # LogisticRegression(C=100)
-
         # https://machinelearningmastery.com/hyperparameters-for-classification-machine-learning-algorithms/
         # https://towardsdatascience.com/logistic-regression-model-tuning-with-scikit-learn-part-1-425142e01af5
         # define models and parameters
         # model = LogisticRegression()
         # solvers = ['newton-cg', 'lbfgs', 'liblinear']
         # penalty = ['l2']
-        # c_values = [0.1, 1, 2, 3, 10, 50, 120, 121, 122]
+        # c_values = [0.1, 1, 2, 3, 10, 50, 100, 120, 121, 122]
         # # define grid search
         # grid = dict(solver=solvers, penalty=penalty, C=c_values)
         # cv = RepeatedStratifiedKFold(n_splits=10, n_repeats=3, random_state=1)

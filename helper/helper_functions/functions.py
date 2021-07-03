@@ -1,7 +1,8 @@
 from nltk import sent_tokenize, word_tokenize
 from collections import Counter
 import numpy as np
-
+import re
+from nltk.tokenize.treebank import TreebankWordDetokenizer
 
 def tokenizing_sentences(data_frame):
     data_frame['tokenized_sents'] = data_frame.apply(lambda row: sent_tokenize(row['text']), axis=1)
@@ -16,6 +17,16 @@ def tokenizing_sentences_and_words_data_frame(data_frame):
             dd.append(word)
         words.append(dd)
     return words
+
+
+def convert_numpy_array_to_array_of_arrays(numpy_array):
+    return_array = []
+    for i in numpy_array:
+        dd = []
+        for word in word_tokenize(i):
+            dd.append(word)
+        return_array.append(dd)
+    return return_array
 
 
 def tokenizing_sentences_and_words_list(corpus):
@@ -74,8 +85,18 @@ def remove_words_from_corpus(corpus, list_word):
     """Gets a list of sentences (corpus) and removes words from the given list (list_word)"""
     sentences = []
     for sentence in corpus:
+        word_tokens = word_tokenize(sentence)
         for word in list_word:
-            sentence = sentence.replace(word, '')
+            if word in word_tokens:
+                #sentence = re.sub(r'\b' + word + '\\b', '', sentence)
+                word_tokens.remove(word)
+                # print(word)
+                # print(sentence)
+                # sentence = sentence.replace(word, '')
+            # print(sentence)
+        sentence = TreebankWordDetokenizer().detokenize(word_tokens)
+        #sentence = re.sub('\s+', ' ', sentence)  # Remove Double Spaces
+        # print(sentence)
         sentences.append(sentence)
     return sentences
 
@@ -139,3 +160,9 @@ def count_the_most_common_words_in_data_set(data_set, column, counter):
             all_words.append(word.lower())
 
     return Counter(all_words).most_common(counter)
+
+
+def count_the_most_common_words_in_data_set_convert(list):
+    res_list = [x[0] for x in list]
+    print(res_list)
+    return res_list

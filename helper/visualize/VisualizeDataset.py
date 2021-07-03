@@ -19,7 +19,7 @@ class VisualizeDataset:
         self.count_plot_target_class()
         self.check_for_null_values()
         self.data_frame_info()
-        self.count_plot_word_length()
+        self.word_count_distribution()
         self.count_plot_most_common_words_in_data_set()
 
     def count_plot_target_class(self):
@@ -51,7 +51,7 @@ class VisualizeDataset:
         print(self.data_frame.isna().sum())
 
     # https://towardsdatascience.com/the-real-world-as-seen-on-twitter-sentiment-analysis-part-one-5ac2d06b63fb
-    def count_plot_word_length(self):
+    def word_count_distribution(self):
         self.data_frame['word count'] = \
             self.data_frame.apply(lambda row: count_words_per_sentence(row['text']), axis=1)
         # plot word count distribution for both positive and negative sentiments
@@ -75,14 +75,14 @@ class VisualizeDataset:
             alpha=0.5,
             label=['positive', 'negative', 'neutral'])
         plt.legend(loc='upper right')
-        self.generated_image_name = sanitize_model_name(self.dataframe_name) + 'count_plot_word_length'
+        self.generated_image_name = sanitize_model_name(self.dataframe_name) + 'word_count_distribution'
         self.save_plot_as_image()
         plt.show()
         del self.data_frame['word count']
 
     # https://towardsdatascience.com/the-real-world-as-seen-on-twitter-sentiment-analysis-part-one-5ac2d06b63fb
     def count_plot_most_common_words_in_data_set(self):
-        list_of_most_common_words = count_the_most_common_words_in_data_set(self.data_frame, 'text', 20)
+        list_of_most_common_words = count_the_most_common_words_in_data_set(self.data_frame, 'text', 10)
         print(list_of_most_common_words)
         word = []
         frequency = []

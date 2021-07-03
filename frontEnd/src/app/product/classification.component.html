@@ -34,6 +34,12 @@
     border-radius: 4px;
 }
 
+.text_span{
+    padding: 3px;
+    color: white;
+    border-radius: 4px;
+}
+
 </style>
 
 
@@ -44,10 +50,10 @@
         <div class="col-sm-12" style="
     margin-bottom: 5px;
 ">
-          <span class="text_span_blue">Tweet</span> {{randomTweet?.tweet}}
+          <span class="text_span_blue">Tweet</span> &nbsp; <span class="text_span" [ngClass]="randomTweet?.sentiment">{{randomTweet?.tweet}}</span>
         </div>
         <div class="col-sm-12" >
-          <span class="text_span_blue">Sentiment</span> {{randomTweet?.sentiment}}
+          <span class="text_span_blue" >Sentiment</span>  &nbsp; <span class="text_span" [ngClass]="randomTweet?.sentiment">{{randomTweet?.sentiment}}</span>
         </div>
       </div>
     <div class="col-sm-6" style="border-right: 3px solid #dbdbdb;">

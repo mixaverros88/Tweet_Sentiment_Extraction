@@ -121,7 +121,9 @@ contractions_list = {
     "youre": "you are",
     "ur": "you're",
     "you've": "you have",
+    "that`ll": "that will",
 
+    "that`ll": "that will",  # / are not
     "ain`t": "am not",  # / are not
     "aint": "am not",  # / are not
     "aint`": "am not",  # / are not
