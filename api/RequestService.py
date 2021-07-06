@@ -1,8 +1,7 @@
-import pandas as pd
-
 from api.dto.ClassificationDto import ClassificationDto
 from helper.clean_dataset.DataCleaning import DataCleaning
-from helper.helper_functions.functions import convert_sentence_to_vector_array_request
+from helper.helper_functions.functions import convert_sentence_to_vector_array_request, \
+    convert_text_to_data_frame_of_one_row
 from helper.retrieve.serializedModels import bag_of_words_over_sampling, \
     bag_of_words_logistic_regression_over_sampling, bag_of_words_svm_over_sampling, bag_of_words_nb_over_sampling, \
     bag_of_words_multi_layer_perceptron_classifier_over_sampling, bag_of_words_decision_tree_over_sampling, \
@@ -19,14 +18,14 @@ class RequestService:
 
     def classify_text(self):
         # convert text to data frame with one row since the initial implementation of DataCleaning accepts dataframe
-        request_text = {'text': [self.requested_text]}
-        data_frame = pd.DataFrame(request_text)
+        data_frame = convert_text_to_data_frame_of_one_row(self.requested_text)
         data_cleaning = DataCleaning(data_frame)
         cleaned_data_frame = data_cleaning.data_pre_processing()
         cleaned_text = cleaned_data_frame.iloc[0]['text']
+        data_pre_processing_steps = data_cleaning.get_data_pre_processing_steps()
         print('Cleaned Request: ', cleaned_text)
 
-        # BOW
+        # Bag of Words
         bag_of_words_model = bag_of_words_over_sampling()  # Retrieve Model
         bag_of_words_vectors = bag_of_words_model.transform([cleaned_text])
 
@@ -49,19 +48,6 @@ class RequestService:
 
         # Word2Vec
         word2vec_model = word2vec_over_sampling()  # Retrieve Model
-        # from nltk import sent_tokenize, word_tokenize
-        # import numpy as np
-        # word_tokens = word_tokenize(cleaned_text)
-        # np_vec = []
-        # for word in word_tokens:
-        #     vec = word2vec_model.wv[str(word)]
-        #     np_vec.append(vec)
-        # aa = np.average(np_vec, axis=0)
-        # print(type((np_vec)))
-        # print(type((aa)))
-        # nn = np.array(np_vec)
-        # print(type((nn)))
-
         np_vec = convert_sentence_to_vector_array_request(word2vec_model, cleaned_text)
 
         word2vec_logistic_regression_model = word2vec_logistic_regression_over_sampling()  # Retrieve Model
@@ -119,5 +105,6 @@ class RequestService:
             word2vec_logistic_regression_probabilities_results,
             word2vec_svm_results,
             word2vec_mlp_results,
-            word2vec_decision_tree_results
+            word2vec_decision_tree_results,
+            data_pre_processing_steps
         )

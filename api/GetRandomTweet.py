@@ -5,8 +5,7 @@ from api.dto.Tweet import Tweet
 class GetRandomTweet:
 
     def get_tweet(self):
-        random_row = read_dataset.read_test_data_set().sample()
-        for index, row in random_row.iterrows():
-            tweet = row['text']
-            sentiment = row['sentiment']
+        random_tweet = read_dataset.read_test_data_set().sample()
+        tweet = random_tweet.iloc[0]['text']
+        sentiment = random_tweet.iloc[0]['sentiment']
         return Tweet(tweet, sentiment)

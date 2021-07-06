@@ -1,10 +1,4 @@
-def map_sentiment(sentiment):
-    if sentiment == 0:
-        return 'Negative'
-    if sentiment == 1:
-        return 'Neutral'
-    if sentiment == 2:
-        return 'Positive'
+from helper.helper_functions.functions import map_sentiment
 
 
 class ClassificationDto:
@@ -15,7 +9,7 @@ class ClassificationDto:
                  tfidf_logistic_regression_probabilities_results, tfidf_logistic_regression_results, tfidf_svm_results,
                  tfidf_nb_results, tfidf_mlp_results, tfidf_decision_tree_results,
                  word2vec_logistic_regression_model_results, word2vec_logistic_regression_probabilities_results,
-                 word2vec_svm_results, word2vec_mlp_results, word2vec_decision_tree_results):
+                 word2vec_svm_results, word2vec_mlp_results, word2vec_decision_tree_results, data_pre_processing_steps):
         self.bag_of_words_cleaned_sample_data_frame = bag_of_words_cleaned_sample_data_frame
         self.bag_of_words_logistic_regression_probabilities_results = \
             bag_of_words_logistic_regression_probabilities_results
@@ -35,6 +29,7 @@ class ClassificationDto:
         self.word2vec_svm_results = word2vec_svm_results
         self.word2vec_mlp_results = word2vec_mlp_results
         self.word2vec_decision_tree_results = word2vec_decision_tree_results
+        self.data_pre_processing_steps = data_pre_processing_steps
 
     def get_response(self):
         text = self.bag_of_words_cleaned_sample_data_frame.iloc[0]['text']
@@ -44,6 +39,7 @@ class ClassificationDto:
 
         return {
             'text': str(text),
+            'data_pre_processing_steps': self.data_pre_processing_steps,
             'bag_of_words': {
                 'logistic_regression_probabilities': {
                     'negative': str(bag_of_words_lg[0]),

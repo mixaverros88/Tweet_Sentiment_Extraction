@@ -103,6 +103,9 @@ slang_list = {
     "ng": "no good",
     "itll": "it shall",
     "b/c": "because",
+    "yep": "yes",
+    "wsop": "world series of poker",
+    # ugh ??
     # uh ??
     # oh ??
     # gotto ??

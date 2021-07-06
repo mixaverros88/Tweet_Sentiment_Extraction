@@ -1,19 +1,19 @@
-import unicodedata
+from nltk.tokenize.treebank import TreebankWordDetokenizer
 from helper.clean_dataset.contractionList import contractions_list
 from helper.clean_dataset.slanglist import slang_list
 from nltk.tokenize import word_tokenize
 from nltk.tokenize import sent_tokenize
 from nltk.stem import WordNetLemmatizer
+from num2words import num2words
 from autocorrect import Speller
+from wordsegment import load, segment
+from pathlib import Path
+import unicodedata
 import pandas as pd
 import re
 import os
-from pathlib import Path
-from num2words import num2words
-from nltk.tokenize.treebank import TreebankWordDetokenizer
 import nltk
 import en_core_web_lg
-from wordsegment import load, segment
 
 nlp = en_core_web_lg.load()
 
@@ -23,7 +23,7 @@ nltk.download('words')
 
 
 class DataCleaning:
-    # class attributes
+    data_pre_processing_steps = {}
     initial_data_frame = ''
     text = ''
 
@@ -39,8 +39,8 @@ class DataCleaning:
             self.remove_column_from_data_frame()
         self.sanitize_data_frame()
         if self.dataframe_name is not None:  # If the request is from API
-            self.create_new_csv()
-            self.compare_dataframes()
+            self.create_new_csv_with_cleaned_text()
+            self.create_new_csv_for_comparison()
         return self.data_frame
 
     def drop_row_if_has_null_column(self):
@@ -51,52 +51,76 @@ class DataCleaning:
         """Remove a column from give data frame """
         self.data_frame.drop(self.column_name, axis=1, inplace=True)
 
+    def get_data_pre_processing_steps(self):
+        return self.data_pre_processing_steps
+
     def sanitize_data_frame(self):
         """For every row of the data frame proceed with the following steps"""
         for index, row in self.data_frame.iterrows():
             self.text = row['text']
             print('#### START: ' + str(index) + ' ####')
             print('1. Initial Text: ' + self.text)
+            self.data_pre_processing_steps.update({'Step_01': self.text})
             self.text = self.name_entity_recognition()
-            print('2. name_entity_recognition: ' + self.text)
+            print('2. Name Entity Recognition: ' + self.text)
+            self.data_pre_processing_steps.update({'Step_02': self.text})
             self.text = self.expand_contractions()
-            print('3. expand_contractions: ' + self.text)
+            print('3. Expand Contractions: ' + self.text)
+            self.data_pre_processing_steps.update({'Step_03': self.text})
             self.text = self.remove_am_pm_dates()
-            print('4. remove_am_pm_dates: ' + self.text)
+            print('4. Remove am pm dates: ' + self.text)
+            self.data_pre_processing_steps.update({'Step_04': self.text})
             self.text = self.remove_emojis()
-            print('5. remove_emojis: ' + self.text)
+            print('5. Remove Emojis: ' + self.text)
+            self.data_pre_processing_steps.update({'Step_05': self.text})
             self.text = self.covert_text_to_lower_case()
-            print('6. covert_text_to_lower_case: ' + self.text)
+            print('6. Covert Text To Lower Case: ' + self.text)
+            self.data_pre_processing_steps.update({'Step_06': self.text})
             self.text = self.replace_slang_word()
-            print('7. replace_slang_word: ' + self.text)
+            print('7. Replace Slang Word: ' + self.text)
+            self.data_pre_processing_steps.update({'Step_07': self.text})
             self.text = self.remove_urls()
-            print('8. remove_urls: ' + self.text)
+            print('8. Remove Urls: ' + self.text)
+            self.data_pre_processing_steps.update({'Step_08': self.text})
             self.text = self.remove_html_tags()
-            print('9. remove_html_tags: ' + self.text)
+            print('9. Remove Html Tags: ' + self.text)
+            self.data_pre_processing_steps.update({'Step_09': self.text})
             self.text = self.remove_hash_tags()
-            print('10. remove_hash_tags: ' + self.text)
+            print('10. Remove Hash Tags: ' + self.text)
+            self.data_pre_processing_steps.update({'Step_10': self.text})
             self.text = self.convert_accented_characters_to_ASCII_characters()
-            print('11. remove_accented_chars: ' + self.text)
+            print('11. Remove Accented Chars: ' + self.text)
+            self.data_pre_processing_steps.update({'Step_11': self.text})
             self.text = self.remove_punctuations_special_characters()
-            print('12. remove_punctuations_special_characters: ' + self.text)
+            print('12. Remove Punctuations Special Characters: ' + self.text)
+            self.data_pre_processing_steps.update({'Step_12': self.text})
             self.text = self.remove_consequently_char()
-            print('13. remove_consequently_char: ' + self.text)
+            print('13. Remove Consequently Char: ' + self.text)
+            self.data_pre_processing_steps.update({'Step_13': self.text})
             self.text = self.replace_slang_word()
-            print('14. replace_slang_word: ' + self.text)
+            print('14. Replace Slang Word: ' + self.text)
+            self.data_pre_processing_steps.update({'Step_14': self.text})
             self.text = self.trim_text()
-            print('15. trim_text: ' + self.text)
+            print('15. Trim Text: ' + self.text)
+            self.data_pre_processing_steps.update({'Step_15': self.text})
             self.text = self.remove_double_spaces()
-            print('16. remove_double_spaces: ' + self.text)
-            # self.text = self.word_segment()
-            # print('27. word_segment: ' + self.text)
+            print('16. Remove Double Spaces: ' + self.text)
+            self.data_pre_processing_steps.update({'Step_16': self.text})
+            self.text = self.word_segment()
+            print('17. Word Segment: ' + self.text)
+            self.data_pre_processing_steps.update({'Step_17': self.text})
             self.text = self.auto_spelling()
-            print('18. auto_spelling: ' + self.text)
+            print('18. Auto Spelling: ' + self.text)
+            self.data_pre_processing_steps.update({'Step_18': self.text})
             self.text = self.lemmatization()
-            print('19. lemmatization: ' + self.text)
-            self.text = self.convert_num_to_word()
-            print('20. convert_num_to_word: ' + self.text)
+            print('19. Lemmatization: ' + self.text)
+            self.data_pre_processing_steps.update({'Step_19': self.text})
+            self.text = self.convert_number_to_word()
+            print('20. Convert Num To Word: ' + self.text)
+            self.data_pre_processing_steps.update({'Step_20': self.text})
             self.text = self.convert_to_nominal()
-            print('21. convert_to_nominal: ' + self.text)
+            print('21. Convert To Nominal: ' + self.text)
+            self.data_pre_processing_steps.update({'Step_21': self.text})
             print('#### STOP: ' + str(index) + ' #### \n')
             self.data_frame.loc[index, 'text'] = self.text
 
@@ -139,15 +163,16 @@ class DataCleaning:
     def convert_accented_characters_to_ASCII_characters(self):
         return unicodedata.normalize('NFKD', self.text).encode('ascii', 'ignore').decode('utf-8', 'ignore')
 
-    def create_new_csv(self):
-        """ Summarize the raw tweet with the cleaned tweet in one csv in order to analyze the results"""
+    def create_new_csv_with_cleaned_text(self):
+        """Create a new csv with cleaned text for fitting the models"""
         merge_dataframes = pd.concat([self.data_frame['text'], self.data_frame['sentiment']], axis=1,
                                      keys=['text', 'sentiment'])
         merge_dataframes.to_csv(os.path.abspath(
             path.parent.absolute().parent) + '\\datasets\\cleaned\\' + self.dataframe_name + "_dataframe_cleaned.csv",
                                 sep=',', index=False, header=True)
 
-    def compare_dataframes(self):
+    def create_new_csv_for_comparison(self):
+        """ Summarize the raw tweet with the cleaned tweet in one csv in order to analyze the results"""
         merge_dataframes = pd.concat([self.initial_data_frame['text'], self.data_frame['text']], axis=1,
                                      keys=['Initial Text', 'Cleaned Text'])
         merge_dataframes.to_csv(os.path.abspath(
@@ -155,8 +180,8 @@ class DataCleaning:
                                 sep=',', encoding='utf-8', index=False)
 
     def remove_emojis(self):
-        """ remove emoji e.g. 👋 """
-        regrex_pattern = \
+        """ Remove Emoji e.g. 👋 """
+        regex_pattern = \
             re.compile("["
                        u"\U0001F600-\U0001F64F"  # emoticons
                        u"\U0001F300-\U0001F5FF"  # symbols & pictographs
@@ -174,37 +199,42 @@ class DataCleaning:
                        u"\u200d"
                        u"\u2640-\u2642"
                        "]+", flags=re.UNICODE)
-        return regrex_pattern.sub(r'', self.text)
+        return regex_pattern.sub(r'', self.text)
 
     def expand_contractions(self):
+        """Expand contractions e.g. ain't -> am not"""
         for word in self.text.split():
             if word.lower() in contractions_list:
                 self.text = self.text.replace(word, contractions_list[word.lower()])
         return self.text
 
     def remove_consequently_char(self):
+        """Remove Consequently Char e.g. ggggooooooddd -> good"""
         return re.sub(r'(.)\1+', r'\1\1', self.text)
 
     def replace_slang_word(self):
+        """Replace Slang Word e.g. afaik -> as far as i know"""
         for word in self.text.split():
             if word.lower() in slang_list:
                 self.text = self.text.replace(word, slang_list[word.lower()])
         return self.text
 
     def auto_spelling(self):
+        """Replace mis spelling words e.g. godi -> god"""
         spell = Speller(lang='en')
         spells = [spell(w) for w in (word_tokenize(self.text))]
         return " ".join(spells)
 
     # https://www.datacamp.com/community/tutorials/stemming-lemmatization-python
     def lemmatization(self):
+        """Get the lemma for every word e.g. running -> run"""
         wordnet_lemmatizer = WordNetLemmatizer()
         lemmatized_word = [wordnet_lemmatizer.lemmatize(word, pos="v") for sent in sent_tokenize(self.text) for word in
                            word_tokenize(sent)]
         return " ".join(lemmatized_word)
 
-    def convert_num_to_word(self):
-        """e.g 1 to one"""
+    def convert_number_to_word(self):
+        """Convert number to word e.g 12 to twelve"""
         tokens = nltk.word_tokenize(self.text)
         tokens = nltk.pos_tag(tokens)
         text = []

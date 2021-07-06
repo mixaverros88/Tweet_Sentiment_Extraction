@@ -5,9 +5,10 @@ from helper.retrieve.serializedModels import bag_of_words_over_sampling
 
 class BoW:
 
-    def __init__(self, corpus, *model_name):
+    def __init__(self, corpus, model_name=None):
         self.corpus = corpus
-        self.model_name = str(model_name)
+        if model_name is not None:
+            self.model_name = str(model_name)
 
     def text_vectorization(self):
         model = CountVectorizer()

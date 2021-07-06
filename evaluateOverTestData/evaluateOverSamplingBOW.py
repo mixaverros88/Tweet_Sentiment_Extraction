@@ -1,12 +1,13 @@
 from helper.retrieve import dataset as read_dataset
-from helper.helper_functions.functions import tokenize_sentence
 from models.text_vectorization.BoW import BoW
 from models.machine_learning import LogisticRegressionModel
 from models.machine_learning import SvmModel
 from models.machine_learning import GaussianNBModel
 from models.machine_learning import DecisionTreeModel
 from models.neural import MLPClassifierModel
-
+from helper.helper_functions.functions import tokenize_sentence, \
+    count_word_occurrences, remove_words_from_corpus, count_the_most_common_words_in_data_set, \
+    count_the_most_common_words_in_data_set_convert
 from sklearn.metrics import classification_report
 import configparser
 
@@ -18,6 +19,7 @@ word_embedding = config.get('STR', 'word.embedding.bow')
 test_size = float(config.get('PROJECT', 'test.size'))
 random_state = int(config.get('PROJECT', 'random.state'))
 remove_words_by_occur_size = int(config.get('PROJECT', 'remove.words.occur.size'))
+remove_most_common_word_size = int(config.get('PROJECT', 'remove.most.common.word'))
 
 # Retrieve Data Frames
 test_data_set = read_dataset.read_cleaned_test_data_set()
@@ -25,8 +27,20 @@ test_data_set = read_dataset.read_cleaned_test_data_set()
 # Remove Null rows
 test_data_set.dropna(inplace=True)
 
+# List of words that occurs 3 or less times
+list_of_words_tha_occurs_3_or_less_times = count_word_occurrences(test_data_set,
+                                                                  remove_words_by_occur_size)
+
+# List of top 15 most common word
+most_common_words = count_the_most_common_words_in_data_set(test_data_set, 'text',
+                                                            remove_most_common_word_size)
+most_common_words = count_the_most_common_words_in_data_set_convert(most_common_words)
+
 # Tokenize data frame
 corpus = tokenize_sentence(test_data_set)
+
+# Remove from corpus the given list of words
+corpus = remove_words_from_corpus(corpus, list_of_words_tha_occurs_3_or_less_times + most_common_words)
 
 # Vectorized - BOW
 bag_of_words_over_sampling = BoW(corpus)
@@ -37,7 +51,6 @@ y = test_data_set['sentiment']
 
 # Logistic Regression
 logistic_regression_model = LogisticRegressionModel.run_on_test_data_set(X, y)
-
 print(classification_report(y, logistic_regression_model))
 
 # Support Vector Machine

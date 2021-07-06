@@ -8,6 +8,7 @@ from models.machine_learning.LogisticRegressionModel import LogisticRegressionMo
 from models.machine_learning.SvmModel import SvmModel
 from models.machine_learning.GaussianNBModel import GaussianNBModel
 from models.neural.MLPClassifierModel import MLPClassifierModel
+from models.neural.LSTMModel import LSTMModel
 from models.machine_learning.KNeighborsModel import KNeighborsModel
 from models.machine_learning.DecisionTreeModel import DecisionTreeModel
 from sklearn.model_selection import train_test_split
@@ -33,10 +34,12 @@ train_data_frame_over_sampling.dropna(inplace=True)
 target_values = get_column_values_as_np_array(target_column, train_data_frame_over_sampling)
 
 # List of words that occurs 3 or less times
-list_of_words_tha_occurs_3_or_less_times = count_word_occurrences(train_data_frame_over_sampling, remove_words_by_occur_size)
+list_of_words_tha_occurs_3_or_less_times = count_word_occurrences(train_data_frame_over_sampling,
+                                                                  remove_words_by_occur_size)
 
 # List of top 15 most common word
-most_common_words = count_the_most_common_words_in_data_set(train_data_frame_over_sampling, 'text', remove_most_common_word_size)
+most_common_words = count_the_most_common_words_in_data_set(train_data_frame_over_sampling, 'text',
+                                                            remove_most_common_word_size)
 most_common_words = count_the_most_common_words_in_data_set_convert(most_common_words)
 
 # Tokenize data frame
@@ -48,6 +51,8 @@ corpus = remove_words_from_corpus(corpus, list_of_words_tha_occurs_3_or_less_tim
 # Vectorized - BOW
 bag_of_words_over_sampling = BoW(corpus, config.get('MODELS', 'oversampling.BOW.bow'))
 vectors_bag_of_words_over_sampling = bag_of_words_over_sampling.text_vectorization()
+
+print('vectors_bag_of_words_over_sampling len', vectors_bag_of_words_over_sampling.shape[0])
 
 # Split Train-Test Data
 X_train, X_test, y_train, y_test = train_test_split(vectors_bag_of_words_over_sampling,

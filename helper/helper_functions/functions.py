@@ -1,8 +1,9 @@
 from nltk import sent_tokenize, word_tokenize
 from collections import Counter
 import numpy as np
-import re
 from nltk.tokenize.treebank import TreebankWordDetokenizer
+import pandas as pd
+
 
 def tokenizing_sentences(data_frame):
     data_frame['tokenized_sents'] = data_frame.apply(lambda row: sent_tokenize(row['text']), axis=1)
@@ -29,16 +30,6 @@ def convert_numpy_array_to_array_of_arrays(numpy_array):
     return return_array
 
 
-def tokenizing_sentences_and_words_list(corpus):
-    words = []
-    for sentence in corpus:
-        dd = []
-        for word in word_tokenize(sentence):
-            dd.append(word)
-        words.append(dd)
-    return words
-
-
 def get_column_values_as_np_array(column_name, data_frame):
     return data_frame[column_name].values
 
@@ -55,13 +46,6 @@ def tokenize_text(data_frame):
     for index, row in data_frame.iterrows():
         word_tokens += word_tokenize(row['text'])
     return word_tokens
-
-
-def get_corpus(data_frame):
-    sentences = ''
-    for index, row in data_frame.iterrows():
-        sentences += row['text']
-    return [sentences]
 
 
 def count_word_occurrences(data_frame, counter):
@@ -88,14 +72,14 @@ def remove_words_from_corpus(corpus, list_word):
         word_tokens = word_tokenize(sentence)
         for word in list_word:
             if word in word_tokens:
-                #sentence = re.sub(r'\b' + word + '\\b', '', sentence)
+                # sentence = re.sub(r'\b' + word + '\\b', '', sentence)
                 word_tokens.remove(word)
                 # print(word)
                 # print(sentence)
                 # sentence = sentence.replace(word, '')
             # print(sentence)
         sentence = TreebankWordDetokenizer().detokenize(word_tokens)
-        #sentence = re.sub('\s+', ' ', sentence)  # Remove Double Spaces
+        # sentence = re.sub('\s+', ' ', sentence)  # Remove Double Spaces
         # print(sentence)
         sentences.append(sentence)
     return sentences
@@ -127,13 +111,26 @@ def convert_sentence_to_vector_array_request(word2vec_model, sentence):
     word_tokens = word_tokenize(sentence)
     np_vec = []
     for word in word_tokens:
+        vec = ''
         try:
             vec = word2vec_model.wv[str(word)]
         except:
             print(str(word) + ' is not in vocabulary word2vec')
         np_vec.append(vec)
-    aa = np.average(np_vec, axis=0)
-    nn = np.array(np_vec)
+    return np_vec
+
+
+def convert_corpus_to_vector_array_request(word2vec_model, corpus):
+    np_vec = []
+    for sentence in corpus:
+        word_tokens = word_tokenize(str(sentence))
+        for word in word_tokens:
+            vec = ''
+            try:
+                vec = word2vec_model.wv[str(word)]
+            except:
+                print(str(word) + ' is not in vocabulary word2vec')
+            np_vec.append(vec)
     return np_vec
 
 
@@ -166,3 +163,17 @@ def count_the_most_common_words_in_data_set_convert(list):
     res_list = [x[0] for x in list]
     print(res_list)
     return res_list
+
+
+def map_sentiment(sentiment):
+    if sentiment == 0:
+        return 'Negative'
+    if sentiment == 1:
+        return 'Neutral'
+    if sentiment == 2:
+        return 'Positive'
+
+
+def convert_text_to_data_frame_of_one_row(text):
+    request_text = {'text': [text]}
+    return pd.DataFrame(request_text)
