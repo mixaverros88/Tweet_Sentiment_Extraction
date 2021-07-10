@@ -11,11 +11,11 @@ from pathlib import Path
 import unicodedata
 import pandas as pd
 import re
-import os
 import nltk
-import en_core_web_lg
+import en_core_web_sm
+from definitions import ROOT_DIR
 
-nlp = en_core_web_lg.load()
+nlp = en_core_web_sm.load()
 
 path = Path()
 nltk.download('maxent_ne_chunker')
@@ -106,8 +106,8 @@ class DataCleaning:
             self.text = self.remove_double_spaces()
             print('16. Remove Double Spaces: ' + self.text)
             self.data_pre_processing_steps.update({'Step_16': self.text})
-            self.text = self.word_segment()
-            print('17. Word Segment: ' + self.text)
+            # self.text = self.word_segment()
+            # print('17. Word Segment: ' + self.text)
             self.data_pre_processing_steps.update({'Step_17': self.text})
             self.text = self.auto_spelling()
             print('18. Auto Spelling: ' + self.text)
@@ -167,16 +167,14 @@ class DataCleaning:
         """Create a new csv with cleaned text for fitting the models"""
         merge_dataframes = pd.concat([self.data_frame['text'], self.data_frame['sentiment']], axis=1,
                                      keys=['text', 'sentiment'])
-        merge_dataframes.to_csv(os.path.abspath(
-            path.parent.absolute().parent) + '\\datasets\\cleaned\\' + self.dataframe_name + "_dataframe_cleaned.csv",
+        merge_dataframes.to_csv(ROOT_DIR + '/datasets/cleaned/' + self.dataframe_name + "_dataframe_cleaned.csv",
                                 sep=',', index=False, header=True)
 
     def create_new_csv_for_comparison(self):
         """ Summarize the raw tweet with the cleaned tweet in one csv in order to analyze the results"""
         merge_dataframes = pd.concat([self.initial_data_frame['text'], self.data_frame['text']], axis=1,
                                      keys=['Initial Text', 'Cleaned Text'])
-        merge_dataframes.to_csv(os.path.abspath(
-            path.parent.absolute().parent) + '\\presentation\\results\\' + self.dataframe_name + "_dataframe_cleaned_initial.csv",
+        merge_dataframes.to_csv(ROOT_DIR + '/presentation/results/' + self.dataframe_name + "_dataframe_cleaned_initial.csv",
                                 sep=',', encoding='utf-8', index=False)
 
     def remove_emojis(self):

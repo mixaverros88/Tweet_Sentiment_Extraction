@@ -56,7 +56,7 @@ X_train, X_test, y_train, y_test = train_test_split(vectors_bag_of_words_under_s
                                                     random_state=random_state)
 
 # Logistic Regression
-logistic_regression_params = {'C': 1.0, 'penalty': 'l2', 'max_iter': 1000}
+logistic_regression_params = {'C': 1.2, 'penalty': 'l2', 'max_iter': 1000, 'solver': 'liblinear'}
 logistic_regression_model = LogisticRegressionModel(
     X_train,
     X_test,

@@ -1,8 +1,6 @@
 from sklearn.neighbors import KNeighborsClassifier
 import pickle
 import collections
-from sklearn.model_selection import GridSearchCV
-from helper.helper_functions.functions import get_models_best_parameters
 
 
 class KNeighborsModel:
@@ -17,12 +15,7 @@ class KNeighborsModel:
 
     def results(self):
         print('KNeighbors Classifier')
-        # Grid Search
-        # grid_params = {'n_neighbors': [3, 5, 11, 19], 'weights': ['uniform', 'distance'],
-        #                'metric': ['euclidean', 'manhattan']}
-        # kneighbors = GridSearchCV(KNeighborsClassifier(), grid_params, verbose=1, cv=5, n_jobs=1)
-        # get_models_best_parameters(kneighbors, 'KNeighbors Classifier')
-
+        # k_neighbors_model_tuning(self.x_train, self.y_train)
         model = KNeighborsClassifier(
             metric=self.param_space.get('metric'),
             weights=self.param_space.get('weights')

@@ -5,8 +5,8 @@ import matplotlib.pyplot as plt
 import seaborn as sns
 import pandas as pd
 from pathlib import Path
-import os
 import configparser
+from definitions import ROOT_DIR
 
 path = Path()
 
@@ -65,10 +65,9 @@ class ComposeMetrics:
 
     def save_plot_as_image(self, type_name):
         """Save the plot as image"""
-        plt.savefig(os.path.abspath(
-            __file__ + '/../../../presentation/images/' + type_name + '/' + self.model_name_for_save +
-            '_' + self.data_name + '_' + self.word_embedding + '_' + type_name + '.png'),
-            bbox_inches='tight')
+        plt.savefig(ROOT_DIR + '/presentation/images/' + type_name + '/' + self.model_name_for_save +
+                    '_' + self.data_name + '_' + self.word_embedding + '_' + type_name + '.png',
+                    bbox_inches='tight')
 
     def plot_roc_curve(self):
         # roc_curve curve for classes

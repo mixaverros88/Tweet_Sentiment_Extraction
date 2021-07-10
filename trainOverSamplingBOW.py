@@ -8,7 +8,6 @@ from models.machine_learning.LogisticRegressionModel import LogisticRegressionMo
 from models.machine_learning.SvmModel import SvmModel
 from models.machine_learning.GaussianNBModel import GaussianNBModel
 from models.neural.MLPClassifierModel import MLPClassifierModel
-from models.neural.LSTMModel import LSTMModel
 from models.machine_learning.KNeighborsModel import KNeighborsModel
 from models.machine_learning.DecisionTreeModel import DecisionTreeModel
 from sklearn.model_selection import train_test_split
@@ -59,7 +58,7 @@ X_train, X_test, y_train, y_test = train_test_split(vectors_bag_of_words_over_sa
                                                     target_values, test_size=test_size, random_state=random_state)
 
 # Logistic Regression
-logistic_regression_params = {'C': 1.0, 'penalty': 'l2', 'max_iter': 1000}
+logistic_regression_params = {'C': 1.2, 'penalty': 'l2', 'max_iter': 1000, 'solver': 'liblinear'}
 logistic_regression_model = LogisticRegressionModel(
     X_train,
     X_test,

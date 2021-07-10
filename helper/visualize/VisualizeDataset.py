@@ -1,10 +1,10 @@
 import matplotlib.pyplot as plt
 import seaborn as sns
-import os
 from helper.helper_functions.functions import count_words_per_sentence, count_the_most_common_words_in_data_set, \
     sanitize_model_name
 from pathlib import Path
 import numpy as np
+from definitions import ROOT_DIR
 path = Path()
 
 
@@ -36,8 +36,7 @@ class VisualizeDataset:
 
     def save_plot_as_image(self):
         """Save the plot as image"""
-        plt.savefig(os.path.abspath(
-            path.parent.absolute().parent) + '\\presentation\\images\\' + self.folder + '\\' + self.generated_image_name + '.png',
+        plt.savefig(ROOT_DIR + '/presentation/images/' + self.folder + '/' + self.generated_image_name + '.png',
                     bbox_inches='tight')
 
     def data_frame_info(self):

@@ -86,7 +86,8 @@ def remove_words_from_corpus(corpus, list_word):
 
 
 def get_models_best_parameters(model, algo_name):
-    print(algo_name + ' Best Parameters : ', model.best_estimator_)
+    print(algo_name + ' Best Estimator : ', model.best_estimator_)
+    print(algo_name + ' Best Parameters : ', model.best_params_)
 
 
 def get_sentiment_as_array():
@@ -101,22 +102,52 @@ def convert_sentence_to_vector_array(word2vec_model, sentence):
     word_tokens = word_tokenize(sentence)
     np_vec = []
     for word in word_tokens:
-        vec = word2vec_model.wv[str(word)]
-        np_vec.append(vec)
-    nn = np.array(np_vec)
+        try:
+            vec = word2vec_model.wv[str(word)]
+            np_vec.append(vec)
+        except:
+            print(str(word) + ' is not in vocabulary word2vec')
     return np.average(np_vec, axis=0)
+
+def get_indices(df,col,n):
+    """
+    Get the indices of dataframe where exist more than n tokens in a specific column
+
+    Parameters:
+
+       df(pandas dataframe)
+       n(int): threshold value for minimum words
+       col(string): column name
+
+    """
+
+
+    tmp = []
+    for i in range(len(df)):#df.iterrows() wasnt working for me
+        if len(word_tokenize(df[col][i])) < n:
+            tmp.append(i)
+    return tmp
+
+def convert_sentence_to_vector_array2(word2vec_model, sentences):
+    data_frame = pd.DataFrame({'text': sentences})
+    #tmp = get_indices(data_frame, 'text', 2)
+    #data_frame = data_frame.drop(tmp)
+    x = data_frame['text'].apply(lambda sentence: convert_sentence_to_vector_array(word2vec_model, sentence))
+    x = x.to_numpy()
+    x = x.reshape(-1, 1)
+    x = np.concatenate(np.concatenate(x, axis=0), axis=0).reshape(-1, 100)
+    return x
 
 
 def convert_sentence_to_vector_array_request(word2vec_model, sentence):
     word_tokens = word_tokenize(sentence)
     np_vec = []
     for word in word_tokens:
-        vec = ''
         try:
             vec = word2vec_model.wv[str(word)]
+            np_vec.append(vec)
         except:
             print(str(word) + ' is not in vocabulary word2vec')
-        np_vec.append(vec)
     return np_vec
 
 
@@ -125,12 +156,11 @@ def convert_corpus_to_vector_array_request(word2vec_model, corpus):
     for sentence in corpus:
         word_tokens = word_tokenize(str(sentence))
         for word in word_tokens:
-            vec = ''
             try:
                 vec = word2vec_model.wv[str(word)]
+                np_vec.append(vec)
             except:
                 print(str(word) + ' is not in vocabulary word2vec')
-            np_vec.append(vec)
     return np_vec
 
 
@@ -177,3 +207,7 @@ def map_sentiment(sentiment):
 def convert_text_to_data_frame_of_one_row(text):
     request_text = {'text': [text]}
     return pd.DataFrame(request_text)
+
+
+def convert_list_to_numpy_array(vec_list):
+    return np.asarray(vec_list)

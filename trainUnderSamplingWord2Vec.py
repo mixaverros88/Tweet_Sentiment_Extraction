@@ -58,7 +58,7 @@ X_train, X_test, y_train, y_test = \
     train_test_split(X, target_values, test_size=test_size, random_state=random_state, stratify=target_values)
 
 # Logistic Regression
-logistic_regression_params = {'C': 1.0, 'penalty': 'l2', 'max_iter': 1000}
+logistic_regression_params = {'C': 121, 'penalty': 'l2', 'max_iter': 1000, 'solver': 'liblinear'}
 logistic_regression_model = LogisticRegressionModel(X_train, X_test, y_train, y_test,
                                                     config.get('MODELS', 'under_sampling.word2vec.lg'),
                                                     logistic_regression_params)

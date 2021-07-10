@@ -37,7 +37,8 @@ target_values = get_column_values_as_np_array(target_column, train_data_frame_ov
 list_of_words_tha_occurs_3_or_less_times = count_word_occurrences(train_data_frame_over_sampling,
                                                                   remove_words_by_occur_size)
 # List of top 15 most common word
-most_common_words = count_the_most_common_words_in_data_set(train_data_frame_over_sampling, 'text', remove_most_common_word_size)
+most_common_words = count_the_most_common_words_in_data_set(train_data_frame_over_sampling, 'text',
+                                                            remove_most_common_word_size)
 most_common_words = count_the_most_common_words_in_data_set_convert(most_common_words)
 
 # Tokenize data frame
@@ -54,12 +55,15 @@ word2vec_model = word_2_vec.text_vectorization()
 
 X = convert_data_frame_sentence_to_vector_array(word2vec_model, train_data_frame_over_sampling)
 
+# X = convert_sentence_to_vector_array2(word2vec_model, corpus)
+
+
 # Split Train-Test Data
 X_train, X_test, y_train, y_test = \
     train_test_split(X, target_values, test_size=test_size, random_state=random_state, stratify=target_values)
 
 # Logistic Regression
-logistic_regression_params = {'C': 1.0, 'penalty': 'l2', 'max_iter': 1000}
+logistic_regression_params = {'C': 121, 'penalty': 'l2', 'max_iter': 1000, 'solver': 'liblinear'}
 logistic_regression_model = LogisticRegressionModel(
     X_train,
     X_test,
@@ -99,11 +103,23 @@ ComposeMetrics(
 
 # Gaussian Naive Bayes
 # nb_params = {'alpha': 1.5}
-# nb_model = GaussianNBModel(X_train, X_test, y_train, y_test, config.get('MODELS', 'oversampling.word2vec.gaussian'), 'sss', nb_params)
+# nb_model = GaussianNBModel(
+#     X_train,
+#     X_test,
+#     y_train,
+#     y_test,
+#     config.get('MODELS', 'oversampling.word2vec.gaussian'),
+#     nb_params,
+#     'word2Vec')
 # nb_y_predict = nb_model.results()
 #
-# ComposeMetrics(nb_y_predict.score, y_test, nb_y_predict.prediction, config.get('MODELNAME', 'model.nb'), data_set,
-#                word_embedding)
+# ComposeMetrics(
+#     nb_y_predict.score,
+#     y_test,
+#     nb_y_predict.prediction,
+#     config.get('MODELNAME', 'model.nb'),
+#     data_set,
+#     word_embedding)
 
 # MLP Classifier
 neural_network_params = {'activation': 'tanh', 'alpha': 0.05, 'hidden_layer_sizes': (5, 5, 5),

@@ -11,6 +11,7 @@ class Tfidf:
             self.model_name = model_name
 
     def text_vectorization(self):
+        print('Tfidf')
         model = TfidfVectorizer()
         vectors = model.fit_transform(self.corpus)
         pickle.dump(model, open('serializedModels/' + self.model_name + '.sav', 'wb'))

@@ -24,8 +24,4 @@ class Word2VecModel:
         model = word2vec_over_sampling()
         vectors = convert_corpus_to_vector_array_request(model, self.corpus)
         print(model)
-        print('TfidfVectorizer get_feature_names(): ', model.get_feature_names())
-        print('TfidfVectorizer len get_feature_names(): ', len(model.get_feature_names()))
-        print('Tfidf Vocabulary Size: ', len(model.vocabulary_))
-        print('Tfidf Vocabulary : ', model.vocabulary_)
         return vectors

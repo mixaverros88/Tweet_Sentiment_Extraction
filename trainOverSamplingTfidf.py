@@ -33,10 +33,12 @@ train_data_frame_over_sampling.dropna(inplace=True)
 target_values = get_column_values_as_np_array(target_column, train_data_frame_over_sampling)
 
 # List of words that occurs 3 or less times
-list_of_words_tha_occurs_3_or_less_times = count_word_occurrences(train_data_frame_over_sampling, remove_words_by_occur_size)
+list_of_words_tha_occurs_3_or_less_times = count_word_occurrences(train_data_frame_over_sampling,
+                                                                  remove_words_by_occur_size)
 
 # List of top 15 most common word
-most_common_words = count_the_most_common_words_in_data_set(train_data_frame_over_sampling, 'text', remove_most_common_word_size)
+most_common_words = count_the_most_common_words_in_data_set(train_data_frame_over_sampling, 'text',
+                                                            remove_most_common_word_size)
 most_common_words = count_the_most_common_words_in_data_set_convert(most_common_words)
 
 # Tokenize data frame
@@ -54,7 +56,7 @@ X_train, X_test, y_train, y_test = train_test_split(vectors_bag_of_words_over_sa
                                                     target_values, test_size=test_size, random_state=random_state)
 
 # Logistic Regression
-logistic_regression_params = {'C': 1.0, 'penalty': 'l2', 'max_iter': 1000}
+logistic_regression_params = {'C': 5.1, 'penalty': 'l2', 'max_iter': 1000, 'solver': 'liblinear'}
 logistic_regression_model = LogisticRegressionModel(
     X_train,
     X_test,

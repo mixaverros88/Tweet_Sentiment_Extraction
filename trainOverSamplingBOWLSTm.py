@@ -3,12 +3,11 @@ import numpy as np  # linear algebra
 import pandas as pd  # data processing, CSV file I/O (e.g. pd.read_csv)
 from keras.preprocessing.text import Tokenizer
 from keras.preprocessing.sequence import pad_sequences
-from keras.models import Sequential
-from keras.layers import Dense, Embedding, LSTM, Dropout
+from keras.layers import Dropout
 from sklearn.model_selection import train_test_split
 import configparser
 import re
-from keras.layers import Dense, Embedding, LSTM, SpatialDropout1D
+from keras.layers import Dense, Embedding, LSTM
 from keras.models import Sequential
 
 config = configparser.RawConfigParser()
