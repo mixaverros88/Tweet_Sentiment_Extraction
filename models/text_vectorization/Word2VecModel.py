@@ -1,7 +1,8 @@
 from gensim.models import Word2Vec
 import pickle
-from helper.retrieve.serializedModels import word2vec_over_sampling
-from helper.helper_functions.functions import convert_corpus_to_vector_array_request
+from utils.serializedModels import word2vec_over_sampling
+from definitions import ROOT_DIR
+from utils.functions import convert_corpus_to_vector_array_request
 
 
 class Word2VecModel:
@@ -17,7 +18,7 @@ class Word2VecModel:
         print(model)
         print('Word2Vec Vocabulary : ', model.wv.syn0)
         print('Word2Vec Vocabulary len : ', len(model.wv.syn0))
-        pickle.dump(model, open('serializedModels/' + self.model_name + '.sav', 'wb'))
+        pickle.dump(model, open(ROOT_DIR + '/apiService/serializedModels/' + self.model_name + '.sav', 'wb'))
         return model
 
     def text_vectorization_test_data_set(self):

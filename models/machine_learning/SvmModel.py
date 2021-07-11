@@ -1,7 +1,8 @@
 from sklearn import svm
 import pickle
 import collections
-from helper.retrieve.serializedModels import bag_of_words_svm_over_sampling
+from utils.serializedModels import bag_of_words_svm_over_sampling
+from definitions import ROOT_DIR
 
 
 def run_on_test_data_set(x, y):
@@ -24,7 +25,7 @@ class SvmModel:
         # svm_model_tuning(self.x_train, self.y_train)
         model = svm.SVC(kernel=self.param_space.get('kernel'))  # Linear Kernel
         model.fit(self.x_train, self.y_train)
-        pickle.dump(model, open('serializedModels/' + self.model_name + '.sav', 'wb'))
+        pickle.dump(model, open(ROOT_DIR + '/apiService/serializedModels/' + self.model_name + '.sav', 'wb'))
         predictions = model.predict(self.x_test)
         y_score = model.fit(self.x_train, self.y_train).decision_function(self.x_test)
         Point = collections.namedtuple('Point', ['prediction', 'score'])

@@ -1,6 +1,7 @@
 from sklearn.feature_extraction.text import CountVectorizer
 import pickle
-from helper.retrieve.serializedModels import bag_of_words_over_sampling
+from utils.serializedModels import bag_of_words_over_sampling
+from definitions import ROOT_DIR
 
 
 class BoW:
@@ -13,7 +14,7 @@ class BoW:
     def text_vectorization(self):
         model = CountVectorizer()
         vectors = model.fit_transform(self.corpus)
-        pickle.dump(model, open('serializedModels/' + self.model_name + '.sav', 'wb'))
+        pickle.dump(model, open(ROOT_DIR + '/apiService/serializedModels/' + self.model_name + '.sav', 'wb'))
         print(model)
         print('CountVectorizer get_feature_names(): ', model.get_feature_names())
         print('CountVectorizer len get_feature_names(): ', len(model.get_feature_names()))

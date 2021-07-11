@@ -1,7 +1,8 @@
 from sklearn.naive_bayes import MultinomialNB
 import pickle
 import collections
-from helper.retrieve.serializedModels import bag_of_words_nb_over_sampling
+from utils.serializedModels import bag_of_words_nb_over_sampling
+from definitions import ROOT_DIR
 
 
 def run_on_test_data_set(x, y):
@@ -31,7 +32,7 @@ class GaussianNBModel:
         # nb_model_tuning(self.x_train, self.y_train)
         model = MultinomialNB(alpha=1.5)
         model.fit(self.X_train, self.y_train)
-        pickle.dump(model, open('serializedModels/' + self.model_name + '.sav', 'wb'))
+        pickle.dump(model, open(ROOT_DIR + '/apiService/serializedModels/' + self.model_name + '.sav', 'wb'))
         predictions = model.predict(self.X_test)
         Point = collections.namedtuple('Point', ['prediction', 'score'])
         return Point(prediction=predictions, score=None)

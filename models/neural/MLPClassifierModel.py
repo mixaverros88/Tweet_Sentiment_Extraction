@@ -1,7 +1,8 @@
 from sklearn.neural_network import MLPClassifier
 import pickle
 import collections
-from helper.retrieve.serializedModels import bag_of_words_multi_layer_perceptron_classifier_over_sampling
+from utils.serializedModels import bag_of_words_multi_layer_perceptron_classifier_over_sampling
+from definitions import ROOT_DIR
 
 
 def run_on_test_data_set(x, y):
@@ -29,7 +30,7 @@ class MLPClassifierModel:
         model = MLPClassifier(activation='tanh', alpha=0.05, hidden_layer_sizes=(5, 5, 5), learning_rate='adaptive',
                               max_iter=1000)
         model.fit(self.x_train, self.y_train)
-        pickle.dump(model, open('serializedModels/' + self.model_name + '.sav', 'wb'))
+        pickle.dump(model, open(ROOT_DIR + '/apiService/serializedModels/' + self.model_name + '.sav', 'wb'))
         predictions = model.predict(self.x_test)
         Point = collections.namedtuple('Point', ['prediction', 'score'])
         return Point(prediction=predictions, score=None)

@@ -1,6 +1,7 @@
 from sklearn.neighbors import KNeighborsClassifier
 import pickle
 import collections
+from definitions import ROOT_DIR
 
 
 class KNeighborsModel:
@@ -21,7 +22,7 @@ class KNeighborsModel:
             weights=self.param_space.get('weights')
         )
         model.fit(self.X_train, self.y_train)
-        pickle.dump(model, open('serializedModels/' + self.model_name + '.sav', 'wb'))
+        pickle.dump(model, open(ROOT_DIR + '/apiService/serializedModels/' + self.model_name + '.sav', 'wb'))
         predictions = model.predict(self.X_test)
         Point = collections.namedtuple('Point', ['prediction', 'score'])
         return Point(prediction=predictions, score=None)

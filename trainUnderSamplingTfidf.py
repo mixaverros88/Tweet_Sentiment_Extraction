@@ -1,9 +1,6 @@
-from helper.retrieve import dataset as read_dataset
-from helper.helper_functions.functions import get_column_values_as_np_array, tokenize_sentence, \
-    count_word_occurrences, remove_words_from_corpus, count_the_most_common_words_in_data_set, \
-    count_the_most_common_words_in_data_set_convert
+import utils.dataset as data
 from models.text_vectorization.Tfidf import Tfidf
-from helper.metrics.ComposeMetrics import ComposeMetrics
+from utils.ComposeMetrics import ComposeMetrics
 from models.machine_learning.LogisticRegressionModel import LogisticRegressionModel
 from models.machine_learning.SvmModel import SvmModel
 from models.machine_learning.GaussianNBModel import GaussianNBModel
@@ -11,6 +8,8 @@ from models.neural.MLPClassifierModel import MLPClassifierModel
 from models.machine_learning.KNeighborsModel import KNeighborsModel
 from models.machine_learning.DecisionTreeModel import DecisionTreeModel
 from sklearn.model_selection import train_test_split
+from utils.functions import get_column_values_as_np_array, tokenize_sentence, count_word_occurrences, \
+    remove_words_from_corpus, count_the_most_common_words_in_data_set_convert, count_the_most_common_words_in_data_set
 import configparser
 
 config = configparser.RawConfigParser()
@@ -24,7 +23,7 @@ remove_words_by_occur_size = int(config.get('PROJECT', 'remove.words.occur.size'
 remove_most_common_word_size = int(config.get('PROJECT', 'remove.most.common.word'))
 
 # Retrieve Data Frames
-train_data_frame_under_sampling = read_dataset.read_cleaned_train_data_set_under_sampling()
+train_data_frame_under_sampling = data.read_cleaned_train_data_set_under_sampling()
 
 # Remove Null rows
 train_data_frame_under_sampling.dropna(inplace=True)
@@ -37,7 +36,8 @@ list_of_words_tha_occurs_3_or_less_times = count_word_occurrences(train_data_fra
                                                                   remove_words_by_occur_size)
 
 # List of top 15 most common word
-most_common_words = count_the_most_common_words_in_data_set(train_data_frame_under_sampling, 'text', remove_most_common_word_size)
+most_common_words = count_the_most_common_words_in_data_set(train_data_frame_under_sampling, 'text',
+                                                            remove_most_common_word_size)
 most_common_words = count_the_most_common_words_in_data_set_convert(most_common_words)
 
 # Tokenize data frame

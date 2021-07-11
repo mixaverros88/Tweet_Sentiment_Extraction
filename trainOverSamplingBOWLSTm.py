@@ -1,4 +1,4 @@
-from helper.retrieve import dataset as read_dataset
+import utils.dataset as data
 import numpy as np  # linear algebra
 import pandas as pd  # data processing, CSV file I/O (e.g. pd.read_csv)
 from keras.preprocessing.text import Tokenizer
@@ -21,7 +21,7 @@ remove_words_by_occur_size = int(config.get('PROJECT', 'remove.words.occur.size'
 remove_most_common_word_size = int(config.get('PROJECT', 'remove.most.common.word'))
 
 # Retrieve Data Frames
-train_data_frame_over_sampling = read_dataset.read_cleaned_train_data_set_over_sampling()
+train_data_frame_over_sampling = data.read_cleaned_train_data_set_over_sampling()
 
 # Remove Null rows
 train_data_frame_over_sampling.dropna(inplace=True)

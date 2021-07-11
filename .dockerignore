@@ -1,0 +1,12 @@
+.git
+.gitignore
+README.md
+/frontEnd/*
+/generateCsv/
+/utils/
+/test/
+/presentation/
+/evaluateOverTestData/
+/datasets/
+/buildingScripts/
+/models/

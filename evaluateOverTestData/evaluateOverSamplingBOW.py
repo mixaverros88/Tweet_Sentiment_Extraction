@@ -1,17 +1,12 @@
-from helper.retrieve.dataset import read_cleaned_test_data_set
+import utils.dataset as data
 from models.text_vectorization.BoW import BoW
-from models.machine_learning import LogisticRegressionModel
-from models.machine_learning import SvmModel
-from models.machine_learning import GaussianNBModel
-from models.machine_learning import DecisionTreeModel
+from models.machine_learning import DecisionTreeModel, GaussianNBModel, SvmModel, LogisticRegressionModel
 from models.neural import MLPClassifierModel
-from helper.helper_functions.functions import tokenize_sentence, \
-    count_word_occurrences, remove_words_from_corpus, count_the_most_common_words_in_data_set, \
-    count_the_most_common_words_in_data_set_convert
 from sklearn.metrics import classification_report
+from utils.functions import tokenize_sentence, count_word_occurrences, remove_words_from_corpus, \
+    count_the_most_common_words_in_data_set_convert, count_the_most_common_words_in_data_set
 from definitions import ROOT_DIR
 import configparser
-
 
 config = configparser.RawConfigParser()
 config.read(ROOT_DIR + '/ConfigFile.properties')
@@ -24,7 +19,7 @@ remove_words_by_occur_size = int(config.get('PROJECT', 'remove.words.occur.size'
 remove_most_common_word_size = int(config.get('PROJECT', 'remove.most.common.word'))
 
 # Retrieve Data Frames
-test_data_set = read_cleaned_test_data_set()
+test_data_set = data.read_cleaned_test_data_set()
 
 # Remove Null rows
 test_data_set.dropna(inplace=True)

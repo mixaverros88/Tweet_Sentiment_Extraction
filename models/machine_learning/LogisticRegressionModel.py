@@ -1,7 +1,8 @@
 import pickle
 import collections
 from sklearn.linear_model import LogisticRegression
-from helper.retrieve.serializedModels import bag_of_words_logistic_regression_over_sampling
+from utils.serializedModels import bag_of_words_logistic_regression_over_sampling
+from definitions import ROOT_DIR
 
 
 def run_on_test_data_set(x, y):
@@ -29,7 +30,7 @@ class LogisticRegressionModel:
             solver=self.param_space.get('solver')
         )
         model.fit(self.x_train, self.y_train)
-        pickle.dump(model, open('serializedModels/' + self.model_name + '.sav', 'wb'))
+        pickle.dump(model, open(ROOT_DIR + '/apiService/serializedModels/' + self.model_name + '.sav', 'wb'))
         y_score = model.fit(self.x_train, self.y_train).decision_function(self.x_test)
         predictions = model.predict(self.x_test)
         Point = collections.namedtuple('Point', ['prediction', 'score'])
