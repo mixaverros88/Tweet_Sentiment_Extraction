@@ -26,8 +26,51 @@
   color:white
 }
 
+
+.text_span_blue{
+    background-color: #41a1f0;
+    padding: 3px;
+    color: white;
+    border-radius: 4px;
+}
+
+.text_span{
+    padding: 3px;
+    color: white;
+    border-radius: 4px;
+}
+
 </style>
+
 <div class="container" style="border: 1.5px solid #dbdbdb;border-radius: 13px;">
+    <hr>
+    <div class="row">
+      <div class="col-sm-6" style="border-right: 3px solid #dbdbdb;min-height: 80px;">
+        <div class="col-sm-12" style="
+    margin-bottom: 5px;
+">
+          <span class="text_span_blue">Tweet</span> &nbsp; <span class="text_span" [ngClass]="randomTweet?.sentiment">{{randomTweet?.tweet}}</span>
+        </div>
+        <div class="col-sm-12" >
+          <span class="text_span_blue" >Sentiment</span>  &nbsp; <span class="text_span" [ngClass]="randomTweet?.sentiment">{{randomTweet?.sentiment}}</span>
+        </div>
+      </div>
+    <div class="col-sm-6" style="border-right: 3px solid #dbdbdb;">
+      <form>
+        <div class="form-group text-center">
+          <button type="button" class="btn btn-primary btn-lg" style="
+    background-color: #41a1f0;
+    width: 221px;
+"
+                  (click)="getProducts();  ">
+            Random Tweet
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+  <hr>
+
   <div class="row">
     <div class="col-sm-6" style="border-right: 3px solid #dbdbdb;">
       <form>
@@ -36,27 +79,61 @@
           <textarea style="
     width: 100% !important;
     padding: 9px;
-" #textInput placeholder="Place yours text" required rows="10" cols="60"></textarea>
+" #textInput placeholder="Place yours text" required rows="10" cols="60">{{randomTweet?.tweet}}</textarea>
         </div>
         <div class="form-group text-center">
-          <button type="button" class="btn btn-primary btn-lg" style="
-    background-color: #41a1f0;
-    width: 221px;
-"
-                  (click)="postText(textInput.value);  ">
+          <button type="button" class="btn btn-primary btn-lg" style="background-color: #41a1f0;width: 221px;" (click)="postText(textInput.value);  ">
             Classify Text
           </button>
         </div>
       </form>
     </div>
     <div class="col-sm-6">
-      <h3>Cleaned Text</h3>
-     <div class="col-bg-12 customTextArea">
+      <form>
+        <h3>Cleaned Text</h3>
+        <div class="form-group customTextArea">
         {{classification?.text}}
       </div>
-    </div>
+        <div class="form-group text-center">
+        <button type="button" class="btn btn-primary btn-lg" data-toggle="collapse" data-target="#demo" style="background-color: #41a1f0;">Text Pre Processing Steps</button>
+      </div>
+      </form>
   </div>
-  <hr>
+</div>
+
+<hr>
+
+<div class="row">
+    <div class="col-sm-12">
+      <div id="demo" class="collapse">
+          <ul>
+            <p><span class="text_span_blue">Step 01 - Initial Text: </span>   {{classification?.data_pre_processing_steps?.Step_01}}</p>
+            <p><span class="text_span_blue">Step 02 - Name Entity Recognition: </span>   {{classification?.data_pre_processing_steps?.Step_02}}</p>
+            <p><span class="text_span_blue">Step 03 - Expand Contractions: </span>   {{classification?.data_pre_processing_steps?.Step_03}}</p>
+            <p><span class="text_span_blue">Step 04 - Remove am pm dates: </span>   {{classification?.data_pre_processing_steps?.Step_04}}</p>
+            <p><span class="text_span_blue">Step 05 - Remove Emojis: </span>   {{classification?.data_pre_processing_steps?.Step_05}}</p>
+            <p><span class="text_span_blue">Step 06 - Covert Text To Lower Case: </span>   {{classification?.data_pre_processing_steps?.Step_06}}</p>
+            <p><span class="text_span_blue">Step 07 - Replace Slang Word: </span>   {{classification?.data_pre_processing_steps?.Step_07}}</p>
+            <p><span class="text_span_blue">Step 08 - Remove Urls:</span>   {{classification?.data_pre_processing_steps?.Step_08}}</p>
+            <p><span class="text_span_blue">Step 09 - Remove Html Tags: </span>   {{classification?.data_pre_processing_steps?.Step_09}}</p>
+            <p><span class="text_span_blue">Step 10 - Remove Hash Tags: </span>   {{classification?.data_pre_processing_steps?.Step_10}}</p>
+            <p><span class="text_span_blue">Step 11 - Remove Accented Chars: </span>   {{classification?.data_pre_processing_steps?.Step_11}}</p>
+            <p><span class="text_span_blue">Step 12 - Remove Punctuations Special Characters: </span>   {{classification?.data_pre_processing_steps?.Step_12}}</p>
+            <p><span class="text_span_blue">Step 13 - Remove Consequently Char: </span>   {{classification?.data_pre_processing_steps?.Step_13}}</p>
+            <p><span class="text_span_blue">Step 14 - Replace Slang Word: </span>   {{classification?.data_pre_processing_steps?.Step_14}}</p>
+            <p><span class="text_span_blue">Step 15 - Trim Text: </span>   {{classification?.data_pre_processing_steps?.Step_15}}</p>
+            <p><span class="text_span_blue">Step 16 - Remove Double Spaces: </span>   {{classification?.data_pre_processing_steps?.Step_16}}</p>
+            <p><span class="text_span_blue">Step 17 - Word Segment: </span>   {{classification?.data_pre_processing_steps?.Step_17}}</p>
+            <p><span class="text_span_blue">Step 18 - Auto Spelling: </span>   {{classification?.data_pre_processing_steps?.Step_18}}</p>
+            <p><span class="text_span_blue">Step 19 - Lemmatization: </span>   {{classification?.data_pre_processing_steps?.Step_19}}</p>
+            <p><span class="text_span_blue">Step 20 - Convert Num To Word: </span>   {{classification?.data_pre_processing_steps?.Step_20}}</p>
+            <p><span class="text_span_blue">Step 21 - Convert To Nominal: </span>   {{classification?.data_pre_processing_steps?.Step_21}}</p>
+          </ul>
+        </div>
+     </div>
+ </div>
+
+<hr>
 
   <div class="row">
     <div class="col-sm-12">

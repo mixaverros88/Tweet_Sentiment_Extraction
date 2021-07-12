@@ -1,8 +1,8 @@
-from helper.retrieve import dataset as read_dataset
-from helper.clean_dataset.DataCleaning import DataCleaning
-from helper.visualize.VisualizeDataset import VisualizeDataset
-from helper.label_encoder.LabelEncoderTransform import LabelEncoderTransform
-from helper.clean_dataset.BalanceDataset import BalanceDataset
+import utils.dataset as data
+from apiService.utils.clean_dataset.DataCleaning import DataCleaning
+from utils.VisualizeDataset import VisualizeDataset
+from utils.LabelEncoderTransform import LabelEncoderTransform
+from utils.BalanceDataset import BalanceDataset
 
 train_dataset = 'Train_Dataset'
 test_dataset = 'Test_Dataset'
@@ -10,8 +10,8 @@ target_name = 'sentiment'
 text_id_column = 'textID'
 
 # Retrieve Data Frames
-train_data_frame = read_dataset.read_train_data_set()
-test_data_frame = read_dataset.read_test_data_set()
+train_data_frame = data.read_train_data_set()
+test_data_frame = data.read_test_data_set()
 
 # Visualize Dataset
 VisualizeDataset(train_data_frame, train_dataset, target_name, 'count_plot_target_class_train_df')

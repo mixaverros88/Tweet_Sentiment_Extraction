@@ -1,0 +1,12 @@
+version: "3"
+services:
+  flask:
+    build: .
+    ports:
+      - "5000:5000"
+  angular:
+    build: # "context" and "dockerfile" fields have to be under "build"
+      context: .
+      dockerfile: frontEnd/Dockerfile
+    ports:
+      - "8080:80"
