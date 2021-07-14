@@ -10,6 +10,9 @@ from models.machine_learning.DecisionTreeModel import DecisionTreeModel
 from sklearn.model_selection import train_test_split
 from utils.functions import get_column_values_as_np_array, tokenize_sentence, count_word_occurrences, \
     remove_words_from_corpus, count_the_most_common_words_in_data_set_convert, count_the_most_common_words_in_data_set
+from utils.serializedModels import bag_of_words_logistic_regression_under_sampling, bag_of_words_svm_under_sampling, \
+    bag_of_words_nb_under_sampling, bag_of_words_multi_layer_perceptron_classifier_under_sampling, \
+    bag_of_words_decision_tree_under_sampling, bag_of_words_k_neighbors_under_sampling
 import configparser
 
 config = configparser.RawConfigParser()
@@ -68,6 +71,9 @@ logistic_regression_model = LogisticRegressionModel(
 logistic_regression_y_predict = logistic_regression_model.results()
 
 ComposeMetrics(
+    bag_of_words_logistic_regression_under_sampling(),
+    X_train,
+    y_train,
     logistic_regression_y_predict.score,
     y_test,
     logistic_regression_y_predict.prediction,
@@ -88,6 +94,9 @@ svm_model = SvmModel(
 svm_y_predict = svm_model.results()
 
 ComposeMetrics(
+    bag_of_words_svm_under_sampling(),
+    X_train,
+    y_train,
     svm_y_predict.score,
     y_test,
     svm_y_predict.prediction,
@@ -105,6 +114,9 @@ nb_model = GaussianNBModel(
 nb_y_predict = nb_model.results()
 
 ComposeMetrics(
+    bag_of_words_nb_under_sampling(),
+    X_train,
+    y_train,
     nb_y_predict.score,
     y_test,
     nb_y_predict.prediction,
@@ -125,8 +137,16 @@ neural_network = MLPClassifierModel(
 
 neural_network_predict = neural_network.results()
 
-ComposeMetrics(neural_network_predict.score, y_test, neural_network_predict.prediction,
-               config.get('MODELNAME', 'model.mlp'), data_set, word_embedding)
+ComposeMetrics(
+    bag_of_words_multi_layer_perceptron_classifier_under_sampling(),
+    X_train,
+    y_train,
+    neural_network_predict.score,
+    y_test,
+    neural_network_predict.prediction,
+    config.get('MODELNAME', 'model.mlp'),
+    data_set,
+    word_embedding)
 
 # Decision Tree
 decision_tree_params = {'max_depth': 5, 'max_leaf_nodes': 18, 'min_samples_split': 3}
@@ -140,6 +160,9 @@ decision_tree = DecisionTreeModel(
 decision_tree_predict = decision_tree.results()
 
 ComposeMetrics(
+    bag_of_words_decision_tree_under_sampling(),
+    X_train,
+    y_train,
     decision_tree_predict.score,
     y_test,
     decision_tree_predict.prediction,
@@ -159,6 +182,9 @@ k_neighbors_model = KNeighborsModel(
 k_neighbors_model_predict = k_neighbors_model.results()
 
 ComposeMetrics(
+    bag_of_words_k_neighbors_under_sampling(),
+    X_train,
+    y_train,
     k_neighbors_model_predict.score,
     y_test,
     k_neighbors_model_predict.prediction,

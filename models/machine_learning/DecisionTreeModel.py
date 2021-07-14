@@ -1,12 +1,17 @@
 from sklearn.tree import DecisionTreeClassifier
 import pickle
 import collections
-from utils.serializedModels  import bag_of_words_decision_tree_over_sampling
+from utils.serializedModels import bag_of_words_decision_tree_over_sampling, bag_of_words_decision_tree_under_sampling
 from definitions import ROOT_DIR
 
 
-def run_on_test_data_set(x, y):
+def run_on_test_data_set_over_sampling(x):
     model = bag_of_words_decision_tree_over_sampling()  # Retrieve Model
+    return model.predict(x)
+
+
+def run_on_test_data_set_under_sampling(x):
+    model = bag_of_words_decision_tree_under_sampling()  # Retrieve Model
     return model.predict(x)
 
 

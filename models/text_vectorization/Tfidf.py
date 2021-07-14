@@ -1,5 +1,5 @@
 from sklearn.feature_extraction.text import TfidfVectorizer
-from utils.serializedModels import tfidf_over_sampling
+from utils.serializedModels import tfidf_over_sampling, tfidf_under_sampling
 import pickle
 from definitions import ROOT_DIR
 
@@ -23,8 +23,18 @@ class Tfidf:
         print(model)
         return vectors
 
-    def text_vectorization_test_data_set(self):
+    def text_vectorization_test_data_set_over_sampling(self):
         model = tfidf_over_sampling()  # Retrieve Model
+        vectors = model.transform(self.corpus)
+        print(model)
+        print('TfidfVectorizer get_feature_names(): ', model.get_feature_names())
+        print('TfidfVectorizer len get_feature_names(): ', len(model.get_feature_names()))
+        print('Tfidf Vocabulary Size: ', len(model.vocabulary_))
+        print('Tfidf Vocabulary : ', model.vocabulary_)
+        return vectors
+
+    def text_vectorization_test_data_set_under_sampling(self):
+        model = tfidf_under_sampling()  # Retrieve Model
         vectors = model.transform(self.corpus)
         print(model)
         print('TfidfVectorizer get_feature_names(): ', model.get_feature_names())

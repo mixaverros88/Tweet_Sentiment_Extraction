@@ -1,4 +1,4 @@
-import utils.dataset as data
+from utils.dataset import read_cleaned_test_data_set
 from models.text_vectorization.BoW import BoW
 from models.machine_learning import DecisionTreeModel, GaussianNBModel, SvmModel, LogisticRegressionModel
 from models.neural import MLPClassifierModel
@@ -19,7 +19,7 @@ remove_words_by_occur_size = int(config.get('PROJECT', 'remove.words.occur.size'
 remove_most_common_word_size = int(config.get('PROJECT', 'remove.most.common.word'))
 
 # Retrieve Data Frames
-test_data_set = data.read_cleaned_test_data_set()
+test_data_set = read_cleaned_test_data_set()
 
 # Remove Null rows
 test_data_set.dropna(inplace=True)
@@ -41,33 +41,33 @@ corpus = remove_words_from_corpus(corpus, list_of_words_tha_occurs_3_or_less_tim
 
 # Vectorized - BOW
 bag_of_words_over_sampling = BoW(corpus)
-vectors_bag_of_words_over_sampling = bag_of_words_over_sampling.text_vectorization_test_data_set()
+vectors_bag_of_words_over_sampling = bag_of_words_over_sampling.text_vectorization_test_data_set_over_sampling()
 
 X = vectors_bag_of_words_over_sampling
 y = test_data_set['sentiment']
 
 # Logistic Regression
-logistic_regression_model = LogisticRegressionModel.run_on_test_data_set(X, y)
+logistic_regression_model = LogisticRegressionModel.run_on_test_data_set_over_sampling(X)
 print("Logistic Regression")
 print(classification_report(y, logistic_regression_model))
 
 # Support Vector Machine
-svm = SvmModel.run_on_test_data_set(X, y)
+svm = SvmModel.run_on_test_data_set_over_sampling(X)
 print("Support Vector Machine")
 print(classification_report(y, svm))
 
 # Gaussian Naive Bayes
-gn = GaussianNBModel.run_on_test_data_set(X, y)
+gn = GaussianNBModel.run_on_test_data_set_over_sampling(X)
 print("Gaussian Naive Bayes")
 print(classification_report(y, gn))
 
 # MLP Classifier
-mpl = MLPClassifierModel.run_on_test_data_set(X, y)
+mpl = MLPClassifierModel.run_on_test_data_set_over_sampling(X)
 print("MLP Classifier")
 print(classification_report(y, mpl))
 
 # Decision Tree
-mpl = DecisionTreeModel.run_on_test_data_set(X, y)
+mpl = DecisionTreeModel.run_on_test_data_set_over_sampling(X)
 print("Decision Tree")
 print(classification_report(y, mpl))
 

@@ -1,12 +1,18 @@
 from sklearn.neural_network import MLPClassifier
 import pickle
 import collections
-from utils.serializedModels import bag_of_words_multi_layer_perceptron_classifier_over_sampling
+from utils.serializedModels import bag_of_words_multi_layer_perceptron_classifier_over_sampling, \
+    bag_of_words_multi_layer_perceptron_classifier_under_sampling
 from definitions import ROOT_DIR
 
 
-def run_on_test_data_set(x, y):
+def run_on_test_data_set_over_sampling(x):
     model = bag_of_words_multi_layer_perceptron_classifier_over_sampling()
+    return model.predict(x)
+
+
+def run_on_test_data_set_under_sampling(x):
+    model = bag_of_words_multi_layer_perceptron_classifier_under_sampling()
     return model.predict(x)
 
 

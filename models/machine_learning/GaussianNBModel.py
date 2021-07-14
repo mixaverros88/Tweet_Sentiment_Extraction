@@ -1,12 +1,17 @@
 from sklearn.naive_bayes import MultinomialNB
 import pickle
 import collections
-from utils.serializedModels import bag_of_words_nb_over_sampling
+from utils.serializedModels import bag_of_words_nb_over_sampling, bag_of_words_nb_under_sampling
 from definitions import ROOT_DIR
 
 
-def run_on_test_data_set(x, y):
-    model = bag_of_words_nb_over_sampling()  # Retrieve Model
+def run_on_test_data_set_over_sampling(x):
+    model = bag_of_words_nb_over_sampling()
+    return model.predict(x)
+
+
+def run_on_test_data_set_under_sampling(x):
+    model = bag_of_words_nb_under_sampling()
     return model.predict(x)
 
 

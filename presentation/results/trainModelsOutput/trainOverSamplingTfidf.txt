@@ -58,20 +58,20 @@ NB Model : Micro Precision, recall, f1-score (0.6653661464585834, 0.665366146458
 weighted avg       0.67      0.67      0.67      9996
 
 MLPClassifier
-MLPClassifier Model : Macro Precision, recall, f1-score (0.7039416893024656, 0.7033136630567158, 0.7035234663110179, None)
-MLPClassifier Model : Micro Precision, recall, f1-score (0.7044817927170869, 0.7044817927170869, 0.7044817927170869, None)
-[[2540  644  172]
- [ 712 1967  573]
- [ 183  670 2535]]
+MLPClassifier Model : Macro Precision, recall, f1-score (0.7064613004052834, 0.7090752243352602, 0.707161960474673, None)
+MLPClassifier Model : Micro Precision, recall, f1-score (0.7107843137254902, 0.7107843137254902, 0.7107843137254902, None)
+[[2513  648  195]
+ [ 690 1867  695]
+ [ 180  483 2725]]
               precision    recall  f1-score   support
 
-           0       0.74      0.76      0.75      3356
-           1       0.60      0.60      0.60      3252
-           2       0.77      0.75      0.76      3388
+           0       0.74      0.75      0.75      3356
+           1       0.62      0.57      0.60      3252
+           2       0.75      0.80      0.78      3388
 
-    accuracy                           0.70      9996
-   macro avg       0.70      0.70      0.70      9996
-weighted avg       0.71      0.70      0.70      9996
+    accuracy                           0.71      9996
+   macro avg       0.71      0.71      0.71      9996
+weighted avg       0.71      0.71      0.71      9996
 
 Support Vector Machine SVM
 Decision Tree Model : Macro Precision, recall, f1-score (0.6445840836762842, 0.46367478649464, 0.4056698517624273, None)

@@ -10,6 +10,9 @@ from sklearn.model_selection import train_test_split
 from utils.functions import tokenizing_sentences_and_words_data_frame, get_column_values_as_np_array, tokenize_sentence, \
     count_word_occurrences, remove_words_from_corpus, count_the_most_common_words_in_data_set_convert, \
     count_the_most_common_words_in_data_set, convert_data_frame_sentence_to_vector_array
+from utils.serializedModels import word2vec_logistic_regression_under_sampling, word2vec_svm_under_sampling, \
+    bag_of_words_nb_under_sampling, word2vec_multi_layer_perceptron_classifier_under_sampling, \
+    word2vec_decision_tree_under_sampling, word2vec_k_neighbors_under_sampling
 import configparser
 
 config = configparser.RawConfigParser()
@@ -65,6 +68,9 @@ logistic_regression_model = LogisticRegressionModel(X_train, X_test, y_train, y_
 logistic_regression_model = logistic_regression_model.results()
 
 ComposeMetrics(
+    word2vec_logistic_regression_under_sampling(),
+    X_train,
+    y_train,
     logistic_regression_model.score,
     y_test,
     logistic_regression_model.prediction,
@@ -78,12 +84,16 @@ svm_model = SvmModel(X_train, X_test, y_train, y_test, config.get('MODELS', 'und
 svm_y_predict = svm_model.results()
 
 ComposeMetrics(
+    word2vec_svm_under_sampling(),
+    X_train,
+    y_train,
     svm_y_predict.score,
     y_test,
     svm_y_predict.prediction,
     config.get('MODELNAME', 'model.svm'),
     data_set,
     word_embedding)
+
 
 # Gaussian Naive Bayes
 # nb_params = {'alpha': 1.5}
@@ -92,6 +102,7 @@ ComposeMetrics(
 #
 # ComposeMetrics(nb_y_predict.score, y_test, nb_y_predict.prediction, config.get('MODELNAME', 'model.nb'), data_set,
 #                word_embedding)
+
 
 # MLP Classifier
 neural_network_params = {'activation': 'tanh', 'alpha': 0.05, 'hidden_layer_sizes': (5, 5, 5),
@@ -102,6 +113,9 @@ neural_network = MLPClassifierModel(X_train, X_test, y_train, y_test,
 neural_network_predict = neural_network.results()
 
 ComposeMetrics(
+    word2vec_multi_layer_perceptron_classifier_under_sampling(),
+    X_train,
+    y_train,
     neural_network_predict.score,
     y_test,
     neural_network_predict.prediction,
@@ -116,6 +130,9 @@ decision_tree = DecisionTreeModel(X_train, X_test, y_train, y_test, config.get('
 decision_tree_predict = decision_tree.results()
 
 ComposeMetrics(
+    word2vec_decision_tree_under_sampling(),
+    X_train,
+    y_train,
     decision_tree_predict.score,
     y_test,
     decision_tree_predict.prediction,
@@ -130,47 +147,12 @@ k_neighbors_model = KNeighborsModel(X_train, X_test, y_train, y_test,
 k_neighbors_model_predict = k_neighbors_model.results()
 
 ComposeMetrics(
+    word2vec_k_neighbors_under_sampling(),
+    X_train,
+    y_train,
     k_neighbors_model_predict.score,
     y_test,
     k_neighbors_model_predict.prediction,
     config.get('MODELNAME', 'model.kn'),
     data_set,
     word_embedding)
-
-# import numpy as np
-# import pandas as pd
-# from sklearn.linear_model import LogisticRegression
-# from sklearn.model_selection import train_test_split
-# from sklearn.metrics import classification_report
-# import spacy
-# import en_core_web_lg
-#
-# nlp = en_core_web_lg.load()
-#
-#
-#
-#
-# def get_vec(x):
-#     doc = nlp(str(x))
-#     vec = doc.vector
-#     return vec
-#
-#
-# df['vec'] = df['text'].apply(lambda x: get_vec(x))
-#
-# print(df.head())
-# X = df['vec'].to_numpy()
-# X = X.reshape(-1, 1)
-# X = np.concatenate(np.concatenate(X, axis=0), axis=0).reshape(-1, 300)
-#
-# y = target_values
-#
-# X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=0, stratify=y)
-#
-# print(X_train.shape)
-# print(X_test.shape)
-#
-# clf = LogisticRegression(solver='liblinear')
-# clf.fit(X_train, y_train)
-# y_pred = clf.predict(X_test)
-# print(classification_report(y_test, y_pred))
