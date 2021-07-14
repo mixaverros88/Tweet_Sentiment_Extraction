@@ -37,8 +37,8 @@ class ComposeMetrics:
         self.classification_report()
         if self.y_score is not None:
             self.plot_roc_curve()
-        self.measure_trade_off()
-        self.measure_trade_off_alter_native()
+        # self.measure_trade_off()
+        # self.measure_trade_off_alter_native()
 
     def print_micro_macro_metrics(self):
         print(self.model_name + ' : Macro Precision, recall, f1-score',

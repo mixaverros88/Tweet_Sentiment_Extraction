@@ -1,10 +1,11 @@
 from utils.dataset import read_cleaned_test_data_set
 from models.text_vectorization.BoW import BoW
-from models.machine_learning import DecisionTreeModel, GaussianNBModel, SvmModel, LogisticRegressionModel
-from models.neural import MLPClassifierModel
 from sklearn.metrics import classification_report
 from utils.functions import tokenize_sentence, count_word_occurrences, remove_words_from_corpus, \
     count_the_most_common_words_in_data_set_convert, count_the_most_common_words_in_data_set
+from utils.serializedModels import bag_of_words_logistic_regression_over_sampling, bag_of_words_svm_over_sampling, \
+    bag_of_words_nb_over_sampling, bag_of_words_multi_layer_perceptron_classifier_over_sampling, \
+    bag_of_words_decision_tree_over_sampling, bag_of_words_k_neighbors_over_sampling
 from definitions import ROOT_DIR
 import configparser
 
@@ -47,28 +48,31 @@ X = vectors_bag_of_words_over_sampling
 y = test_data_set['sentiment']
 
 # Logistic Regression
-logistic_regression_model = LogisticRegressionModel.run_on_test_data_set_over_sampling(X)
+lg = bag_of_words_logistic_regression_over_sampling()
 print("Logistic Regression")
-print(classification_report(y, logistic_regression_model))
+print(classification_report(y, lg.predict(X)))
 
 # Support Vector Machine
-svm = SvmModel.run_on_test_data_set_over_sampling(X)
+svm = bag_of_words_svm_over_sampling()
 print("Support Vector Machine")
-print(classification_report(y, svm))
+print(classification_report(y, svm.predict(X)))
 
 # Gaussian Naive Bayes
-gn = GaussianNBModel.run_on_test_data_set_over_sampling(X)
+gn = bag_of_words_nb_over_sampling()
 print("Gaussian Naive Bayes")
-print(classification_report(y, gn))
+print(classification_report(y, gn.predict(X)))
 
 # MLP Classifier
-mpl = MLPClassifierModel.run_on_test_data_set_over_sampling(X)
+mpl = bag_of_words_multi_layer_perceptron_classifier_over_sampling()
 print("MLP Classifier")
-print(classification_report(y, mpl))
+print(classification_report(y, mpl.predict(X)))
 
 # Decision Tree
-mpl = DecisionTreeModel.run_on_test_data_set_over_sampling(X)
+dt = bag_of_words_decision_tree_over_sampling()
 print("Decision Tree")
-print(classification_report(y, mpl))
+print(classification_report(y, dt.predict(X)))
 
-# TODO: KNeighborsModel
+# KNeighbors
+kn = bag_of_words_k_neighbors_over_sampling()
+print("KNeighbors")
+print(classification_report(y, kn.predict(X)))

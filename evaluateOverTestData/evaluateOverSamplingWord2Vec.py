@@ -1,14 +1,10 @@
 import utils.dataset as data
-from models.text_vectorization.Word2VecModel import Word2VecModel
-from models.machine_learning import DecisionTreeModel, GaussianNBModel, SvmModel, LogisticRegressionModel
-from models.neural import MLPClassifierModel
+from utils.serializedModels import word2vec_logistic_regression_over_sampling, word2vec_svm_over_sampling, \
+    word2vec_multi_layer_perceptron_classifier_over_sampling, \
+    word2vec_decision_tree_over_sampling, word2vec_k_neighbors_over_sampling, word2vec_over_sampling
 from sklearn.metrics import classification_report
 from definitions import ROOT_DIR
-from apiService.utils.helper_functions.functions import convert_sentence_to_vector_array_request, \
-    convert_text_to_data_frame_of_one_row
-from utils.functions import tokenizing_sentences_and_words_data_frame, tokenize_sentence, count_word_occurrences, \
-    remove_words_from_corpus, count_the_most_common_words_in_data_set_convert, count_the_most_common_words_in_data_set, \
-    convert_list_to_numpy_array
+from utils.functions import convert_data_frame_sentence_to_vector_array
 import configparser
 
 config = configparser.RawConfigParser()
@@ -27,53 +23,34 @@ test_data_set = data.read_cleaned_test_data_set()
 # Remove Null rows
 test_data_set.dropna(inplace=True)
 
-# List of words that occurs 3 or less times
-list_of_words_tha_occurs_3_or_less_times = count_word_occurrences(test_data_set,
-                                                                  remove_words_by_occur_size)
+word2vec_model = word2vec_over_sampling()
 
-# List of top 15 most common word
-most_common_words = count_the_most_common_words_in_data_set(test_data_set, 'text',
-                                                            remove_most_common_word_size)
-most_common_words = count_the_most_common_words_in_data_set_convert(most_common_words)
-
-# Tokenize data frame
-corpus = tokenize_sentence(test_data_set)
-
-# Remove from corpus the given list of words
-corpus = remove_words_from_corpus(corpus, list_of_words_tha_occurs_3_or_less_times + most_common_words)
-
-# Vectorized - BOW
-tokenized_sentences = tokenizing_sentences_and_words_data_frame(test_data_set)
-word2vec_of_words_over_sampling = Word2VecModel(tokenized_sentences)
-vectors_bag_of_words_over_sampling = word2vec_of_words_over_sampling.text_vectorization_test_data_set_over_sampling()
-
-#X = convert_list_to_numpy_array(vectors_bag_of_words_over_sampling)
-X = np_vec = convert_sentence_to_vector_array_request(word2vec_model, cleaned_text)
+X = convert_data_frame_sentence_to_vector_array(word2vec_model, test_data_set)
 y = test_data_set['sentiment']
 
 # Logistic Regression
-logistic_regression_model = LogisticRegressionModel.run_on_test_data_set_over_sampling(X)
+lg = word2vec_logistic_regression_over_sampling()
 print("Logistic Regression")
-print(classification_report(y, logistic_regression_model))
+print(classification_report(y, lg.predict(X)))
 
 # Support Vector Machine
-svm = SvmModel.run_on_test_data_set_over_sampling(X)
+svm = word2vec_svm_over_sampling()
 print("Support Vector Machine")
-print(classification_report(y, svm))
+print(classification_report(y, svm.predict(X)))
 
-# Gaussian Naive Bayes
-gn = GaussianNBModel.run_on_test_data_set_over_sampling(X)
-print("Gaussian Naive Bayes")
-print(classification_report(y, gn))
+# TODO: Gaussian Naive Bayes
 
 # MLP Classifier
-mpl = MLPClassifierModel.run_on_test_data_set_over_sampling(X)
+mpl = word2vec_multi_layer_perceptron_classifier_over_sampling()
 print("MLP Classifier")
-print(classification_report(y, mpl))
+print(classification_report(y, mpl.predict(X)))
 
 # Decision Tree
-mpl = DecisionTreeModel.run_on_test_data_set_over_sampling(X)
+dt = word2vec_decision_tree_over_sampling()
 print("Decision Tree")
-print(classification_report(y, mpl))
+print(classification_report(y, dt.predict(X)))
 
-# TODO: KNeighborsModel
+# KNeighbors
+kn = word2vec_k_neighbors_over_sampling()
+print("KNeighbors")
+print(classification_report(y, kn.predict(X)))

@@ -1,19 +1,7 @@
 import pickle
 import collections
 from sklearn.linear_model import LogisticRegression
-from utils.serializedModels import bag_of_words_logistic_regression_over_sampling, \
-    bag_of_words_logistic_regression_under_sampling
 from definitions import ROOT_DIR
-
-
-def run_on_test_data_set_over_sampling(x):
-    model = bag_of_words_logistic_regression_over_sampling()
-    return model.predict(x)
-
-
-def run_on_test_data_set_under_sampling(x):
-    model = bag_of_words_logistic_regression_under_sampling()
-    return model.predict(x)
 
 
 class LogisticRegressionModel:

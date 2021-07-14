@@ -8,7 +8,12 @@ slang_list = {
     "bak": "back at keyboard",
     "bbl": "be back later",
     "bbs": "be back soon",
+    "3YP": "three year period",
     "bfn": "bye for now",
+    "4me": "for me",
+    "have2cut": "have to cut",
+    "have2live": "have to live",
+    "sme": "subject matter expert",
     "b4n": "bye for now",
     "brb": "be right back",
     "brt": "be right there",
@@ -152,6 +157,9 @@ slang_list = {
     "doc": "doctor",
     "bff": "best friend",
     "H-O-T": "hot",
+    "4get": "forget",
+    "dvr": "digital video recorder",
+    "4ish": "approximately four",
     # ugh ??
     # wow ??
     # uh ??

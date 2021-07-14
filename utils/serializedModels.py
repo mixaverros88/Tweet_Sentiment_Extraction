@@ -111,7 +111,7 @@ def tfidf_svm_over_sampling():
 
 
 def tfidf_svm_under_sampling():
-    return pickle.load(open(ROOT_DIR + "/apiService/serializedModels/Tfidf_svm_over_sampling.sav", 'rb'))
+    return pickle.load(open(ROOT_DIR + "/apiService/serializedModels/Tfidf_svm_under_sampling.sav", 'rb'))
 
 
 def bag_of_words_multi_layer_perceptron_classifier_over_sampling():

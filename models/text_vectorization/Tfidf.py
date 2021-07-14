@@ -24,7 +24,7 @@ class Tfidf:
         return vectors
 
     def text_vectorization_test_data_set_over_sampling(self):
-        model = tfidf_over_sampling()  # Retrieve Model
+        model = tfidf_over_sampling()
         vectors = model.transform(self.corpus)
         print(model)
         print('TfidfVectorizer get_feature_names(): ', model.get_feature_names())
@@ -34,7 +34,7 @@ class Tfidf:
         return vectors
 
     def text_vectorization_test_data_set_under_sampling(self):
-        model = tfidf_under_sampling()  # Retrieve Model
+        model = tfidf_under_sampling()
         vectors = model.transform(self.corpus)
         print(model)
         print('TfidfVectorizer get_feature_names(): ', model.get_feature_names())

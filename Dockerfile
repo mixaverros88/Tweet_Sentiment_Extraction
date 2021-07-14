@@ -15,10 +15,5 @@ CMD ["python", "api.py"]
 # docker run -p 5000:5000 -d docker-flask-app
 
 # docker tag docker-flask-app mixaverross88/docker-flask-app:latest
-# 
-# 
-# Step 5
-# Push the image to the docker hub
-
 # docker push mixaverross88/docker-flask-app:latest
 
