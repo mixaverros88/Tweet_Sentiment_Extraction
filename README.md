@@ -24,27 +24,17 @@ Run the runAngular.cmd on buildingScripts folder.
 
 Access it at http://localhost:2500/
 
-### Run the tests
+In order to run the following train models:
 
-Run the runTests.cmd on buildingScripts folder.
+trainOverSamplingBOW.py
+trainOverSamplingTfidf.py
+trainOverSamplingWord2Vec.py
+trainUnderSamplingWord2Vec.py
+trainUnderSamplingBOW.py
+trainUnderSamplingTfidf.py
 
-### Distribution of Sentiment class
+Run the tranAllTheModels.cmd on buildingScripts folder.
 
-![](presentation/images/count_plot_target_class_test_df.png)
+In the apiService folder you can find the package.
 
-### Get the terminal output
-
-run the terminalOutPutAsTxt.cmd
-
-| Target| Rows
-| ---- |:-----:
-| Negative | 7781  |
-| Neutral  | 11118 |
-| Positive | 8582  |
-
-We consider this dataset as imbalanced???
-
-
-### Text pre-processing
-
-
+In the evaluateOverTestData you can find all the files to be executed. 
