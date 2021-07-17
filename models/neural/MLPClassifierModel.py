@@ -31,9 +31,10 @@ class MLPClassifierModel:
             learning_rate=self.param_space.get('learning_rate'),
             max_iter=self.param_space.get('max_iter'))
         model.fit(self.x_train, self.y_train)
+        score = model.predict_proba(self.x_test)
         save_models(model, self.model_name)
         predictions = model.predict(self.x_test)
         Point = collections.namedtuple('Point', ['prediction', 'score'])
         end_time = time.time()
         compute_elapsed_time(start_time, end_time, self.model_name)
-        return Point(prediction=predictions, score=None)
+        return Point(prediction=predictions, score=score)

@@ -93,7 +93,7 @@ class ComposeMetrics:
         plt.plot(fpr[0], tpr[0], linestyle='--', color='orange', label='Negative')
         plt.plot(fpr[1], tpr[1], linestyle='--', color='green', label='Neutral')
         plt.plot(fpr[2], tpr[2], linestyle='--', color='blue', label='Positive')
-        plt.title('Multiclass ROC curve')
+        plt.title(self.model_name + ' ROC curve')
         plt.xlabel('False Positive Rate')
         plt.ylabel('True Positive rate')
         plt.legend(loc='best')

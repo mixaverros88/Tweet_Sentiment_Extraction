@@ -141,7 +141,7 @@ intervals = (
 )
 
 
-def display_time(seconds, granularity=2):
+def display_time(seconds, granularity=3):
     result = []
 
     for name, count in intervals:
@@ -155,8 +155,13 @@ def display_time(seconds, granularity=2):
 
 
 def compute_elapsed_time(start_time, end_time, model_name):
+    print('Start Time', start_time)
+    print('End Time', end_time)
     elapsed_time = end_time - start_time
-    print(model_name + ' Elapsed Time : ' + str(display_time(elapsed_time)))
+    print('Elapsed Time', elapsed_time)
+    timed = display_time(elapsed_time)
+    print(timed)
+    print(model_name + ' Elapsed Time : ' + str(timed))
 
 
 def save_models(model, model_name):
