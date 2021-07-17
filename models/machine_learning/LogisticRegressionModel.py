@@ -1,7 +1,8 @@
-import pickle
 import collections
 from sklearn.linear_model import LogisticRegression
-from definitions import ROOT_DIR
+import time
+
+from utils.functions import compute_elapsed_time, save_models
 
 
 class LogisticRegressionModel:
@@ -16,6 +17,7 @@ class LogisticRegressionModel:
 
     def results(self):
         print('Logistic Regression')
+        start_time = time.time()
         # logistic_regression_model_tuning(self.x_train, self.y_train)
         model = LogisticRegression(
             C=self.param_space.get('C'),
@@ -24,8 +26,10 @@ class LogisticRegressionModel:
             solver=self.param_space.get('solver')
         )
         model.fit(self.x_train, self.y_train)
-        pickle.dump(model, open(ROOT_DIR + '/apiService/serializedModels/' + self.model_name + '.sav', 'wb'))
+        save_models(model, self.model_name)
         y_score = model.fit(self.x_train, self.y_train).decision_function(self.x_test)
         predictions = model.predict(self.x_test)
         Point = collections.namedtuple('Point', ['prediction', 'score'])
+        end_time = time.time()
+        compute_elapsed_time(start_time, end_time, self.model_name)
         return Point(prediction=predictions, score=y_score)

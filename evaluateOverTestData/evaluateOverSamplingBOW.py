@@ -1,8 +1,8 @@
 from utils.dataset import read_cleaned_test_data_set
 from models.text_vectorization.BoW import BoW
 from sklearn.metrics import classification_report
-from utils.functions import tokenize_sentence, count_word_occurrences, remove_words_from_corpus, \
-    count_the_most_common_words_in_data_set_convert, count_the_most_common_words_in_data_set
+from utils.functions import convert_data_frame_to_list, count_word_occurrences, remove_words_from_corpus, \
+    convert_list_of_tuples_to_list, count_the_most_common_words_in_data_set
 from utils.serializedModels import bag_of_words_logistic_regression_over_sampling, bag_of_words_svm_over_sampling, \
     bag_of_words_nb_over_sampling, bag_of_words_multi_layer_perceptron_classifier_over_sampling, \
     bag_of_words_decision_tree_over_sampling, bag_of_words_k_neighbors_over_sampling
@@ -32,10 +32,10 @@ list_of_words_tha_occurs_3_or_less_times = count_word_occurrences(test_data_set,
 # List of top 15 most common word
 most_common_words = count_the_most_common_words_in_data_set(test_data_set, 'text',
                                                             remove_most_common_word_size)
-most_common_words = count_the_most_common_words_in_data_set_convert(most_common_words)
+most_common_words = convert_list_of_tuples_to_list(most_common_words)
 
 # Tokenize data frame
-corpus = tokenize_sentence(test_data_set)
+corpus = convert_data_frame_to_list(test_data_set)
 
 # Remove from corpus the given list of words
 corpus = remove_words_from_corpus(corpus, list_of_words_tha_occurs_3_or_less_times + most_common_words)

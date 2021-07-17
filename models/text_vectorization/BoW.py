@@ -1,7 +1,9 @@
 from sklearn.feature_extraction.text import CountVectorizer
-import pickle
+import time
 from utils.serializedModels import bag_of_words_over_sampling, bag_of_words_under_sampling
-from definitions import ROOT_DIR
+from utils.functions import compute_elapsed_time, save_models
+
+""""Bag Of Words"""
 
 
 class BoW:
@@ -12,32 +14,24 @@ class BoW:
             self.model_name = str(model_name)
 
     def text_vectorization(self):
+        print('BOW Vocabulary')
         model = CountVectorizer()
+        start_time = time.time()
         vectors = model.fit_transform(self.corpus)
-        pickle.dump(model, open(ROOT_DIR + '/apiService/serializedModels/' + self.model_name + '.sav', 'wb'))
+        save_models(model, self.model_name)
         print(model)
         print('CountVectorizer get_feature_names(): ', model.get_feature_names())
         print('CountVectorizer len get_feature_names(): ', len(model.get_feature_names()))
         print('BOW Vocabulary Size: ', len(model.vocabulary_))
         print('BOW Vocabulary : ', model.vocabulary_)
+        end_time = time.time()
+        compute_elapsed_time(start_time, end_time, self.model_name)
         return vectors
 
     def text_vectorization_test_data_set_over_sampling(self):
         model = bag_of_words_over_sampling()  # Retrieve Model
-        vectors = model.transform(self.corpus)
-        print(model)
-        print('CountVectorizer get_feature_names(): ', model.get_feature_names())
-        print('CountVectorizer len get_feature_names(): ', len(model.get_feature_names()))
-        print('BOW Vocabulary Size: ', len(model.vocabulary_))
-        print('BOW Vocabulary : ', model.vocabulary_)
-        return vectors
+        return model.transform(self.corpus)
 
     def text_vectorization_test_data_set_under_sampling(self):
         model = bag_of_words_under_sampling()  # Retrieve Model
-        vectors = model.transform(self.corpus)
-        print(model)
-        print('CountVectorizer get_feature_names(): ', model.get_feature_names())
-        print('CountVectorizer len get_feature_names(): ', len(model.get_feature_names()))
-        print('BOW Vocabulary Size: ', len(model.vocabulary_))
-        print('BOW Vocabulary : ', model.vocabulary_)
-        return vectors
+        return model.transform(self.corpus)

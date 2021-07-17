@@ -7,12 +7,12 @@ from models.machine_learning.KNeighborsModel import KNeighborsModel
 from models.machine_learning.DecisionTreeModel import DecisionTreeModel
 from models.neural.MLPClassifierModel import MLPClassifierModel
 from sklearn.model_selection import train_test_split
-from utils.functions import tokenizing_sentences_and_words_data_frame, convert_numpy_array_to_array_of_arrays, \
-    get_column_values_as_np_array, tokenize_sentence, count_word_occurrences, remove_words_from_corpus, \
-    count_the_most_common_words_in_data_set_convert, count_the_most_common_words_in_data_set, \
+from utils.functions import tokenizing_dataframe, \
+    get_column_values_as_np_array, convert_data_frame_to_list, count_word_occurrences, remove_words_from_corpus, \
+    convert_list_of_tuples_to_list, count_the_most_common_words_in_data_set, \
     convert_data_frame_sentence_to_vector_array
 from utils.serializedModels import word2vec_logistic_regression_over_sampling, word2vec_svm_over_sampling, \
-    bag_of_words_nb_over_sampling, word2vec_multi_layer_perceptron_classifier_over_sampling, \
+    word2vec_multi_layer_perceptron_classifier_over_sampling, \
     word2vec_decision_tree_over_sampling, word2vec_k_neighbors_over_sampling
 import configparser
 
@@ -21,6 +21,7 @@ config.read('ConfigFile.properties')
 data_set = config.get('STR', 'data.over.sampling')
 word_embedding = config.get('STR', 'word.embedding.word2vec')
 target_column = config.get('STR', 'target.column')
+text_column = config.get('STR', 'text.column')
 test_size = float(config.get('PROJECT', 'test.size'))
 random_state = int(config.get('PROJECT', 'random.state'))
 remove_words_by_occur_size = int(config.get('PROJECT', 'remove.words.occur.size'))
@@ -39,26 +40,22 @@ target_values = get_column_values_as_np_array(target_column, train_data_frame_ov
 list_of_words_tha_occurs_3_or_less_times = count_word_occurrences(train_data_frame_over_sampling,
                                                                   remove_words_by_occur_size)
 # List of top 15 most common word
-most_common_words = count_the_most_common_words_in_data_set(train_data_frame_over_sampling, 'text',
+most_common_words = count_the_most_common_words_in_data_set(train_data_frame_over_sampling, text_column,
                                                             remove_most_common_word_size)
-most_common_words = count_the_most_common_words_in_data_set_convert(most_common_words)
+most_common_words = convert_list_of_tuples_to_list(most_common_words)
 
 # Tokenize data frame
-corpus = tokenize_sentence(train_data_frame_over_sampling)
+corpus = convert_data_frame_to_list(train_data_frame_over_sampling)
 
 # Remove from corpus the given list of words
 corpus = remove_words_from_corpus(corpus, list_of_words_tha_occurs_3_or_less_times + most_common_words)
 
 # Vectorized - Word2Vec
-tokenized_sentences = tokenizing_sentences_and_words_data_frame(train_data_frame_over_sampling)
-tokenized_sentences2 = convert_numpy_array_to_array_of_arrays(corpus)
+tokenized_sentences = tokenizing_dataframe(train_data_frame_over_sampling)
 word_2_vec = Word2VecModel(tokenized_sentences, config.get('MODELS', 'oversampling.word2vec.word2vec'))
 word2vec_model = word_2_vec.text_vectorization()
 
 X = convert_data_frame_sentence_to_vector_array(word2vec_model, train_data_frame_over_sampling)
-
-# X = convert_sentence_to_vector_array2(word2vec_model, corpus)
-
 
 # Split Train-Test Data
 X_train, X_test, y_train, y_test = \
@@ -138,8 +135,8 @@ neural_network = MLPClassifierModel(
     y_train,
     y_test,
     config.get('MODELS', 'oversampling.word2vec.mlp'),
-    'sss',
-    neural_network_params)
+    neural_network_params,
+    'word2vec_model')
 
 neural_network_predict = neural_network.results()
 
@@ -155,7 +152,7 @@ ComposeMetrics(
     word_embedding)
 
 # Decision Tree
-decision_tree_params = {'max_depth': 5, 'max_leaf_nodes': 18, 'min_samples_split': 3}
+decision_tree_params = {'max_depth': 5, 'max_leaf_nodes': 10, 'min_samples_split': 2}
 decision_tree = DecisionTreeModel(
     X_train,
     X_test,
@@ -178,7 +175,7 @@ ComposeMetrics(
     word_embedding)
 
 # K Neighbors
-k_neighbors_params = {'metric': 'euclidean', 'weights': 'distance'}
+k_neighbors_params = {'metric': 'manhattan', 'weights': 'distance', 'n_neighbors': 3}
 k_neighbors_model = KNeighborsModel(
     X_train,
     X_test,

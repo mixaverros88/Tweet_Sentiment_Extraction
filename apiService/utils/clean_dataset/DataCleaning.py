@@ -105,8 +105,8 @@ class DataCleaning:
             self.text = self.remove_double_spaces()
             print('16. Remove Double Spaces: ' + self.text)
             self.data_pre_processing_steps.update({'Step_16': self.text})
-            # self.text = self.word_segment()
-            # print('17. Word Segment: ' + self.text)
+            self.text = self.word_segment()
+            print('17. Word Segment: ' + self.text)
             self.data_pre_processing_steps.update({'Step_17': self.text})
             self.text = self.auto_spelling()
             print('18. Auto Spelling: ' + self.text)
@@ -249,15 +249,13 @@ class DataCleaning:
     def convert_to_nominal(self):
         """e.g 1st to first"""
         numbers = re.findall('(\d+)[st|nd|rd|th]', self.text)
-
-        newText = self.text
+        new_text = self.text
         for n in numbers:
-            ordinalAsString = num2words(n, ordinal=True)
-            newText = re.sub(r"\d+[st|nd|rd|th]", ordinalAsString[:-1], self.text, 1)
-            print(newText)
+            ordinal_as_string = num2words(n, ordinal=True)
+            new_text = re.sub(r"\d+[st|nd|rd|th]", ordinal_as_string[:-1], self.text, 1)
         print(self.text)
-        print(newText)
-        return newText
+        print(new_text)
+        return new_text
 
     def word_segment(self):
         """Segment Words e.g loveit to love it"""
@@ -270,7 +268,7 @@ class DataCleaning:
         doc = nlp(self.text)
         print([(X.text, X.label_) for X in doc.ents])
         for idx, X in enumerate(doc.ents):
-            # REMOVE organizations
+            # REMOVE organizations, Person, Location, Time
             if X.label_ == 'ORG' or \
                     X.label_ == 'PERSON' or \
                     X.label_ == 'GPE' or \

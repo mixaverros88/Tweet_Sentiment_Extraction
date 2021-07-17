@@ -23,6 +23,9 @@ COPY --from=builder /ng-app/dist/restFull /usr/share/nginx/html
 
 CMD ["nginx", "-g", "daemon off;"]
 
-# docker image build -t docker-angular-app .
-# docker run  -p 8080:80 -d docker-angular-app
+# docker image build -t docker-angular-sentiment-analysis-app .
+# docker run  -p 8080:80 -d docker-angular-sentiment-analysis-app
+
+# docker tag docker-angular-sentiment-analysis-app mixaverross88/docker-angular-sentiment-analysis-app:latest
+# docker push mixaverross88/docker-angular-sentiment-analysis-app:latest
 

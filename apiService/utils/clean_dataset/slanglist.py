@@ -1,3 +1,5 @@
+"""Slang List Map"""
+
 slang_list = {
     "afaik": "as far as i know",
     "afk": "away from keyboard",
@@ -160,27 +162,5 @@ slang_list = {
     "4get": "forget",
     "dvr": "digital video recorder",
     "4ish": "approximately four",
-    # ugh ??
-    # wow ??
-    # uh ??
-    # oh ??
-    # gotto ??
-    # HOORAYY ??
-    # waaaa ??
-    # Hehehehe ??
-    # weee ??
-    # bahah ??
-    # hahaha ??
-    # Ahhh ??
-    # woot ??
-    # woohoo ??
-    # frolick ??
-    # wrrkk ??
-    # oowww ??
-    # hehe ??
-    # mahasha ??
-
-    # emoji
-    "=P": "",
-    "<3": "",
+    "gby ": "god bless you",
 }

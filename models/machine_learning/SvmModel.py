@@ -1,7 +1,9 @@
 from sklearn import svm
-import pickle
 import collections
-from definitions import ROOT_DIR
+from utils.model_tuning import svm_model_tuning
+import time
+
+from utils.functions import compute_elapsed_time, save_models
 
 
 class SvmModel:
@@ -16,11 +18,14 @@ class SvmModel:
 
     def results(self):
         print('Support Vector Machine SVM')
+        start_time = time.time()
         # svm_model_tuning(self.x_train, self.y_train)
         model = svm.SVC(kernel=self.param_space.get('kernel'))  # Linear Kernel
         model.fit(self.x_train, self.y_train)
-        pickle.dump(model, open(ROOT_DIR + '/apiService/serializedModels/' + self.model_name + '.sav', 'wb'))
+        save_models(model, self.model_name)
         predictions = model.predict(self.x_test)
         y_score = model.fit(self.x_train, self.y_train).decision_function(self.x_test)
         Point = collections.namedtuple('Point', ['prediction', 'score'])
+        end_time = time.time()
+        compute_elapsed_time(start_time, end_time, self.model_name)
         return Point(prediction=predictions, score=y_score)

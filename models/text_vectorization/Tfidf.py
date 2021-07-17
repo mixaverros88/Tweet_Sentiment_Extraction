@@ -1,7 +1,9 @@
 from sklearn.feature_extraction.text import TfidfVectorizer
 from utils.serializedModels import tfidf_over_sampling, tfidf_under_sampling
-import pickle
-from definitions import ROOT_DIR
+from utils.functions import compute_elapsed_time, save_models
+import time
+
+""""TF-IDF"""
 
 
 class Tfidf:
@@ -13,32 +15,23 @@ class Tfidf:
 
     def text_vectorization(self):
         print('Tfidf')
+        start_time = time.time()
         model = TfidfVectorizer()
         vectors = model.fit_transform(self.corpus)
-        pickle.dump(model, open(ROOT_DIR + '/apiService/serializedModels/' + self.model_name + '.sav', 'wb'))
+        save_models(model, self.model_name)
         print('TfidfVectorizer get_feature_names(): ', model.get_feature_names())
         print('TfidfVectorizer len get_feature_names(): ', len(model.get_feature_names()))
         print('Tfidf Vocabulary Size: ', len(model.vocabulary_))
         print('Tfidf Vocabulary: ', model.vocabulary_)
         print(model)
+        end_time = time.time()
+        compute_elapsed_time(start_time, end_time, self.model_name)
         return vectors
 
     def text_vectorization_test_data_set_over_sampling(self):
         model = tfidf_over_sampling()
-        vectors = model.transform(self.corpus)
-        print(model)
-        print('TfidfVectorizer get_feature_names(): ', model.get_feature_names())
-        print('TfidfVectorizer len get_feature_names(): ', len(model.get_feature_names()))
-        print('Tfidf Vocabulary Size: ', len(model.vocabulary_))
-        print('Tfidf Vocabulary : ', model.vocabulary_)
-        return vectors
+        return model.transform(self.corpus)
 
     def text_vectorization_test_data_set_under_sampling(self):
         model = tfidf_under_sampling()
-        vectors = model.transform(self.corpus)
-        print(model)
-        print('TfidfVectorizer get_feature_names(): ', model.get_feature_names())
-        print('TfidfVectorizer len get_feature_names(): ', len(model.get_feature_names()))
-        print('Tfidf Vocabulary Size: ', len(model.vocabulary_))
-        print('Tfidf Vocabulary : ', model.vocabulary_)
-        return vectors
+        return model.transform(self.corpus)

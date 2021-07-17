@@ -1,7 +1,9 @@
 from sklearn.neural_network import MLPClassifier
-import pickle
 import collections
-from definitions import ROOT_DIR
+import time
+
+from utils.functions import compute_elapsed_time, save_models
+from utils.model_tuning import mlp_classifier_model_tuning
 
 
 class MLPClassifierModel:
@@ -20,11 +22,18 @@ class MLPClassifierModel:
 
     def results(self):
         print('MLPClassifier')
+        start_time = time.time()
         # mlp_classifier_model_tuning(self.x_train, self.y_train)
-        model = MLPClassifier(activation='tanh', alpha=0.05, hidden_layer_sizes=(5, 5, 5), learning_rate='adaptive',
-                              max_iter=1000)
+        model = MLPClassifier(
+            activation=self.param_space.get('activation'),
+            alpha=self.param_space.get('alpha'),
+            hidden_layer_sizes=self.param_space.get('hidden_layer_sizes'),
+            learning_rate=self.param_space.get('learning_rate'),
+            max_iter=self.param_space.get('max_iter'))
         model.fit(self.x_train, self.y_train)
-        pickle.dump(model, open(ROOT_DIR + '/apiService/serializedModels/' + self.model_name + '.sav', 'wb'))
+        save_models(model, self.model_name)
         predictions = model.predict(self.x_test)
         Point = collections.namedtuple('Point', ['prediction', 'score'])
+        end_time = time.time()
+        compute_elapsed_time(start_time, end_time, self.model_name)
         return Point(prediction=predictions, score=None)

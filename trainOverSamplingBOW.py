@@ -8,8 +8,8 @@ from models.neural.MLPClassifierModel import MLPClassifierModel
 from models.machine_learning.KNeighborsModel import KNeighborsModel
 from models.machine_learning.DecisionTreeModel import DecisionTreeModel
 from sklearn.model_selection import train_test_split
-from utils.functions import get_column_values_as_np_array, tokenize_sentence, count_word_occurrences, \
-    remove_words_from_corpus, count_the_most_common_words_in_data_set_convert, count_the_most_common_words_in_data_set
+from utils.functions import get_column_values_as_np_array, convert_data_frame_to_list, count_word_occurrences, \
+    remove_words_from_corpus, convert_list_of_tuples_to_list, count_the_most_common_words_in_data_set
 from utils.serializedModels import bag_of_words_logistic_regression_over_sampling, bag_of_words_svm_over_sampling, \
     bag_of_words_nb_over_sampling, bag_of_words_multi_layer_perceptron_classifier_over_sampling, \
     bag_of_words_decision_tree_over_sampling, bag_of_words_k_neighbors_over_sampling
@@ -18,6 +18,7 @@ import configparser
 config = configparser.RawConfigParser()
 config.read('ConfigFile.properties')
 target_column = config.get('STR', 'target.column')
+text_column = config.get('STR', 'text.column')
 data_set = config.get('STR', 'data.over.sampling')
 word_embedding = config.get('STR', 'word.embedding.bow')
 test_size = float(config.get('PROJECT', 'test.size'))
@@ -39,12 +40,12 @@ list_of_words_tha_occurs_3_or_less_times = count_word_occurrences(train_data_fra
                                                                   remove_words_by_occur_size)
 
 # List of top 15 most common word
-most_common_words = count_the_most_common_words_in_data_set(train_data_frame_over_sampling, 'text',
+most_common_words = count_the_most_common_words_in_data_set(train_data_frame_over_sampling, text_column,
                                                             remove_most_common_word_size)
-most_common_words = count_the_most_common_words_in_data_set_convert(most_common_words)
+most_common_words = convert_list_of_tuples_to_list(most_common_words)
 
 # Tokenize data frame
-corpus = tokenize_sentence(train_data_frame_over_sampling)
+corpus = convert_data_frame_to_list(train_data_frame_over_sampling)
 
 # Remove from corpus the given list of words
 corpus = remove_words_from_corpus(corpus, list_of_words_tha_occurs_3_or_less_times + most_common_words)
@@ -152,7 +153,7 @@ ComposeMetrics(
     word_embedding)
 
 # Decision Tree
-decision_tree_params = {'max_depth': 5, 'max_leaf_nodes': 18, 'min_samples_split': 3}
+decision_tree_params = {'max_depth': 5, 'max_leaf_nodes': 10, 'min_samples_split': 2}
 decision_tree = DecisionTreeModel(
     X_train,
     X_test,
@@ -174,7 +175,7 @@ ComposeMetrics(
     word_embedding)
 
 # K Neighbors
-k_neighbors_params = {'metric': 'euclidean', 'weights': 'distance'}
+k_neighbors_params = {'metric': 'manhattan', 'weights': 'distance', 'n_neighbors': 3}
 k_neighbors_model = KNeighborsModel(
     X_train,
     X_test,

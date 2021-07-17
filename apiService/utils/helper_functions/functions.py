@@ -2,7 +2,7 @@ from nltk import word_tokenize
 import pandas as pd
 
 
-def convert_sentence_to_vector_array_request(word2vec_model, sentence):
+def convert_text_to_vector_array_by_word2vec_model(word2vec_model, sentence):
     word_tokens = word_tokenize(sentence)
     np_vec = []
     for word in word_tokens:
@@ -24,5 +24,6 @@ def map_sentiment(sentiment):
 
 
 def convert_text_to_data_frame_of_one_row(text):
+    """Convert text to data frame of one row and with one column named text"""
     request_text = {'text': [text]}
     return pd.DataFrame(request_text)

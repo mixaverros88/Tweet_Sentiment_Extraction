@@ -37,8 +37,8 @@ class ComposeMetrics:
         self.classification_report()
         if self.y_score is not None:
             self.plot_roc_curve()
-        # self.measure_trade_off()
-        # self.measure_trade_off_alter_native()
+        # self.measure_trade_off_based_on_error()
+        # self.measure_trade_off_based_on_accuracy()
 
     def print_micro_macro_metrics(self):
         print(self.model_name + ' : Macro Precision, recall, f1-score',
@@ -101,7 +101,7 @@ class ComposeMetrics:
         self.plt_show: plt.show()
         plt.close()
 
-    def measure_trade_off(self):
+    def measure_trade_off_based_on_error(self):
         y = np.array(self.y_train)
         kf = KFold(n_splits=10)
         list_training_error = []
@@ -133,7 +133,7 @@ class ComposeMetrics:
         self.plt_show: plt.show()
         plt.close()
 
-    def measure_trade_off_alter_native(self):
+    def measure_trade_off_based_on_accuracy(self):
         y = np.array(self.y_train)
         k_fold = KFold(n_splits=10)
         train_scores = []

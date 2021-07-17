@@ -8,6 +8,7 @@ import numpy as np
 from sklearn.neural_network import MLPClassifier
 from sklearn.neighbors import KNeighborsClassifier
 
+
 # https://machinelearningmastery.com/hyperparameters-for-classification-machine-learning-algorithms/
 # https://towardsdatascience.com/logistic-regression-model-tuning-with-scikit-learn-part-1-425142e01af5
 
@@ -24,16 +25,17 @@ def logistic_regression_model_tuning(x_train, y_train):
 def mlp_classifier_model_tuning(x_train, y_train):
     print('MLPClassifier Model Tuning')
     model = MLPClassifier()
-    grid = dict(hidden_layer_sizes=[(5, 5, 5)], activation=['tanh', 'relu'],
-                solver=['sgd', 'adam'], alpha=[0.0001, 0.05],
-                learning_rate=['constant', 'adaptive'], max_iter=[200])
+    grid = dict(hidden_layer_sizes=[(3, 3, 3), (5, 5, 5), (10, 10, 10)], activation=['tanh', 'relu'],
+                solver=['sgd', 'adam'], alpha=[0.0001, 0.05, 1, 2],
+                learning_rate=['constant', 'adaptive'], max_iter=[400])
     grid_search(model, grid, x_train, y_train)
 
 
 def decision_tree_model_tuning(x_train, y_train):
-    print('MLPClassifier Model Tuning')
+    print('Decision Tree Model Tuning')
     model = DecisionTreeClassifier()
-    grid = dict(max_leaf_nodes=list(range(2, 20)), min_samples_split=[2, 3], max_depth=np.arange(3, 6))
+    grid = dict(max_leaf_nodes=list(range(2, 3, 5)), min_samples_split=[2, 3, 6],
+                max_depth=np.arange(2, 3, 5))
     grid_search(model, grid, x_train, y_train)
 
 
@@ -47,12 +49,12 @@ def nb_model_tuning(x_train, y_train):
 def k_neighbors_model_tuning(x_train, y_train):
     print('K Neighbors Model Tuning')
     model = KNeighborsClassifier()
-    grid = dict(n_neighbors=[3, 5, 11, 19], weights=['uniform', 'distance'],metric=['euclidean', 'manhattan'])
+    grid = dict(n_neighbors=[3, 5, 11, 19, 25], weights=['uniform', 'distance'], metric=['euclidean', 'manhattan'])
     grid_search(model, grid, x_train, y_train)
 
 
 def svm_model_tuning(x_train, y_train):
-    print('Support Vector Machine SVM Model Tuning')
+    print('Support Vector Machine Model Tuning')
     model = svm.SVC(kernel='linear', probability=True)
     grid = dict(C=np.linspace(start=1000, stop=10000, num=4, endpoint=True))
     grid_search(model, grid, x_train, y_train)

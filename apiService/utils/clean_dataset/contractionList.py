@@ -1,3 +1,5 @@
+"""Contraction List Map"""
+
 contractions_list = {
     "ain't": "am not",  # / are not
     "aren't": "are not",  # / am not

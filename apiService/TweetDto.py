@@ -1,4 +1,7 @@
-class Tweet:
+"""Tweet DTO"""
+
+
+class TweetDto:
 
     def __init__(self, tweet, sentiment):
         self.tweet = tweet
