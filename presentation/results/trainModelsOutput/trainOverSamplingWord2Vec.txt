@@ -4,101 +4,101 @@ list_word:  ['restart', 'consolation', 'sm', 'dent', 'avid', 'salon', 'eyebrows'
 Size of words with 3 or less occurrences 8436
 33317
 Word2Vec(vocab=13311, size=100, alpha=0.025)
-Word2Vec Vocabulary :  [[ 9.5690286e-01 -3.9474034e-01 -3.2644286e-03 ... -9.7881550e-01
-  -4.8587477e-01  1.0580045e+00]
- [-7.0967424e-01 -2.9188284e-01  7.5586402e-01 ... -5.5512142e-01
-  -5.1886129e-01  3.1968990e-01]
- [ 3.3886859e-01 -3.1518567e-01 -3.5576335e-01 ...  4.6764299e-02
-  -3.4804064e-01  8.2094383e-01]
+Word2Vec Vocabulary :  [[-8.3775556e-01  9.7463675e-02  7.4746865e-01 ...  9.3469661e-01
+  -1.2587912e+00  1.0168222e+00]
+ [-8.6306930e-01 -8.0566603e-01  8.0411589e-01 ...  1.4266208e+00
+  -3.7177029e-01  1.9803189e-01]
+ [-6.3592958e-01 -5.8594900e-01  1.2108285e+00 ...  6.9113868e-01
+  -4.4437099e-01  1.7315342e-01]
  ...
- [-9.6306793e-04 -1.1034393e-03  1.4006555e-02 ... -5.7286816e-03
-   3.2697080e-03 -9.0121422e-03]
- [-5.0660514e-04  2.4883612e-03  6.9729094e-03 ...  2.4671664e-03
-   1.1308451e-02 -1.1522733e-02]
- [ 8.6297346e-03  3.8793951e-07  8.4887343e-03 ... -1.4373283e-03
-   5.3580008e-03 -4.0940070e-03]]
+ [-2.9101560e-03  2.0403003e-03 -1.4900094e-03 ...  8.5892491e-03
+  -1.6260492e-02  1.8445538e-04]
+ [-3.9024539e-03  3.3625579e-03  1.0997530e-02 ...  1.8110666e-02
+  -6.2996978e-03 -3.5211144e-03]
+ [-1.3885511e-02  3.1783942e-03  4.7944672e-03 ...  4.5736879e-03
+  -1.1320182e-02  1.2435791e-02]]
 Word2Vec Vocabulary len :  13311
-word2vec_over_sampling Elapsed Time : 5.0 seconds
+word2vec_over_sampling Elapsed Time : 4.0 seconds
 Logistic Regression
-word2vec_logistic_regression_over_sampling Elapsed Time : 1.0 minute, 6.0 seconds
-Logistic Regression Model : Macro Precision, recall, f1-score (0.6052751935586039, 0.5995076825980958, 0.6015529630703201, None)
-Logistic Regression Model : Micro Precision, recall, f1-score (0.5995398159263705, 0.5995398159263705, 0.5995398159263705, None)
-[[2047 1012  275]
- [ 904 1817  607]
- [ 453  752 2129]]
+word2vec_logistic_regression_over_sampling Elapsed Time : 48.0 seconds
+Logistic Regression Model : Macro Precision, recall, f1-score (0.6071267753011398, 0.6023092857390061, 0.604131503964601, None)
+Logistic Regression Model : Micro Precision, recall, f1-score (0.6023409363745498, 0.6023409363745498, 0.6023409363745498, None)
+[[2025 1012  297]
+ [ 885 1829  614]
+ [ 433  734 2167]]
               precision    recall  f1-score   support
 
-           0       0.60      0.61      0.61      3334
+           0       0.61      0.61      0.61      3334
            1       0.51      0.55      0.53      3328
-           2       0.71      0.64      0.67      3334
+           2       0.70      0.65      0.68      3334
 
     accuracy                           0.60      9996
    macro avg       0.61      0.60      0.60      9996
 weighted avg       0.61      0.60      0.60      9996
 
 Support Vector Machine SVM
-word2vec_svm_over_sampling Elapsed Time : 4.0 minutes, 16.0 seconds
-SVM Model : Macro Precision, recall, f1-score (0.587288435774748, 0.5690501923653731, 0.5723716654370087, None)
-SVM Model : Micro Precision, recall, f1-score (0.5690276110444178, 0.5690276110444178, 0.5690276110444178, None)
-[[1823 1238  273]
- [ 814 2019  495]
- [ 515  973 1846]]
+word2vec_svm_over_sampling Elapsed Time : 3.0 minutes, 12.0 seconds
+SVM Model : Macro Precision, recall, f1-score (0.5814312823542093, 0.5629447427822128, 0.5665216856961363, None)
+SVM Model : Micro Precision, recall, f1-score (0.5629251700680272, 0.5629251700680272, 0.5629251700680272, None)
+[[1805 1255  274]
+ [ 847 1982  499]
+ [ 514  980 1840]]
               precision    recall  f1-score   support
 
-           0       0.58      0.55      0.56      3334
-           1       0.48      0.61      0.53      3328
-           2       0.71      0.55      0.62      3334
+           0       0.57      0.54      0.56      3334
+           1       0.47      0.60      0.53      3328
+           2       0.70      0.55      0.62      3334
 
-    accuracy                           0.57      9996
-   macro avg       0.59      0.57      0.57      9996
-weighted avg       0.59      0.57      0.57      9996
+    accuracy                           0.56      9996
+   macro avg       0.58      0.56      0.57      9996
+weighted avg       0.58      0.56      0.57      9996
 
 MLPClassifier
-word2vec_mlp_over_sampling Elapsed Time : 12.0 seconds
-MLPClassifier Model : Macro Precision, recall, f1-score (0.591564125136714, 0.585991996312276, 0.5867604537457897, None)
-MLPClassifier Model : Micro Precision, recall, f1-score (0.5860344137655062, 0.5860344137655062, 0.5860344137655062, None)
-[[2148  883  303]
- [1024 1715  589]
- [ 641  698 1995]]
+word2vec_mlp_over_sampling Elapsed Time : 14.0 seconds
+MLPClassifier Model : Macro Precision, recall, f1-score (0.597762510993653, 0.5915031536961839, 0.5931016293061245, None)
+MLPClassifier Model : Micro Precision, recall, f1-score (0.5915366146458584, 0.5915366146458584, 0.5915366146458584, None)
+[[2110  951  273]
+ [ 947 1783  598]
+ [ 558  756 2020]]
               precision    recall  f1-score   support
 
-           0       0.56      0.64      0.60      3334
-           1       0.52      0.52      0.52      3328
-           2       0.69      0.60      0.64      3334
+           0       0.58      0.63      0.61      3334
+           1       0.51      0.54      0.52      3328
+           2       0.70      0.61      0.65      3334
 
     accuracy                           0.59      9996
-   macro avg       0.59      0.59      0.59      9996
-weighted avg       0.59      0.59      0.59      9996
+   macro avg       0.60      0.59      0.59      9996
+weighted avg       0.60      0.59      0.59      9996
 
 Decision Tree
 word2vec_decision_tree_over_sampling Elapsed Time : 1.0 second
-Decision Tree Model : Macro Precision, recall, f1-score (0.4946453187266915, 0.48580500246104624, 0.48771434231481253, None)
-Decision Tree Model : Micro Precision, recall, f1-score (0.48579431772709086, 0.48579431772709086, 0.48579431772709086, None)
-[[1472 1373  489]
- [ 923 1676  729]
- [ 643  983 1708]]
+Decision Tree Model : Macro Precision, recall, f1-score (0.4891290183472254, 0.48784816354036886, 0.48723426354885174, None)
+Decision Tree Model : Micro Precision, recall, f1-score (0.4878951580632253, 0.4878951580632253, 0.4878951580632253, None)
+[[1780  944  610]
+ [1173 1363  792]
+ [ 872  728 1734]]
               precision    recall  f1-score   support
 
-           0       0.48      0.44      0.46      3334
-           1       0.42      0.50      0.46      3328
-           2       0.58      0.51      0.55      3334
+           0       0.47      0.53      0.50      3334
+           1       0.45      0.41      0.43      3328
+           2       0.55      0.52      0.54      3334
 
     accuracy                           0.49      9996
    macro avg       0.49      0.49      0.49      9996
 weighted avg       0.49      0.49      0.49      9996
 
 KNeighbors Classifier
-word2vec_k_neighbors_over_sampling Elapsed Time : 30.0 seconds
-KNeighbors Classifier : Macro Precision, recall, f1-score (0.5931349269600893, 0.5971279301831941, 0.5898171955598084, None)
-KNeighbors Classifier : Micro Precision, recall, f1-score (0.5972388955582233, 0.5972388955582233, 0.5972388955582233, None)
-[[2370  560  404]
- [1090 1372  866]
- [ 550  556 2228]]
+word2vec_k_neighbors_over_sampling Elapsed Time : 49.0 seconds
+KNeighbors Classifier : Macro Precision, recall, f1-score (0.5929859297764368, 0.5968276296663744, 0.5893497697312555, None)
+KNeighbors Classifier : Micro Precision, recall, f1-score (0.5969387755102041, 0.5969387755102041, 0.5969387755102041, None)
+[[2369  541  424]
+ [1072 1370  886]
+ [ 554  552 2228]]
               precision    recall  f1-score   support
 
            0       0.59      0.71      0.65      3334
-           1       0.55      0.41      0.47      3328
-           2       0.64      0.67      0.65      3334
+           1       0.56      0.41      0.47      3328
+           2       0.63      0.67      0.65      3334
 
     accuracy                           0.60      9996
    macro avg       0.59      0.60      0.59      9996
